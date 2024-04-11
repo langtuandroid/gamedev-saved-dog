@@ -61,6 +61,14 @@ sysinfo.txt
 *.unitypackage
 *.app
 
+# Large media files
+*.mp4
+*.tiff
+*.avi
+*.flv
+*.mov
+*.wmv
+
 # Crashlytics generated file
 crashlytics-build.properties
 
