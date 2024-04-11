@@ -1652,6 +1652,7 @@ MonoBehaviour:
   _levelManager: {fileID: 1195218092}
   _dataPersistence: {fileID: 1501285801}
   _dataController: {fileID: 1376426651}
+  _timeManager: {fileID: 603343014}
 --- !u!114 &1380508479
 MonoBehaviour:
   m_ObjectHideFlags: 0
