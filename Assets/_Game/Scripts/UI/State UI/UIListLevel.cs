@@ -25,13 +25,15 @@ public class UIListLevel : UICanvas
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataController _dataController;
+    private AudioManager _audioManager;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataController dataController)
+    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataController = dataController;
+        _audioManager = audioManager;
     }
 
     private void OnEnable()
@@ -85,7 +87,7 @@ public class UIListLevel : UICanvas
                     _gameManager.ChangeState(GameState.GamePlay);
                     ClearListLevel();
 
-                    AudioManager.instance.Play(Constant.AUDIO_SFX_PLAY);
+                    _audioManager.Play(Constant.AUDIO_SFX_PLAY);
 
                     CloseDirectly();
                 }
@@ -160,7 +162,7 @@ public class UIListLevel : UICanvas
         UIManager.Instance.OpenUI<UiListAct>();
         ClearListLevel();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
         CloseDirectly();
     }

@@ -34,14 +34,18 @@ public class HealthDogeController : MonoBehaviour
     }
     
     private GameManager _gameManager;
+    private AudioManager _audioManager;
+    private ObjectPool _objectPool;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, AudioManager audioManager, ObjectPool objectPool)
     {
         _gameManager = gameManager;
+        _audioManager = audioManager;
+        _objectPool = objectPool;
     }
 
-    void Start()
+    private void Start()
     {
         animDoge = GetComponent<AnimationControllerDoge>();
 
@@ -53,9 +57,8 @@ public class HealthDogeController : MonoBehaviour
         hit = false;
         die = false;
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void Update()
     {
         if (couterTimeSting > 0)
         {
@@ -91,14 +94,14 @@ public class HealthDogeController : MonoBehaviour
     }
     private void ShowDamageText()
     {
-        GameObject obj = ObjectPool.Instance.GetFromPool(Constant.DMG_TEXT);
+        GameObject obj = _objectPool.GetFromPool(Constant.DMG_TEXT);
         obj.transform.position = TF.position + offsetText;
         obj.transform.rotation = Quaternion.identity;
         obj.SetActive(true);
     }
     private void ShowBloodEffect()
     {
-        GameObject obj = ObjectPool.Instance.GetFromPool(Constant.PAR_BLOOD_VFX);
+        GameObject obj = _objectPool.GetFromPool(Constant.PAR_BLOOD_VFX);
         obj.transform.position = transform.position + offsetBlood;
         obj.transform.rotation = Quaternion.identity;
         obj.SetActive(true);
@@ -109,7 +112,7 @@ public class HealthDogeController : MonoBehaviour
             return;
         if (collision.gameObject.CompareTag(Constant.BEE))
         {
-            AudioManager.instance.Play(Constant.AUDIO_SFX_STING);
+            _audioManager.Play(Constant.AUDIO_SFX_STING);
             DogeHurt();
             LoseHealth();
             if (die)
@@ -132,7 +135,7 @@ public class HealthDogeController : MonoBehaviour
         if (counterTimeHurt <= 0)
         {
             counterTimeHurt = coolDownDogHurt;
-            AudioManager.instance.Play(Constant.AUDIO_SFX_DOGHURT);
+            _audioManager.Play(Constant.AUDIO_SFX_DOGHURT);
             PhoneVibrate.Instance.VibrateDevice();
         }
     }

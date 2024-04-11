@@ -18,14 +18,16 @@ public class Timer : MonoBehaviour
     private Coroutine coroutineInstance;
     private GameManager _gameManager;
     private LevelManager _levelManager;
+    private AudioManager _audioManager;
     
     public float RemainingDuration => remainingDuration;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, AudioManager audioManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
+        _audioManager = audioManager;
     }
     
     void Start()
@@ -70,7 +72,7 @@ public class Timer : MonoBehaviour
             currentLevel.TurnOffHealthBar();
             _levelManager.currentLevel.DestroyAllBees();
 
-            AudioManager.instance.Play(Constant.AUDIO_SFX_WOOHOO);
+            _audioManager.Play(Constant.AUDIO_SFX_WOOHOO);
 
             AnimTickWinThenWin();
         }

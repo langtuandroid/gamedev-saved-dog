@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Beehive : MonoBehaviour
 {
@@ -18,7 +19,18 @@ public class Beehive : MonoBehaviour
     private int randomIndex, randomDog;
     private int randomLives;
     private Vector2 randomVector;
+    
+    private AudioManager _audioManager;
+    private ObjectPool _objectPool;
 
+    [Inject]
+    private void Construct(AudioManager audioManager, ObjectPool objectPool)
+    {
+        _audioManager = audioManager;
+        _objectPool = objectPool;
+    }
+    
+    
     private void Start()
     {
         LinesDrawer.instance.OnEndDraw += BeginGenerate;
@@ -33,7 +45,7 @@ public class Beehive : MonoBehaviour
     {
         for (int i = 0; i < quantityBee; i++)
         {
-            GameObject obj = ObjectPool.Instance.GetFromPool(Constant.BEE);
+            GameObject obj = _objectPool.GetFromPool(Constant.BEE);
             obj.SetActive(true);
             Bee bee1 = Cache.GetBeeGO(obj); //obj.GetComponent<Bee>();
 
@@ -57,8 +69,7 @@ public class Beehive : MonoBehaviour
                     bee1.FinalPointOnLine = pointsOnLine[0];
                     bee1.angleInRadians = 90f;
                 }
-            }
-            else
+            } else
             {
                 bee1.FinalPointOnLine = pointsOnLine[pointsOnLine.Length - 1];
                 bee1.angleInRadians = 180f;
@@ -73,18 +84,18 @@ public class Beehive : MonoBehaviour
     {
         pointsOnLine = LinesDrawer.instance.GetArrayPointsOfLine();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BEE);
+        _audioManager.Play(Constant.AUDIO_SFX_BEE);
 
         StartCoroutine(SpawnBees());
     } 
     public void DestroyAllBees()
     {
-        AudioManager.instance.Pause(Constant.AUDIO_SFX_BEE);
-        for(int i = 0; i < beeGroup.Count; i++)
+        _audioManager.Pause(Constant.AUDIO_SFX_BEE);
+        foreach (Bee bee in beeGroup)
         {
-            if (beeGroup[i].gameObject.activeSelf)
+            if (bee.gameObject.activeSelf)
             {
-                ObjectPool.Instance.ReturnToPool(Constant.BEE, beeGroup[i].gameObject);
+                _objectPool.ReturnToPool(Constant.BEE, bee.gameObject);
             }
         }
 
@@ -96,13 +107,12 @@ public class Beehive : MonoBehaviour
         {
             return Vector2.zero;
         }
-        else
-        {
-            randomIndex = Random.Range(0, lines.Length);
-            randomVector = lines[randomIndex];
-            return randomVector;
-        }
+
+        randomIndex = Random.Range(0, lines.Length);
+        randomVector = lines[randomIndex];
+        return randomVector;
     }
+    
     //private Vector2 GetFinalPointOnLine(Vector2[] lines)
     //{
     //    if (lines == null || lines.Length == 0)

@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 
 public class CoinKill : MonoBehaviour
 {
@@ -13,6 +12,14 @@ public class CoinKill : MonoBehaviour
     private Vector3 initPosImg, initPosText;
     public int amount;
 
+    private ObjectPool _objectPool;
+
+    [Inject]
+    private void Construct (ObjectPool objectPool)
+    {
+        _objectPool = objectPool;
+    }
+    
     private void OnEnable()
     {
         textMesh.text = "+" + amount;
@@ -35,6 +42,6 @@ public class CoinKill : MonoBehaviour
     {
         coinImg.position = initPosImg;
         text.position = initPosText;
-        ObjectPool.Instance.ReturnToPool(Constant.KILL_COIN_VFX, this.gameObject);
+        _objectPool.ReturnToPool(Constant.KILL_COIN_VFX, this.gameObject);
     }
 }

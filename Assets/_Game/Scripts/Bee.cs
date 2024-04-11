@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Bee : MonoBehaviour
 {
@@ -46,7 +47,16 @@ public class Bee : MonoBehaviour
         }
     }
 
+    private AudioManager _audioManager;
+    private ObjectPool _objectPool;
 
+    [Inject]
+    private void Construct(AudioManager audioManager, ObjectPool objectPool)
+    {
+        _audioManager = audioManager;
+        _objectPool = objectPool;
+    }
+    
     void Start()
     {
         OnInit();
@@ -95,8 +105,7 @@ public class Bee : MonoBehaviour
         if (timeCounterBouncing > 0)
         {
             timeCounterBouncing -= Time.deltaTime;
-        }
-        else
+        } else
         {
             moveSpeed = Mathf.Abs(moveSpeed);
         }
@@ -106,7 +115,7 @@ public class Bee : MonoBehaviour
     {
         directToDoge = targetDoge.position - TF.position;
         directToDoge = directToDoge.normalized;
-        rb.AddForce(directToDoge * moveSpeed * 3f, ForceMode2D.Impulse);
+        rb.AddForce(directToDoge * (moveSpeed * 3f), ForceMode2D.Impulse);
     }
 
     public void KnockBack()
@@ -115,11 +124,11 @@ public class Bee : MonoBehaviour
         if (lives <= 0)
         {
             CheerNotify.Instance.KeepStreak();
-            AudioManager.instance.Play(Constant.AUDIO_SFX_BEE_DEAD);
+            _audioManager.Play(Constant.AUDIO_SFX_BEE_DEAD);
 
             ChooseEffect();
 
-            ObjectPool.Instance.ReturnToPool(Constant.BEE, this.gameObject);
+            _objectPool.ReturnToPool(Constant.BEE, this.gameObject);
             return;
         }
 
@@ -142,8 +151,7 @@ public class Bee : MonoBehaviour
         {
             ShowEffect(Constant.HEADSHOT_VFX);
             KillCoinEffect(3);
-        }
-        else
+        } else
         {
             ShowEffect(Constant.KILL_VFX);
             KillCoinEffect(1);
@@ -152,7 +160,7 @@ public class Bee : MonoBehaviour
 
     private void KillCoinEffect(int coin)
     {
-        GameObject obj = ObjectPool.Instance.GetFromPool(Constant.KILL_COIN_VFX);
+        GameObject obj = _objectPool.GetFromPool(Constant.KILL_COIN_VFX);
         obj.GetComponent<CoinKill>().amount = coin;
         obj.transform.position = transform.position;
         obj.transform.rotation = Quaternion.identity;
@@ -161,7 +169,7 @@ public class Bee : MonoBehaviour
 
     private void ShowEffect(string effect)
     {
-        GameObject obj = ObjectPool.Instance.GetFromPool(effect);
+        GameObject obj = _objectPool.GetFromPool(effect);
         obj.transform.position = TF.position;
         obj.transform.rotation = Quaternion.identity;
         obj.SetActive(true);
@@ -179,14 +187,14 @@ public class Bee : MonoBehaviour
         directToPoint = randomPointOnLine - (Vector2)TF.position;
         directToPoint.Normalize();
 
-        TF.Translate(directToPoint * 2f * Time.deltaTime);
+        TF.Translate(directToPoint * (2f * Time.deltaTime));
     }
 
     public void FlyToFinalPointOnLine()
     {
         directToPoint = finalPointOnLine - (Vector2)TF.position;
         directToPoint.Normalize();
-        rb.AddForce(directToPoint * moveSpeed * 1f, ForceMode2D.Impulse);
+        rb.AddForce(directToPoint * (moveSpeed * 1f), ForceMode2D.Impulse);
 
     }
 
@@ -198,25 +206,27 @@ public class Bee : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag(Constant.BEE))
+        if (collision.gameObject.CompareTag(Constant.BEE))
         {
-            //bounceDirect = collision.contacts[0].normal;
-            bounceDirect = targetDoge.position - TF.position;
-
-            bounceDirect.Normalize();
-
-            cosAngle = Mathf.Cos(angleInRadians);
-            sinAngle = Mathf.Sin(angleInRadians);
-
-            bX = bounceDirect.x * cosAngle - bounceDirect.y * sinAngle;
-            bY = bounceDirect.x * sinAngle + bounceDirect.y * cosAngle;
-
-            bounceDirect = new Vector2(bX, bY);
-
-            rb.AddForce(bounceDirect * bounceForce, ForceMode2D.Impulse);
-
-            moveSpeed = -1 * moveSpeed;
-            timeCounterBouncing = timeLengthBouncing;
+            return;
         }
+
+        //bounceDirect = collision.contacts[0].normal;
+        bounceDirect = targetDoge.position - TF.position;
+
+        bounceDirect.Normalize();
+
+        cosAngle = Mathf.Cos(angleInRadians);
+        sinAngle = Mathf.Sin(angleInRadians);
+
+        bX = bounceDirect.x * cosAngle - bounceDirect.y * sinAngle;
+        bY = bounceDirect.x * sinAngle + bounceDirect.y * cosAngle;
+
+        bounceDirect = new Vector2(bX, bY);
+
+        rb.AddForce(bounceDirect * bounceForce, ForceMode2D.Impulse);
+
+        moveSpeed = -1 * moveSpeed;
+        timeCounterBouncing = timeLengthBouncing;
     }
 }

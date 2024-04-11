@@ -1,11 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class ParticleBlood : MonoBehaviour
 {
     private ParticleSystem bloodVFX;
-    void Awake()
+    private ObjectPool _objectPool;
+
+    [Inject]
+    private void Construct (ObjectPool objectPool)
+    {
+        _objectPool = objectPool;
+    }
+
+    private void Awake()
     {
         bloodVFX = GetComponent<ParticleSystem>();
     }
@@ -13,12 +22,12 @@ public class ParticleBlood : MonoBehaviour
     private void OnEnable()
     {
         bloodVFX.Play();
-        Invoke("StopParticleSystem", 1f);
+        Invoke(nameof(StopParticleSystem), 1f);
     }
 
     private void StopParticleSystem()
     {
         bloodVFX.Stop();
-        ObjectPool.Instance.ReturnToPool(Constant.PAR_BLOOD_VFX, this.gameObject);
+        _objectPool.ReturnToPool(Constant.PAR_BLOOD_VFX, gameObject);
     }
 }

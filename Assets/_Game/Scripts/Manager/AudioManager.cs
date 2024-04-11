@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-	public static AudioManager instance;
     public AudioMixer mixer;
 	public AudioMixerGroup musicGroup, sfxGroup;
 
@@ -14,18 +13,9 @@ public class AudioManager : MonoBehaviour
 	public const string onClickNormal = "OnClickNormal";
 	public const string onClickError = "OnClickError";
 
-	void Awake()
+    private void Awake()
 	{
-		if (instance != null)
-		{
-			Destroy(gameObject);
-		}
-		else
-		{
-			instance = this;
-		}
-
-		foreach (Sound s in sounds)
+        foreach (Sound s in sounds)
 		{
 			s.source = gameObject.AddComponent<AudioSource>();
 			s.source.clip = s.clip;
@@ -33,7 +23,8 @@ public class AudioManager : MonoBehaviour
 
 			s.source.outputAudioMixerGroup = sfxGroup;
 		}
-        foreach (Sound s in soundsBGM) {
+        foreach (Sound s in soundsBGM) 
+        {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
             s.source.loop = s.loop;
@@ -41,9 +32,11 @@ public class AudioManager : MonoBehaviour
             s.source.outputAudioMixerGroup = musicGroup;
         }
     }
-    private void Start() {
-        var music = PlayerPrefs.GetInt("GetMusicState", 1);
-        var sfx = PlayerPrefs.GetInt("GetSoundState", 1);
+    
+    private void Start()
+    {
+        var music = PlayerPrefs.GetInt("GetMusicState");
+        var sfx = PlayerPrefs.GetInt("GetSoundState");
         if (music == 1)
             mixer.SetFloat("music", 0);
         else
@@ -57,26 +50,37 @@ public class AudioManager : MonoBehaviour
         // play background music 
         PlayBGM(Constant.AUDIO_MUSIC_BG);
     }
-    public void PlayBGM(string sound) {
-        for (int i = 0; i < soundsBGM.Length; i++) {
-            if (soundsBGM[i].source) {
-                if (soundsBGM[i].name != sound) {
-                    soundsBGM[i].source.Stop(); 
-                }
+    public void PlayBGM(string sound)
+    {
+        foreach (Sound t in soundsBGM)
+        {
+            if (!t.source)
+            {
+                continue;
+            }
+
+            if (t.name != sound)
+            {
+                t.source.Stop(); 
             }
         }
+
         PlayBgm(sound);
     }
-    void PlayBgm(string sound) {
+
+    private void PlayBgm(string sound)
+    {
         Sound s = Array.Find(soundsBGM, item => item.name == sound);
-        if (s == null) {
+        if (s == null)
+        {
             Debug.LogWarning("Sound: " + name + " not found!");
             return;
         }
         s.source.volume = s.volume;
         s.source.pitch = s.pitch;
 
-        if (!s.source.isPlaying) {
+        if (!s.source.isPlaying)
+        {
             s.source.Play(); 
         }
     }
@@ -93,28 +97,39 @@ public class AudioManager : MonoBehaviour
 
 		s.source.PlayOneShot(s.clip);
 	}
-    public void PauseBGM() {
-        foreach (Sound s in soundsBGM) {
+    public void PauseBGM()
+    {
+        foreach (Sound s in soundsBGM)
+        {
             s.source.Pause();
         }
     }
-    public void UnPauseBGM() {
+    public void UnPauseBGM()
+    {
         bool didnotplaying = false;
-        foreach (Sound s in soundsBGM) {
+        
+        foreach (Sound s in soundsBGM)
+        {
             didnotplaying = s.source.isPlaying;
             s.source.UnPause();
         }
-        if (!didnotplaying) {
+        
+        if (!didnotplaying)
+        {
             PlayBGM(Constant.AUDIO_MUSIC_BG);
         }
     }
-    public void PauseSFX() {
-        foreach (Sound s in sounds) {
+    public void PauseSFX()
+    {
+        foreach (Sound s in sounds) 
+        {
             s.source.Pause();
         }
     }
-    public void UnPauseSFX() {
-        foreach (Sound s in sounds) {
+    public void UnPauseSFX() 
+    {
+        foreach (Sound s in sounds)
+        {
             s.source.UnPause();
         }
     }
@@ -136,21 +151,25 @@ public class AudioManager : MonoBehaviour
     public void MusicOn()
     {
         mixer.SetFloat("Music", -1);
+        PlayerPrefs.SetInt("GetMusicState",1);
     }
 
     public void MusicOff()
     {
         mixer.SetFloat("Music", -80);
+        PlayerPrefs.SetInt("GetMusicState",0);
     }
 
     public void SoundOn()
     {
         mixer.SetFloat("SFX", 0);
+        PlayerPrefs.SetInt("GetSoundState",1);
     }
 
     public void SoundOff()
     {
         mixer.SetFloat("SFX", -80);
+        PlayerPrefs.SetInt("GetSoundState",0);
     }
 }
 

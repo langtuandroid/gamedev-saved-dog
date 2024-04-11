@@ -1,13 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 
 public class KillBeeEffect : MonoBehaviour
 {
     private MeshRenderer meshRenderer;
     private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform text, img;
+    
+    private AudioManager _audioManager;
+    private ObjectPool _objectPool;
+
+    [Inject]
+    private void Construct(AudioManager audioManager, ObjectPool objectPool)
+    {
+        _audioManager = audioManager;
+        _objectPool = objectPool;
+    }
 
     private void Awake()
     {
@@ -20,9 +29,9 @@ public class KillBeeEffect : MonoBehaviour
 
         text.DOScale(1f, 0.4f).SetEase(Ease.InOutElastic).SetLoops(1);
         img.DOScale(0.15f, 0.2f).SetEase(Ease.InOutSine).SetLoops(1);
-        if (AudioManager.instance != null)
+        if (_audioManager != null)
         {
-            AudioManager.instance.Play(Constant.AUDIO_SFX_COIN_DROP);
+            _audioManager.Play(Constant.AUDIO_SFX_COIN_DROP);
         }
         if (UIManager.Instance.IsOpened<UIGameplay>())
         {
@@ -38,7 +47,7 @@ public class KillBeeEffect : MonoBehaviour
     }
     private void HideEffect()
     {
-        ObjectPool.Instance.ReturnToPool(Constant.KILL_VFX, this.gameObject);
+        _objectPool.ReturnToPool(Constant.KILL_VFX, gameObject);
     }
     private void ResetEffect()
     {

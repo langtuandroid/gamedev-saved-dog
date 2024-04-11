@@ -26,12 +26,14 @@ public class GameManager : MonoBehaviour
     private Tweener scaleTween;
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
+    private AudioManager _audioManager;
 
    [Inject]
-   private void Construct (LevelManager levelManager, DataPersistence dataPersistence)
+   private void Construct (LevelManager levelManager, DataPersistence dataPersistence, AudioManager audioManager)
    {
        _levelManager = levelManager;
        _dataPersistence = dataPersistence;
+       _audioManager = audioManager;
    }
 
     protected void Awake()
@@ -101,7 +103,7 @@ public class GameManager : MonoBehaviour
 
         _levelManager.currentLevel.ClockTimer.StopClock();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_LOSE);
+        _audioManager.Play(Constant.AUDIO_SFX_LOSE);
 
         UIManager.Instance.GetUI<UIGameplay>().tickLose.gameObject.SetActive(true);
 

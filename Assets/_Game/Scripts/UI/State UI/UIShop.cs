@@ -38,12 +38,14 @@ public class UIShop : UICanvas
     private List<int> charUnlock = new List<int>();
     private DataPersistence _dataPersistence;
     private DataController _dataController;
+    private AudioManager _audioManager;
 
     [Inject]
-    private void Construct(DataPersistence dataPersistence, DataController dataController)
+    private void Construct(DataPersistence dataPersistence, DataController dataController, AudioManager audioManager)
     {
         _dataPersistence = dataPersistence;
         _dataController = dataController;
+        _audioManager = audioManager;
     }
 
     private void OnEnable()
@@ -206,8 +208,8 @@ public class UIShop : UICanvas
         UIManager.Instance.OpenUI<UIMainMenu>();
         CloseDirectly();
 
-        AudioManager.instance.PlayBGM(Constant.AUDIO_MUSIC_BG);
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.PlayBGM(Constant.AUDIO_MUSIC_BG);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
          }
     private void ClearShopWhenClose()
     {

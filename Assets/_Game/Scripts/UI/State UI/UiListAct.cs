@@ -22,11 +22,13 @@ public class UiListAct : UICanvas
     private int actSelected;
 
     private DataController _dataController;
+    private AudioManager _audioManager;
 
     [Inject]
-    private void Construct(DataController dataController)
+    private void Construct(DataController dataController, AudioManager audioManager)
     {
         _dataController = dataController;
+        _audioManager = audioManager;
     }
     
     void OnEnable() 
@@ -75,7 +77,7 @@ public class UiListAct : UICanvas
                     UIManager.Instance.OpenUI<UIListLevel>();
                     ClearListAct();
 
-                    AudioManager.instance.Play(Constant.AUDIO_SFX_PLAY);
+                    _audioManager.Play(Constant.AUDIO_SFX_PLAY);
 
                     CloseDirectly();
                 }
@@ -136,7 +138,7 @@ public class UiListAct : UICanvas
         ClearListAct();
         SetDefautPopup();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
         CloseDirectly();
     }

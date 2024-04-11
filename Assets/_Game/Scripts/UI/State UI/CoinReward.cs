@@ -15,11 +15,13 @@ public class CoinReward : MonoBehaviour
     private float height, width, scale;
     
     private DataController _dataController;
+    private AudioManager _audioManager;
 
     [Inject]
-    private void Construct(DataController dataController)
+    private void Construct(DataController dataController, AudioManager audioManager)
     {
         _dataController = dataController;
+        _audioManager = audioManager;
     }
 
     private void Awake()
@@ -78,7 +80,7 @@ public class CoinReward : MonoBehaviour
             delay += 0.1f;
         }
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_COIN);
+        _audioManager.Play(Constant.AUDIO_SFX_COIN);
         startValue = _dataController.currentGameData.coin;
         endValue = _dataController.currentGameData.coin + addCoin;
         DOTween.Sequence().AppendInterval(1.25f).Append(DOTween.To(() => startValue, x => startValue = x, endValue, 1f).OnUpdate(() => UpdateValue(startValue)).OnComplete(() => 

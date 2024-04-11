@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Zenject;
 
 public class CoinRewardPro : MonoBehaviour
 {
@@ -14,6 +15,14 @@ public class CoinRewardPro : MonoBehaviour
     private int startValue, endValue;
     private float height, width, scale;
 
+    private AudioManager _audioManager;
+
+    [Inject]
+    private void Construct(AudioManager audioManager)
+    {
+        _audioManager = audioManager;
+    }
+    
     private void Awake()
     {
         for (int i = 0; i < pileCoin.transform.childCount; i++)
@@ -53,7 +62,7 @@ public class CoinRewardPro : MonoBehaviour
             delay += 0.1f;
         }
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_COIN);
+        _audioManager.Play(Constant.AUDIO_SFX_COIN);
 
         HandleUICoinText(startValue, endValue);
     }

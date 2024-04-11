@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 
 public class CheerNotify : Singleton<CheerNotify>
 {
@@ -12,6 +12,14 @@ public class CheerNotify : Singleton<CheerNotify>
     public float killInterval;
     public float counter;
 
+    private AudioManager _audioManager;
+
+    [Inject]
+    private void Construct(AudioManager audioManager)
+    {
+        _audioManager = audioManager;
+    }
+    
     private void Start()
     {
         streakKill = 0;
@@ -23,8 +31,7 @@ public class CheerNotify : Singleton<CheerNotify>
         if (counter > 0)
         {
             counter -= Time.deltaTime;
-        }
-        else
+        } else
         {
             CheckStreak();
             streakKill = 0;
@@ -37,137 +44,40 @@ public class CheerNotify : Singleton<CheerNotify>
         counter = killInterval;
     }
 
-    public void CheckStreak()
+    private void CheckStreak()
     {
-        if (streakKill >=3 && streakKill < 6)
+        if (streakKill is >= 3 and < 6)
         {
             SetAnim(0);
-            AudioManager.instance.Play(Constant.AUDIO_SFX_GOOD);
-        }
-        else if (streakKill >= 6 && streakKill < 10)
+            _audioManager.Play(Constant.AUDIO_SFX_GOOD);
+        } else if (streakKill is >= 6 and < 10)
         {
             SetAnim(1);
-            AudioManager.instance.Play(Constant.AUDIO_SFX_GREAT);
-        }
-        else if (streakKill >= 10 && streakKill < 12)
+            _audioManager.Play(Constant.AUDIO_SFX_GREAT);
+        } else if (streakKill is >= 10 and < 12)
         {
             SetAnim(2);
-            AudioManager.instance.Play(Constant.AUDIO_SFX_EXCELLENT);
-        }
-        else if (streakKill >= 12 && streakKill < 14)
+            _audioManager.Play(Constant.AUDIO_SFX_EXCELLENT);
+        } else if (streakKill is >= 12 and < 14)
         {
             SetAnim(3);
-            AudioManager.instance.Play(Constant.AUDIO_SFX_AMAZING);
-        }
-        else if (streakKill >= 14 && streakKill < 16)
+            _audioManager.Play(Constant.AUDIO_SFX_AMAZING);
+        } else if (streakKill is >= 14 and < 16)
         {
             SetAnim(4);
-            AudioManager.instance.Play(Constant.AUDIO_SFX_AWESOME);
-        }
-        else if (streakKill >= 16 && streakKill < 18)
+            _audioManager.Play(Constant.AUDIO_SFX_AWESOME);
+        } else if (streakKill is >= 16 and < 18)
         {
             SetAnim(5);
-            AudioManager.instance.Play(Constant.AUDIO_SFX_INCREDIBLE);
-        }
-        else if (streakKill >= 18)
+            _audioManager.Play(Constant.AUDIO_SFX_INCREDIBLE);
+        } else if (streakKill >= 18)
         {
             SetAnim(6);
-            AudioManager.instance.Play(Constant.AUDIO_SFX_UNBELIEVABLE);
-        }
-    }
-    public void CheckKill()
-    {
-
-        
-
-        switch(streakKill)
-        {
-            case 3:
-                SetAnim(0);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_GOOD);
-                break;
-            case 4:
-                SetAnim(0);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_GOOD);
-                break;
-            case 5:
-                SetAnim(0);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_GOOD);
-                break;
-            case 6:
-                SetAnim(1);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_GREAT);
-                break;
-            case 7:
-                SetAnim(1);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_GREAT);
-                break;
-            case 8:
-                SetAnim(1);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_GREAT);
-                break;
-            case 9:
-                SetAnim(1);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_GREAT);
-                break;
-            case 10:
-                SetAnim(2);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_EXCELLENT);
-                break;
-            case 11:
-                SetAnim(2);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_EXCELLENT);
-                break;
-            case 12:
-                SetAnim(3);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_AMAZING);
-                break;
-            case 13:
-                SetAnim(3);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_AMAZING);
-                break;
-            case 14:
-                SetAnim(4);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_AWESOME);
-                break;
-            case 15:
-                SetAnim(4);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_AWESOME);
-                break;
-            case 16:
-                SetAnim(5);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_INCREDIBLE);
-                break;
-            case 17:
-                SetAnim(5);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_INCREDIBLE);
-                break;
-            case 18:
-                SetAnim(6);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_UNBELIEVABLE);
-                break;
-            case 19:
-                SetAnim(6);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_UNBELIEVABLE);
-                break;
-            case 20:
-                SetAnim(6);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_UNBELIEVABLE);
-                break;
-            case 21:
-                SetAnim(6);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_UNBELIEVABLE);
-                break;
-            case 22:
-                SetAnim(6);
-                AudioManager.instance.Play(Constant.AUDIO_SFX_UNBELIEVABLE);
-                break;
-            default:
-                break;
+            _audioManager.Play(Constant.AUDIO_SFX_UNBELIEVABLE);
         }
     }
 
-    public void SetAnim(int index)
+    private void SetAnim(int index)
     {
         transformList[index].gameObject.SetActive(true);
         transformList[index].DOMove(new Vector3(0f, -0.6f, 0f), 0f);
@@ -178,6 +88,7 @@ public class CheerNotify : Singleton<CheerNotify>
         srList[index].DOFade(0f, 0.9f).SetEase(Ease.OutQuad).OnComplete(() => Hide(index));
 
     }
+    
     private void Hide(int index)
     {
         transformList[index].gameObject.SetActive(false);

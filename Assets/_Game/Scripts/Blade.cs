@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Blade : MonoBehaviour
 {
@@ -26,6 +27,14 @@ public class Blade : MonoBehaviour
             }
             return tf;
         }
+    }
+    
+    private AudioManager _audioManager;
+
+    [Inject]
+    private void Construct(AudioManager audioManager)
+    {
+        _audioManager = audioManager;
     }
 
     private void OnEnable()
@@ -106,7 +115,7 @@ public class Blade : MonoBehaviour
             if (counterSoundBlade <= 0)
             {
                 counterSoundBlade = swipeSoundLength;
-                AudioManager.instance.Play(Constant.AUDIO_SFX_BLADE);
+                _audioManager.Play(Constant.AUDIO_SFX_BLADE);
             }
         } 
     }
@@ -118,7 +127,7 @@ public class Blade : MonoBehaviour
             Bee bee = Cache.GetBee(other); //other.GetComponent<Bee>();
             bee.KnockBack();
 
-            AudioManager.instance.Play(Constant.AUDIO_SFX_BEE_STAB);
+            _audioManager.Play(Constant.AUDIO_SFX_BEE_STAB);
         }
     }
 }

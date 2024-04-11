@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class ObjectPool : Singleton<ObjectPool>
+public class ObjectPool : MonoBehaviour
 {
     [System.Serializable]
     public class Pool
@@ -14,8 +14,11 @@ public class ObjectPool : Singleton<ObjectPool>
     }
     public List<Pool> poolList = new List<Pool>();
 
-    public Dictionary<string, Queue<GameObject>> objectPools = new Dictionary<string, Queue<GameObject>>();
-    void Awake()
+    private Dictionary<string, Queue<GameObject>> objectPools = new Dictionary<string, Queue<GameObject>>();
+
+   [Inject] private DiContainer _diContainer;
+
+   private void Awake()
     {
         foreach (Pool pool in poolList)
         {
@@ -23,7 +26,7 @@ public class ObjectPool : Singleton<ObjectPool>
 
             for (int i = 0; i < pool.poolCount; i++)
             {
-                GameObject obj = Instantiate(pool.poolObjectPrefab);
+                GameObject obj = _diContainer.InstantiatePrefab(pool.poolObjectPrefab);
                 obj.SetActive(false);
 
                 q.Enqueue(obj);
@@ -49,15 +52,15 @@ public class ObjectPool : Singleton<ObjectPool>
         {
             return objectPools[tag].Dequeue();
         }
-        else if (tempPool.canGrow)
-        {
-            GameObject obj = Instantiate(tempPool.poolObjectPrefab);
-            return obj;
-        }
-        else
+
+        if (!tempPool.canGrow)
         {
             return null;
         }
+
+        GameObject obj = _diContainer.InstantiatePrefab(tempPool.poolObjectPrefab);
+        return obj;
+
     }
     public void ReturnToPool(string tag, GameObject obj)
     {

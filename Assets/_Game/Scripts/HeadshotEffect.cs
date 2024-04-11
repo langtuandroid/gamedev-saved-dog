@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 
 public class HeadshotEffect : MonoBehaviour
 {
@@ -9,6 +10,16 @@ public class HeadshotEffect : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform text, img;
 
+    private AudioManager _audioManager;
+    private ObjectPool _objectPool;
+
+    [Inject]
+    private void Construct(AudioManager audioManager, ObjectPool objectPool)
+    {
+        _audioManager = audioManager;
+        _objectPool = objectPool;
+    }
+    
     private void Awake()
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
@@ -20,9 +31,9 @@ public class HeadshotEffect : MonoBehaviour
 
         text.DOScale(1f, 0.4f).SetEase(Ease.InOutElastic).SetLoops(1);
         img.DOScale(0.23f, 0.2f).SetEase(Ease.InOutSine).SetLoops(1);
-        if (AudioManager.instance != null)
+        if (_audioManager != null)
         {
-            AudioManager.instance.Play(Constant.AUDIO_SFX_HEADSHOT);
+            _audioManager.Play(Constant.AUDIO_SFX_HEADSHOT);
         }
         if (UIManager.Instance.IsOpened<UIGameplay>())
         {
@@ -38,7 +49,7 @@ public class HeadshotEffect : MonoBehaviour
     }
     private void HideEffect()
     {
-        ObjectPool.Instance.ReturnToPool(Constant.HEADSHOT_VFX, this.gameObject);
+        _objectPool.ReturnToPool(Constant.HEADSHOT_VFX, this.gameObject);
     }
     private void ResetEffect()
     {

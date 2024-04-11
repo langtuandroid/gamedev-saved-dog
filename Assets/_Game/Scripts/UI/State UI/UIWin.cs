@@ -30,14 +30,16 @@ public class UIWin : UICanvas
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
     private DataController _dataController;
+    private AudioManager _audioManager;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataPersistence = dataPersistence;
         _dataController = dataController;
+        _audioManager = audioManager;
     }
     
     
@@ -224,7 +226,7 @@ public class UIWin : UICanvas
         _levelManager.OnLoadNextLevel();
         _gameManager.ChangeState(GameState.GamePlay);
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
 
         LinesDrawer.instance.HideLineCantDraw();
@@ -242,7 +244,7 @@ public class UIWin : UICanvas
         _levelManager.OnRetry();
         _gameManager.ChangeState(GameState.GamePlay);
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
 
         _dataPersistence.SaveGame();
@@ -310,12 +312,12 @@ public class UIWin : UICanvas
     }
     private void HandleAudioInto()
     {
-        AudioManager.instance.PauseBGM();
-        AudioManager.instance.Play(Constant.AUDIO_SFX_WIN);
+        _audioManager.PauseBGM();
+        _audioManager.Play(Constant.AUDIO_SFX_WIN);
     }
     private void HandleAudioOut()
     {
-        AudioManager.instance.UnPauseBGM();
+        _audioManager.UnPauseBGM();
     }
 
     #region Ad

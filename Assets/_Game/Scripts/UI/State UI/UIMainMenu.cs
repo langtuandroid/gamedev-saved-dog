@@ -13,13 +13,15 @@ public class UIMainMenu : UICanvas
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataController _dataController;
+    private AudioManager _audioManager;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataController dataController)
+    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataController = dataController;
+        _audioManager = audioManager;
     }
     
     private void OnEnable()
@@ -65,7 +67,7 @@ public class UIMainMenu : UICanvas
     {
        
         _gameManager.ChangeState(GameState.GamePlay);
-        AudioManager.instance.Play(Constant.AUDIO_SFX_PLAY);
+        _audioManager.Play(Constant.AUDIO_SFX_PLAY);
 
         UIManager.Instance.OpenUI<UIGameplay>();
         // Load level
@@ -83,7 +85,7 @@ public class UIMainMenu : UICanvas
         UIManager.Instance.OpenUI<UISettings>();
         CloseDirectly();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
     public void SkinShopButton()
     {
@@ -92,8 +94,8 @@ public class UIMainMenu : UICanvas
 
         CloseDirectly();
 
-        AudioManager.instance.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
     public void ListActButton()
     {
@@ -101,14 +103,14 @@ public class UIMainMenu : UICanvas
         UIManager.Instance.OpenUI<UiListAct>();
         CloseDirectly();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
     public void ClaimButton()
     {
        
         UIManager.Instance.OpenUI<UIDailyReward>();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
     public void ChangeCoinTest()
     {

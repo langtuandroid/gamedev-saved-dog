@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 public class DamageText : MonoBehaviour
 {
 
@@ -9,6 +10,15 @@ public class DamageText : MonoBehaviour
     private Vector3 initPos;
 
     private Transform tf;
+    
+    private ObjectPool _objectPool;
+
+    [Inject]
+    private void Construct (ObjectPool objectPool)
+    {
+        _objectPool = objectPool;
+    }
+    
     public Transform TF
     {
         get
@@ -38,7 +48,7 @@ public class DamageText : MonoBehaviour
 
     private void HideText()
     {
-        ObjectPool.Instance.ReturnToPool(Constant.DMG_TEXT, this.gameObject);
+        _objectPool.ReturnToPool(Constant.DMG_TEXT, gameObject);
     }
 
     private void OnDisable()

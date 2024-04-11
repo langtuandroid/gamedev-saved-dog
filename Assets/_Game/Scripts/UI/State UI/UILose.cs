@@ -11,6 +11,7 @@ public class UILose : UICanvas
 {
     public RectTransform PopupLose, dog1, dog2;
     public Text coinText;
+    [SerializeField] private SkeletonGraphic skeletonAnimation1, skeletonAnimation2;
     
     private bool onceClick;
 
@@ -22,17 +23,18 @@ public class UILose : UICanvas
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
     private DataController _dataController;
+    private AudioManager _audioManager;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataPersistence = dataPersistence;
         _dataController = dataController;
+        _audioManager = audioManager;
     }
 
-    [SerializeField] private SkeletonGraphic skeletonAnimation1, skeletonAnimation2;
     private void OnEnable()
     {
         OnInit();
@@ -59,12 +61,12 @@ public class UILose : UICanvas
     }
     private void HandleAudioInto()
     {
-        AudioManager.instance.PauseBGM();
-        AudioManager.instance.Play(Constant.AUDIO_SFX_LOSE_UI);
+        _audioManager.PauseBGM();
+        _audioManager.Play(Constant.AUDIO_SFX_LOSE_UI);
     }
     private void HandleAudioOut()
     {
-        AudioManager.instance.UnPauseBGM();
+        _audioManager.UnPauseBGM();
     }
     public void RetryButton()
     {
@@ -91,7 +93,7 @@ public class UILose : UICanvas
         _levelManager.OnRetry();
         _gameManager.ChangeState(GameState.GamePlay);
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
         _dataPersistence.SaveGame();
     }
@@ -111,7 +113,7 @@ public class UILose : UICanvas
             _levelManager.Despawn();
             LinesDrawer.instance.OnLoadNewLevelOrUI();
 
-            AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+            _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
             CloseDirectly();
         }
@@ -128,7 +130,7 @@ public class UILose : UICanvas
         _levelManager.Despawn();
         LinesDrawer.instance.OnLoadNewLevelOrUI();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
         CloseDirectly();
         
@@ -150,8 +152,8 @@ public class UILose : UICanvas
 
             CloseDirectly();
 
-            AudioManager.instance.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
-            AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+            _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
+            _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
         }
     }
     IEnumerator iShop()
@@ -167,8 +169,8 @@ public class UILose : UICanvas
 
         CloseDirectly();
 
-        AudioManager.instance.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
     private void DisplayChar(int index)
     {

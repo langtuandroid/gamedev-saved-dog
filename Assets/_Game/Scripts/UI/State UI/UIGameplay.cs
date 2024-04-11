@@ -34,13 +34,15 @@ public class UIGameplay : UICanvas
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataController _dataController;
+    private AudioManager _audioManager;
 
     [Inject]
-    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController)
+    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataController = dataController;
+        _audioManager = audioManager;
     }
 
     private void Awake()
@@ -158,7 +160,7 @@ public class UIGameplay : UICanvas
         _levelManager.Despawn();
         LinesDrawer.instance.OnLoadNewLevelOrUI();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
         CloseDirectly();
     }
@@ -179,7 +181,7 @@ public class UIGameplay : UICanvas
         _gameManager.StopTween();
         _levelManager.OnRetry();
 
-        AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
+        _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
         OnInit();
     }
