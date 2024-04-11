@@ -1651,6 +1651,7 @@ MonoBehaviour:
   _gameManager: {fileID: 910963305}
   _levelManager: {fileID: 1195218092}
   _dataPersistence: {fileID: 1501285801}
+  _dataController: {fileID: 1376426651}
 --- !u!114 &1380508479
 MonoBehaviour:
   m_ObjectHideFlags: 0

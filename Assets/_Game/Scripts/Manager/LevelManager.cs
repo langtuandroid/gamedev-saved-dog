@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;
@@ -19,7 +17,15 @@ public class LevelManager : MonoBehaviour
     public event Action OnWinLevel, OnLoseLevel;
     public int stateIndex;
     
-   [Inject] private DiContainer _diContainer;
+    private DiContainer _diContainer;
+    private DataController _dataController;
+
+   [Inject]
+   private void Construct(DiContainer diContainer, DataController dataController)
+   {
+       _diContainer = diContainer;
+       _dataController = dataController;
+   }
     void Start()
     {
         //levelIndexInProgress = 0;
@@ -74,9 +80,9 @@ public class LevelManager : MonoBehaviour
         CheckLevelDone();
         OnWinLevel?.Invoke();
         //Debug.Log("leveldone?--" + DataController.Instance.currentGameData.levelDoneInGame[DataController.Instance.currentGameData.currentLevelInProgress]);
-        if (DataController.Instance.currentGameData.levelDoneInGame[DataController.Instance.currentGameData.currentLevelInProgress] == 0)
+        if (_dataController.currentGameData.levelDoneInGame[_dataController.currentGameData.currentLevelInProgress] == 0)
         {
-            DataController.Instance.currentGameData.levelDoneInGame[DataController.Instance.currentGameData.currentLevelInProgress] = 1;
+            _dataController.currentGameData.levelDoneInGame[_dataController.currentGameData.currentLevelInProgress] = 1;
             //Debug.Log(DataController.Instance.currentGameData.currentLevelInProgress + "--");
         }
     }
@@ -86,31 +92,31 @@ public class LevelManager : MonoBehaviour
     }
     private void CheckLevelDone()
     {
-        if (DataController.Instance.currentGameData.levelDoneInGame.Count == 0)
+        if (_dataController.currentGameData.levelDoneInGame.Count == 0)
         {
             for (int i = 0; i < 999; i++)
             {
-                DataController.Instance.currentGameData.levelDoneInGame.Add(0);
+                _dataController.currentGameData.levelDoneInGame.Add(0);
             }
         }
     }
     public void OnLoadNextLevel()
     {
-        if (currentLevelIndex == DataController.Instance.currentGameData.currentLevelInProgress)
+        if (currentLevelIndex == _dataController.currentGameData.currentLevelInProgress)
         {
-            DataController.Instance.currentGameData.currentLevelInProgress++;
-            OnLoadLevel(DataController.Instance.currentGameData.currentLevelInProgress);
+            _dataController.currentGameData.currentLevelInProgress++;
+            OnLoadLevel(_dataController.currentGameData.currentLevelInProgress);
         }
-        else if (currentLevelIndex < DataController.Instance.currentGameData.currentLevelInProgress)
+        else if (currentLevelIndex < _dataController.currentGameData.currentLevelInProgress)
         {
             currentLevelIndex++;
             OnLoadLevel(currentLevelIndex);
         }
         else
         {
-            DataController.Instance.currentGameData.currentLevelInProgress = currentLevelIndex;
-            DataController.Instance.currentGameData.currentLevelInProgress++;
-            OnLoadLevel(DataController.Instance.currentGameData.currentLevelInProgress);
+            _dataController.currentGameData.currentLevelInProgress = currentLevelIndex;
+            _dataController.currentGameData.currentLevelInProgress++;
+            OnLoadLevel(_dataController.currentGameData.currentLevelInProgress);
         }
     }
 }

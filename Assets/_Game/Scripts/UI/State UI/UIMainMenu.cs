@@ -12,12 +12,14 @@ public class UIMainMenu : UICanvas
     private Tweener scaleTween;
     private GameManager _gameManager;
     private LevelManager _levelManager;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataController dataController)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
+        _dataController = dataController;
     }
     
     private void OnEnable()
@@ -35,7 +37,7 @@ public class UIMainMenu : UICanvas
 
     public void UpdateCoinText()
     {
-        coinText.text = DataController.Instance.currentGameData.coin.ToString();
+        coinText.text = _dataController.currentGameData.coin.ToString();
     }
 
     private void SetAnimationForMainMenu()
@@ -67,7 +69,7 @@ public class UIMainMenu : UICanvas
 
         UIManager.Instance.OpenUI<UIGameplay>();
         // Load level
-        int level = DataController.Instance.currentGameData.currentLevelInProgress;
+        int level = _dataController.currentGameData.currentLevelInProgress;
         _levelManager.OnLoadLevel(level);
         
 
@@ -110,7 +112,7 @@ public class UIMainMenu : UICanvas
     }
     public void ChangeCoinTest()
     {
-        DataController.Instance.currentGameData.coin += 100;
+        _dataController.currentGameData.coin += 100;
         UpdateCoinText();
     }
 }

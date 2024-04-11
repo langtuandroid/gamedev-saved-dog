@@ -33,14 +33,16 @@ public class UIGameplay : UICanvas
     public Image tickWin, tickLose;
     private GameManager _gameManager;
     private LevelManager _levelManager;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager)
+    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
+        _dataController = dataController;
     }
-    
+
     private void Awake()
     {
         initPosClock = clockCover.position;
@@ -75,9 +77,9 @@ public class UIGameplay : UICanvas
     {
         coinImage.DOScale(1.2f, 0.1f).SetEase(Ease.Linear).SetLoops(loop, LoopType.Yoyo);
 
-        startValue = DataController.Instance.currentGameData.coin;
-        endValue = DataController.Instance.currentGameData.coin + loop/2;
-        DataController.Instance.currentGameData.coin += loop / 2;
+        startValue = _dataController.currentGameData.coin;
+        endValue = _dataController.currentGameData.coin + loop/2;
+        _dataController.currentGameData.coin += loop / 2;
         coinText.DOText(endValue.ToString(), 0.5f).OnComplete(ResetCoinImage);
     }
     public void ResetCoinImage()
@@ -104,7 +106,7 @@ public class UIGameplay : UICanvas
 
     private void UpdateCoinText()
     {
-        coinText.text = DataController.Instance.currentGameData.coin.ToString();
+        coinText.text = _dataController.currentGameData.coin.ToString();
     }
     private void ColorStarReturnDefault()
     {

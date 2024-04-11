@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Zenject;
 
 public class UiListAct : UICanvas
 {
@@ -19,6 +20,15 @@ public class UiListAct : UICanvas
     private Button button;
 
     private int actSelected;
+
+    private DataController _dataController;
+
+    [Inject]
+    private void Construct(DataController dataController)
+    {
+        _dataController = dataController;
+    }
+    
     void OnEnable() 
     {
         CheckStarInLevels();
@@ -88,11 +98,11 @@ public class UiListAct : UICanvas
 
     private void CheckStarInLevels()
     {
-        if (DataController.Instance.currentGameData.starDoneInLevels.Count == 0)
+        if (_dataController.currentGameData.starDoneInLevels.Count == 0)
         {
             for (int i = 0; i < 999; i++)
             {
-                DataController.Instance.currentGameData.starDoneInLevels.Add(0);
+                _dataController.currentGameData.starDoneInLevels.Add(0);
             }
         }
     }
@@ -106,16 +116,16 @@ public class UiListAct : UICanvas
         int totalStar = 0;
         for(int i = act * 10; i <= (act *10) + 9; i++)
         {
-            totalStar += DataController.Instance.currentGameData.starDoneInLevels[i];
+            totalStar += _dataController.currentGameData.starDoneInLevels[i];
         }
         return totalStar;
     }
     private int GetTotalStarInGame()
     {
         int totalStar = 0;
-        for(int i = 0; i < DataController.Instance.currentGameData.starDoneInLevels.Count; i++)
+        for(int i = 0; i < _dataController.currentGameData.starDoneInLevels.Count; i++)
         {
-            totalStar += DataController.Instance.currentGameData.starDoneInLevels[i];
+            totalStar += _dataController.currentGameData.starDoneInLevels[i];
         }
         return totalStar;
     }

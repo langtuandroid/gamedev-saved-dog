@@ -49,12 +49,14 @@ public class LinesDrawer : MonoBehaviour
     
     private GameManager _gameManager;
     private LevelManager _levelManager;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataController dataController)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
+        _dataController = dataController;
     }
 
     private void Awake()
@@ -135,7 +137,7 @@ public class LinesDrawer : MonoBehaviour
                     if (_levelManager.currentLevel.levelNumberInGame != 0) blade.gameObject.SetActive(true);
                     if (_levelManager.currentLevel.levelNumberInGame == 1)
                     {
-                        if (DataController.Instance.currentGameData.levelDoneInGame[1] == 0)
+                        if (_dataController.currentGameData.levelDoneInGame[1] == 0)
                         {
                             Transform tutAttack = _levelManager.currentLevel.transform.Find("TutAttack");
                             tutAttack.gameObject.SetActive(true);

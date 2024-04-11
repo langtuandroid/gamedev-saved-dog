@@ -21,13 +21,15 @@ public class UILose : UICanvas
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataPersistence = dataPersistence;
+        _dataController = dataController;
     }
 
     [SerializeField] private SkeletonGraphic skeletonAnimation1, skeletonAnimation2;
@@ -53,7 +55,7 @@ public class UILose : UICanvas
     }
     public void UpdateCoinText()
     {
-        coinText.text = DataController.Instance.currentGameData.coin.ToString();
+        coinText.text = _dataController.currentGameData.coin.ToString();
     }
     private void HandleAudioInto()
     {

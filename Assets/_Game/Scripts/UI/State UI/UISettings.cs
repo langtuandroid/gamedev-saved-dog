@@ -12,11 +12,13 @@ public class UISettings : UICanvas
     [SerializeField] private RectTransform boxRect;
 
     private DataPersistence _dataPersistence;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(DataPersistence dataPersistence)
+    private void Construct(DataPersistence dataPersistence, DataController dataController)
     {
         _dataPersistence = dataPersistence;
+        _dataController = dataController;
     }
     
     private void OnEnable()
@@ -33,9 +35,9 @@ public class UISettings : UICanvas
 
     private void LoadUISetting()
     {
-        musicButtonIcon.sprite = (DataController.Instance.currentGameData.music == false) ? musicOn : musicOff;
-        soundButtonIcon.sprite = (DataController.Instance.currentGameData.sound == false) ? soundOn : soundOff;
-        vibrateButtonIcon.sprite = (DataController.Instance.currentGameData.vibrate == false) ? vibrateOn : vibrateOff;
+        musicButtonIcon.sprite = (_dataController.currentGameData.music == false) ? musicOn : musicOff;
+        soundButtonIcon.sprite = (_dataController.currentGameData.sound == false) ? soundOn : soundOff;
+        vibrateButtonIcon.sprite = (_dataController.currentGameData.vibrate == false) ? vibrateOn : vibrateOff;
     }
 
     public void BackButton()
@@ -48,8 +50,8 @@ public class UISettings : UICanvas
     public void MusicButton()
     {
         AudioManager.instance.Play(Constant.AUDIO_SFX_BTNSETTINGS);
-        musicButtonIcon.sprite = (DataController.Instance.currentGameData.music == true) ? musicOn : musicOff;
-        if (DataController.Instance.currentGameData.music == true)
+        musicButtonIcon.sprite = (_dataController.currentGameData.music == true) ? musicOn : musicOff;
+        if (_dataController.currentGameData.music == true)
         {
             AudioManager.instance.MusicOn();
         }
@@ -57,15 +59,15 @@ public class UISettings : UICanvas
         {
             AudioManager.instance.MusicOff();
         }
-        DataController.Instance.currentGameData.music = !DataController.Instance.currentGameData.music;
+        _dataController.currentGameData.music = !_dataController.currentGameData.music;
 
         _dataPersistence.SaveGame();
     }
     public void SoundButton()
     {
         AudioManager.instance.Play(Constant.AUDIO_SFX_BTNSETTINGS);
-        soundButtonIcon.sprite = (DataController.Instance.currentGameData.sound == true) ? soundOn : soundOff;
-        if (DataController.Instance.currentGameData.sound == true)
+        soundButtonIcon.sprite = (_dataController.currentGameData.sound == true) ? soundOn : soundOff;
+        if (_dataController.currentGameData.sound == true)
         {
             AudioManager.instance.SoundOn();
         }
@@ -73,15 +75,15 @@ public class UISettings : UICanvas
         {
             AudioManager.instance.SoundOff();
         }
-        DataController.Instance.currentGameData.sound = !DataController.Instance.currentGameData.sound;
+        _dataController.currentGameData.sound = !_dataController.currentGameData.sound;
 
         _dataPersistence.SaveGame();
     }
     public void VibrateButton()
     {
         AudioManager.instance.Play(Constant.AUDIO_SFX_BTNSETTINGS);
-        vibrateButtonIcon.sprite = (DataController.Instance.currentGameData.vibrate == true) ? vibrateOn : vibrateOff;
-        DataController.Instance.currentGameData.vibrate = !DataController.Instance.currentGameData.vibrate;
+        vibrateButtonIcon.sprite = (_dataController.currentGameData.vibrate == true) ? vibrateOn : vibrateOff;
+        _dataController.currentGameData.vibrate = !_dataController.currentGameData.vibrate;
 
         _dataPersistence.SaveGame();
     }

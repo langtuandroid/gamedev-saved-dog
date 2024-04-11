@@ -1,12 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 
 public class HandTut : MonoBehaviour
 {
     [SerializeField] private Transform[] listPoint;
     [SerializeField] private GameObject tut;
+    
+    private DataController _dataController;
+
+    [Inject]
+    private void Construct(DataController dataController)
+    {
+        _dataController = dataController;
+    }
     private void OnEnable()
     {
         LinesDrawer.instance.OnEndDraw += HideTut;
@@ -30,11 +37,11 @@ public class HandTut : MonoBehaviour
     private void HideTut()
     {
 
-        if (DataController.Instance.currentGameData.levelDoneInGame.Count == 0)
+        if (_dataController.currentGameData.levelDoneInGame.Count == 0)
         {
             for (int i = 0; i < 999; i++)
             {
-                DataController.Instance.currentGameData.levelDoneInGame.Add(0);
+                _dataController.currentGameData.levelDoneInGame.Add(0);
             }
         }
 

@@ -29,13 +29,15 @@ public class UIWin : UICanvas
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataPersistence = dataPersistence;
+        _dataController = dataController;
     }
     
     
@@ -72,8 +74,8 @@ public class UIWin : UICanvas
         //    + LevelManager.Instance.CurrentLevelIndex);
         // Check level done, if done hide coin reward 
         //Debug.Log(LevelManager.Instance.CurrentLevelIndex + " va " + DataController.Instance.currentGameData.currentLevelInProgress);
-        if (_levelManager.CurrentLevelIndex < DataController.Instance.currentGameData.currentLevelInProgress ||
-            DataController.Instance.currentGameData.starDoneInLevels[_levelManager.CurrentLevelIndex] != 0)
+        if (_levelManager.CurrentLevelIndex < _dataController.currentGameData.currentLevelInProgress ||
+            _dataController.currentGameData.starDoneInLevels[_levelManager.CurrentLevelIndex] != 0)
         {
             amount = 0;
             coverCoinGain.SetActive(false);
@@ -86,7 +88,7 @@ public class UIWin : UICanvas
 
     public void UpdateCoinText()
     {
-        coinText.text = DataController.Instance.currentGameData.coin.ToString();
+        coinText.text = _dataController.currentGameData.coin.ToString();
     }
     public void UpdateCoinRewardText()
     {
@@ -189,9 +191,9 @@ public class UIWin : UICanvas
     private int GetTotalStarInGame()
     {
         int totalStar = 0;
-        for (int i = 0; i < DataController.Instance.currentGameData.starDoneInLevels.Count; i++)
+        for (int i = 0; i < _dataController.currentGameData.starDoneInLevels.Count; i++)
         {
-            totalStar += DataController.Instance.currentGameData.starDoneInLevels[i];
+            totalStar += _dataController.currentGameData.starDoneInLevels[i];
         }
         return totalStar;
     }
@@ -266,27 +268,27 @@ public class UIWin : UICanvas
     }
     private void CheckStarInLevels()
     {
-        if (DataController.Instance.currentGameData.starDoneInLevels.Count == 0)
+        if (_dataController.currentGameData.starDoneInLevels.Count == 0)
         {
             for (int i = 0; i < 999; i++)
             {
-                DataController.Instance.currentGameData.starDoneInLevels.Add(0);
+                _dataController.currentGameData.starDoneInLevels.Add(0);
             }
         }
     }
     public void SetStarForLevel()
     {
-        if (DataController.Instance.currentGameData.starDoneInLevels.Count == 0)
+        if (_dataController.currentGameData.starDoneInLevels.Count == 0)
         {
             for (int i = 0; i < 999; i++)
             {
-                DataController.Instance.currentGameData.starDoneInLevels.Add(0);
+                _dataController.currentGameData.starDoneInLevels.Add(0);
             }
         }
         star = _levelManager.currentLevel.star;
-        if (DataController.Instance.currentGameData.starDoneInLevels[_levelManager.currentLevel.levelNumberInGame] < star)
+        if (_dataController.currentGameData.starDoneInLevels[_levelManager.currentLevel.levelNumberInGame] < star)
         {
-            DataController.Instance.currentGameData.starDoneInLevels[_levelManager.currentLevel.levelNumberInGame] = star;
+            _dataController.currentGameData.starDoneInLevels[_levelManager.currentLevel.levelNumberInGame] = star;
         }
     }
     public void SetColorStarWhenWin()

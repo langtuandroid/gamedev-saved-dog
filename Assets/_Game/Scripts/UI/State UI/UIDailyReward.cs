@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Zenject;
 
 public class UIDailyReward : UICanvas
 {
@@ -14,6 +15,13 @@ public class UIDailyReward : UICanvas
     [SerializeField] CoinRewardPro coinReward;
 
     private DayState dayState;
+    private DataController _dataController;
+
+    [Inject]
+    private void Construct(DataController dataController)
+    {
+        _dataController = dataController;
+    }
     private void OnEnable()
     {
         LoadUIReward();
@@ -46,14 +54,14 @@ public class UIDailyReward : UICanvas
         int dayNum = (int)dayState;
         boxDay[dayNum].sprite = claimed;
         Transform pos = boxDay[dayNum].transform;
-        int coin = DataController.Instance.currentGameData.coin;
+        int coin = _dataController.currentGameData.coin;
         int coinAdded = coin + rewards[dayNum];
         coinReward.Anim(coin, coinAdded, pos);
     }
 
     public void UpdateCoin(int value)
     {
-        DataController.Instance.currentGameData.coin = value;
+        _dataController.currentGameData.coin = value;
         UIManager.Instance.GetUI<UIMainMenu>().UpdateCoinText();
     }
     public void LoadUIReward()

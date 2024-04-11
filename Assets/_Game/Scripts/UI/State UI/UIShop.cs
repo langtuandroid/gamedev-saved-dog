@@ -37,11 +37,13 @@ public class UIShop : UICanvas
     // Data
     private List<int> charUnlock = new List<int>();
     private DataPersistence _dataPersistence;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(DataPersistence dataPersistence)
+    private void Construct(DataPersistence dataPersistence, DataController dataController)
     {
         _dataPersistence = dataPersistence;
+        _dataController = dataController;
     }
 
     private void OnEnable()
@@ -63,27 +65,27 @@ public class UIShop : UICanvas
     }
     private void UpdateMyCoinText()
     {
-        myCoinText.text = DataController.Instance.currentGameData.coin.ToString();
+        myCoinText.text = _dataController.currentGameData.coin.ToString();
     }
 
     private void CheckData()
     {
-        if (DataController.Instance.currentGameData.charUnlock.Count == 0)
+        if (_dataController.currentGameData.charUnlock.Count == 0)
         {
             for(int i = 0; i < charList.Count; i++)
             {
-                DataController.Instance.currentGameData.charUnlock.Add(charList[i].owned == true ? 1 : 0);
-                DataController.Instance.currentGameData.currentAd.Add(0);
-                DataController.Instance.currentGameData.maxAd.Add(charList[i].adMustWatch);
+                _dataController.currentGameData.charUnlock.Add(charList[i].owned == true ? 1 : 0);
+                _dataController.currentGameData.currentAd.Add(0);
+                _dataController.currentGameData.maxAd.Add(charList[i].adMustWatch);
             }
         }
-        else if (DataController.Instance.currentGameData.charUnlock.Count < charList.Count)
+        else if (_dataController.currentGameData.charUnlock.Count < charList.Count)
         {
-            for(int i = DataController.Instance.currentGameData.charUnlock.Count; i < charList.Count; i++)
+            for(int i = _dataController.currentGameData.charUnlock.Count; i < charList.Count; i++)
             {
-                DataController.Instance.currentGameData.charUnlock.Add(charList[i].owned == true ? 1 : 0);
-                DataController.Instance.currentGameData.currentAd.Add(0);
-                DataController.Instance.currentGameData.maxAd.Add(charList[i].adMustWatch);
+                _dataController.currentGameData.charUnlock.Add(charList[i].owned == true ? 1 : 0);
+                _dataController.currentGameData.currentAd.Add(0);
+                _dataController.currentGameData.maxAd.Add(charList[i].adMustWatch);
             }
         }
     }
@@ -95,7 +97,7 @@ public class UIShop : UICanvas
     }
     private void LoadChar()
     {
-        charUnlock = DataController.Instance.currentGameData.charUnlock;
+        charUnlock = _dataController.currentGameData.charUnlock;
         for(int i = 0; i < charList.Count; i++)
         {
             buttonTemp = Instantiate(buttonCharPrefab, content);
@@ -104,13 +106,13 @@ public class UIShop : UICanvas
 
             // Load 
             buttonChar.charImage.sprite = charList[i].image;
-            buttonChar.currentAd = DataController.Instance.currentGameData.currentAd[i];
-            buttonChar.maxAd = DataController.Instance.currentGameData.maxAd[i];
+            buttonChar.currentAd = _dataController.currentGameData.currentAd[i];
+            buttonChar.maxAd = _dataController.currentGameData.maxAd[i];
             buttonChar.textAd.text = buttonChar.currentAd + "/" + buttonChar.maxAd;
             buttonChar.selectedIcon.SetActive(false);
 
             // if isUsing character
-            if (DataController.Instance.currentGameData.currentChar == i)
+            if (_dataController.currentGameData.currentChar == i)
             {
                 previousCharIndex = i;
 
@@ -151,9 +153,9 @@ public class UIShop : UICanvas
                 buttonCharDisplayList[currentCharIndex].selectedIcon.SetActive(true);
 
                 //Debug.Log(index + " --- " + DataController.Instance.currentGameData.currentChar);
-                if (DataController.Instance.currentGameData.charUnlock[index] == 1)
+                if (_dataController.currentGameData.charUnlock[index] == 1)
                 {
-                    if (DataController.Instance.currentGameData.currentChar != index)
+                    if (_dataController.currentGameData.currentChar != index)
                     {
                         buyButton.gameObject.SetActive(false);
                         useButton.gameObject.SetActive(true);
@@ -222,7 +224,7 @@ public class UIShop : UICanvas
         if (currentCharIndex == -1)
             return;
         // Check if enough money
-        if (DataController.Instance.currentGameData.coin < charList[currentCharIndex].price)
+        if (_dataController.currentGameData.coin < charList[currentCharIndex].price)
         {
             AnimPopup();
             return;
@@ -230,11 +232,11 @@ public class UIShop : UICanvas
         else
         {
             // coin data
-            DataController.Instance.currentGameData.coin -= charList[currentCharIndex].price;
+            _dataController.currentGameData.coin -= charList[currentCharIndex].price;
             UpdateMyCoinText();
 
             // owned data
-            DataController.Instance.currentGameData.charUnlock[currentCharIndex] = 1;
+            _dataController.currentGameData.charUnlock[currentCharIndex] = 1;
 
             // UI
             buyButton.gameObject.SetActive(false);
@@ -265,10 +267,10 @@ public class UIShop : UICanvas
         if (currentCharIndex == -1)
             return;
 
-        buttonCharList[DataController.Instance.currentGameData.currentChar].image.sprite = boxBlue;
+        buttonCharList[_dataController.currentGameData.currentChar].image.sprite = boxBlue;
         buttonCharList[currentCharIndex].image.sprite = boxYellow;
         // Data
-        DataController.Instance.currentGameData.currentChar = currentCharIndex;
+        _dataController.currentGameData.currentChar = currentCharIndex;
         // UI
         buyButton.gameObject.SetActive(false);
         useButton.gameObject.SetActive(false);
@@ -301,14 +303,14 @@ public class UIShop : UICanvas
     #region Ad
     void OnWatchVideoSuccess()
     {
-        DataController.Instance.currentGameData.currentAd[currentCharIndex]++;
+        _dataController.currentGameData.currentAd[currentCharIndex]++;
 
-        buttonCharDisplayList[currentCharIndex].textAd.text = DataController.Instance.currentGameData.currentAd[currentCharIndex] + "/"
+        buttonCharDisplayList[currentCharIndex].textAd.text = _dataController.currentGameData.currentAd[currentCharIndex] + "/"
             + charList[currentCharIndex].adMustWatch;
-        if (DataController.Instance.currentGameData.currentAd[currentCharIndex] == charList[currentCharIndex].adMustWatch)
+        if (_dataController.currentGameData.currentAd[currentCharIndex] == charList[currentCharIndex].adMustWatch)
         {
             // owned data
-            DataController.Instance.currentGameData.charUnlock[currentCharIndex] = 1;
+            _dataController.currentGameData.charUnlock[currentCharIndex] = 1;
 
             // UI
             buyButton.gameObject.SetActive(false);

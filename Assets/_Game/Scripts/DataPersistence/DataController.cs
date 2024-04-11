@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class DataController : Singleton<DataController>, IDataPersistence
+public class DataController : MonoBehaviour, IDataPersistence
 {
     public GameData currentGameData;
     public void LoadData(GameData data)

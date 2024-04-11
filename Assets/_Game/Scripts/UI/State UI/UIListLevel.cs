@@ -24,12 +24,14 @@ public class UIListLevel : UICanvas
     private int currentAct;
     private GameManager _gameManager;
     private LevelManager _levelManager;
+    private DataController _dataController;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataController dataController)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
+        _dataController = dataController;
     }
 
     private void OnEnable()
@@ -47,10 +49,10 @@ public class UIListLevel : UICanvas
 
             // load data when unlocked
             buttonLevel.LoadDataUnlocked(actList[currentAct].levelSOList[i].numLevel, actList[currentAct].levelSOList[i].levelImage, 
-                DataController.Instance.currentGameData.starDoneInLevels[i + currentAct * 10]);
+                _dataController.currentGameData.starDoneInLevels[i + currentAct * 10]);
             
             // if lock
-            if (i > 0 && DataController.Instance.currentGameData.starDoneInLevels[i + currentAct * 10 - 1] == 0)
+            if (i > 0 && _dataController.currentGameData.starDoneInLevels[i + currentAct * 10 - 1] == 0)
             {
                 buttonLevel.DisplayLock(true);
             }
@@ -72,7 +74,7 @@ public class UIListLevel : UICanvas
             int index = i;
             btnLevelList[i].onClick.AddListener(() =>
             {
-                if (index > 0 && DataController.Instance.currentGameData.starDoneInLevels[index + currentAct * 10 - 1] == 0)
+                if (index > 0 && _dataController.currentGameData.starDoneInLevels[index + currentAct * 10 - 1] == 0)
                 {
                     // Do sth
                 }
@@ -107,21 +109,21 @@ public class UIListLevel : UICanvas
 
     private void CheckStarInLevels()
     {
-        if (DataController.Instance.currentGameData.starDoneInLevels.Count == 0)
+        if (_dataController.currentGameData.starDoneInLevels.Count == 0)
         {
             for (int i = 0; i < 999; i++)
             {
-                DataController.Instance.currentGameData.starDoneInLevels.Add(0);
+                _dataController.currentGameData.starDoneInLevels.Add(0);
             }
         }
     }
     private void CheckLevelDone()
     {
-        if (DataController.Instance.currentGameData.levelDoneInGame.Count == 0)
+        if (_dataController.currentGameData.levelDoneInGame.Count == 0)
         {
             for (int i = 0; i < 999; i++)
             {
-                DataController.Instance.currentGameData.levelDoneInGame.Add(0);
+                _dataController.currentGameData.levelDoneInGame.Add(0);
             }
         }
     }
@@ -130,7 +132,7 @@ public class UIListLevel : UICanvas
         int totalStar = 0;
         for (int i = act * 10; i <= (act * 10) + 9; i++)
         {
-            totalStar += DataController.Instance.currentGameData.starDoneInLevels[i];
+            totalStar += _dataController.currentGameData.starDoneInLevels[i];
         }
         return totalStar;
     }
@@ -139,16 +141,16 @@ public class UIListLevel : UICanvas
         int totalLevel = 0;
         for (int i = act * 10; i <= (act * 10) + 9; i++)
         {
-            totalLevel += DataController.Instance.currentGameData.levelDoneInGame[i];
+            totalLevel += _dataController.currentGameData.levelDoneInGame[i];
         }
         return totalLevel;
     }
     private int GetTotalStarInGame()
     {
         int totalStar = 0;
-        for (int i = 0; i < DataController.Instance.currentGameData.starDoneInLevels.Count; i++)
+        for (int i = 0; i < _dataController.currentGameData.starDoneInLevels.Count; i++)
         {
-            totalStar += DataController.Instance.currentGameData.starDoneInLevels[i];
+            totalStar += _dataController.currentGameData.starDoneInLevels[i];
         }
         return totalStar;
     }
@@ -172,7 +174,7 @@ public class UIListLevel : UICanvas
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class Act
 {
     public List<LevelSO> levelSOList;

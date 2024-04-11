@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 
 public class CoinReward : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class CoinReward : MonoBehaviour
 
     public int startValue, endValue;
     private float height, width, scale;
+    
+    private DataController _dataController;
+
+    [Inject]
+    private void Construct(DataController dataController)
+    {
+        _dataController = dataController;
+    }
 
     private void Awake()
     {
@@ -70,8 +79,8 @@ public class CoinReward : MonoBehaviour
         }
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_COIN);
-        startValue = DataController.Instance.currentGameData.coin;
-        endValue = DataController.Instance.currentGameData.coin + addCoin;
+        startValue = _dataController.currentGameData.coin;
+        endValue = _dataController.currentGameData.coin + addCoin;
         DOTween.Sequence().AppendInterval(1.25f).Append(DOTween.To(() => startValue, x => startValue = x, endValue, 1f).OnUpdate(() => UpdateValue(startValue)).OnComplete(() => 
         { 
             if (canNextLevel)
@@ -85,6 +94,6 @@ public class CoinReward : MonoBehaviour
     private void UpdateValue(int value)
     {
         uiWin.coinText.text = value.ToString();
-        DataController.Instance.currentGameData.coin = value;
+        _dataController.currentGameData.coin = value;
     }
 }
