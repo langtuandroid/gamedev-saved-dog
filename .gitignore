@@ -69,6 +69,9 @@ sysinfo.txt
 *.mov
 *.wmv
 
+#FBX files
+*.fbx
+
 # Crashlytics generated file
 crashlytics-build.properties
 
