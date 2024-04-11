@@ -11,11 +11,13 @@ public class UIMainMenu : UICanvas
     [SerializeField] private RectTransform playButtonRect, listButtonRect, shopButtonRect, settingButtonRect, coinRect, titleRect;
     private Tweener scaleTween;
     private GameManager _gameManager;
+    private LevelManager _levelManager;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager)
     {
         _gameManager = gameManager;
+        _levelManager = levelManager;
     }
     
     private void OnEnable()
@@ -66,7 +68,7 @@ public class UIMainMenu : UICanvas
         UIManager.Instance.OpenUI<UIGameplay>();
         // Load level
         int level = DataController.Instance.currentGameData.currentLevelInProgress;
-        LevelManager.Instance.OnLoadLevel(level);
+        _levelManager.OnLoadLevel(level);
         
 
         // UI

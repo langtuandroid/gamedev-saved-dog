@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using Spine;
 using Spine.Unity;
+using Zenject;
 
 public class UIShop : UICanvas
 {
@@ -33,9 +34,15 @@ public class UIShop : UICanvas
     private List<Skin> skins;
     private Skin currentSkin;
 
-
     // Data
     private List<int> charUnlock = new List<int>();
+    private DataPersistence _dataPersistence;
+
+    [Inject]
+    private void Construct(DataPersistence dataPersistence)
+    {
+        _dataPersistence = dataPersistence;
+    }
 
     private void OnEnable()
     {
@@ -237,7 +244,7 @@ public class UIShop : UICanvas
             buttonCharDisplayList[currentCharIndex].adImage.gameObject.SetActive(false);
         }
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
 
     private void AnimPopup()
@@ -268,7 +275,7 @@ public class UIShop : UICanvas
         usedButton.gameObject.SetActive(true);
 
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
 
     public void AdButton()
@@ -277,7 +284,7 @@ public class UIShop : UICanvas
             return;
         if (!buttonCharDisplayList[currentCharIndex].textAd.gameObject.activeSelf)
             return;
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
 
     public void SetAnimForUIShop()

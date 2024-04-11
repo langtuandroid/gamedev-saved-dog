@@ -32,11 +32,13 @@ public class UIGameplay : UICanvas
 
     public Image tickWin, tickLose;
     private GameManager _gameManager;
+    private LevelManager _levelManager;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager)
     {
         _gameManager = gameManager;
+        _levelManager = levelManager;
     }
     
     private void Awake()
@@ -121,13 +123,13 @@ public class UIGameplay : UICanvas
         if (inkRatio < 2f / 3f && inkRatio > 1f / 3f)
         {
             star = 2;
-            LevelManager.Instance.currentLevel.star = 2;
+            _levelManager.currentLevel.star = 2;
             stars[2].color = colorLoseStar;
         }
         else if (inkRatio < 1f / 3f && inkRatio > 0)
         {
             star = 1;
-            LevelManager.Instance.currentLevel.star = 1;
+            _levelManager.currentLevel.star = 1;
             stars[1].color = colorLoseStar;
         }
     }
@@ -146,12 +148,12 @@ public class UIGameplay : UICanvas
     
     void OnBackButton()
     {
-        LevelManager.Instance.stateIndex++;
+        _levelManager.stateIndex++;
 
         UIManager.Instance.OpenUI<UIMainMenu>();
         _gameManager.ChangeState(GameState.MainMenu);
 
-        LevelManager.Instance.Despawn();
+        _levelManager.Despawn();
         LinesDrawer.instance.OnLoadNewLevelOrUI();
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
@@ -165,7 +167,7 @@ public class UIGameplay : UICanvas
     }
     public void OnRetryButton()
     {
-        LevelManager.Instance.stateIndex++;
+        _levelManager.stateIndex++;
 
         Debug.Log("Retry");
         if (!_gameManager.IsState(GameState.GamePlay))
@@ -173,7 +175,7 @@ public class UIGameplay : UICanvas
             _gameManager.ChangeState(GameState.GamePlay);
         }
         _gameManager.StopTween();
-        LevelManager.Instance.OnRetry();
+        _levelManager.OnRetry();
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
 

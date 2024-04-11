@@ -19,11 +19,15 @@ public class UILose : UICanvas
     private List<Skin> skins;
     private Skin currentSkin;
     private GameManager _gameManager;
+    private LevelManager _levelManager;
+    private DataPersistence _dataPersistence;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence)
     {
         _gameManager = gameManager;
+        _levelManager = levelManager;
+        _dataPersistence = dataPersistence;
     }
 
     [SerializeField] private SkeletonGraphic skeletonAnimation1, skeletonAnimation2;
@@ -82,27 +86,27 @@ public class UILose : UICanvas
         UIManager.Instance.CloseUI<UILose>();
         UIManager.Instance.OpenUI<UIGameplay>();
         UIManager.Instance.GetUI<UIGameplay>().OnInit();
-        LevelManager.Instance.OnRetry();
+        _levelManager.OnRetry();
         _gameManager.ChangeState(GameState.GamePlay);
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
     public void HomeButton()
     {
-        if (LevelManager.Instance.currentLevel.levelNumberInGame > 1)
+        if (_levelManager.currentLevel.levelNumberInGame > 1)
         {
             StartCoroutine(iHome());
         }
         else
         {
-            LevelManager.Instance.stateIndex++;
+            _levelManager.stateIndex++;
 
             UIManager.Instance.OpenUI<UIMainMenu>();
             _gameManager.ChangeState(GameState.MainMenu);
 
-            LevelManager.Instance.Despawn();
+            _levelManager.Despawn();
             LinesDrawer.instance.OnLoadNewLevelOrUI();
 
             AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
@@ -114,12 +118,12 @@ public class UILose : UICanvas
     IEnumerator iHome()
     {
         yield return new WaitForSeconds(1);
-        LevelManager.Instance.stateIndex++;
+        _levelManager.stateIndex++;
 
         UIManager.Instance.OpenUI<UIMainMenu>();
         _gameManager.ChangeState(GameState.MainMenu);
 
-        LevelManager.Instance.Despawn();
+        _levelManager.Despawn();
         LinesDrawer.instance.OnLoadNewLevelOrUI();
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
@@ -130,7 +134,7 @@ public class UILose : UICanvas
 
     public void ShopButton()
     {
-        if (LevelManager.Instance.currentLevel.levelNumberInGame > 1)
+        if (_levelManager.currentLevel.levelNumberInGame > 1)
         {
             StartCoroutine(iShop());
         }
@@ -139,7 +143,7 @@ public class UILose : UICanvas
             UIManager.Instance.OpenUI<UIShop>();
             _gameManager.ChangeState(GameState.MainMenu);
 
-            LevelManager.Instance.Despawn();
+            _levelManager.Despawn();
             LinesDrawer.instance.OnLoadNewLevelOrUI();
 
             CloseDirectly();
@@ -156,7 +160,7 @@ public class UILose : UICanvas
         UIManager.Instance.OpenUI<UIShop>();
         _gameManager.ChangeState(GameState.MainMenu);
 
-        LevelManager.Instance.Despawn();
+        _levelManager.Despawn();
         LinesDrawer.instance.OnLoadNewLevelOrUI();
 
         CloseDirectly();

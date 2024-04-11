@@ -1649,6 +1649,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameManager: {fileID: 910963305}
+  _levelManager: {fileID: 1195218092}
+  _dataPersistence: {fileID: 1501285801}
 --- !u!114 &1380508479
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class DataPersistence : Singleton<DataPersistence>
+public class DataPersistence : MonoBehaviour
 {
     [Header("File Storage Config")]
     [SerializeField] private string fileName;

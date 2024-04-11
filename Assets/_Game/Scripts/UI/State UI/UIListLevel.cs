@@ -23,11 +23,13 @@ public class UIListLevel : UICanvas
 
     private int currentAct;
     private GameManager _gameManager;
+    private LevelManager _levelManager;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager)
     {
         _gameManager = gameManager;
+        _levelManager = levelManager;
     }
 
     private void OnEnable()
@@ -77,7 +79,7 @@ public class UIListLevel : UICanvas
                 else
                 {
                     UIManager.Instance.OpenUI<UIGameplay>();
-                    LevelManager.Instance.OnLoadLevel(index + currentAct * 10);
+                    _levelManager.OnLoadLevel(index + currentAct * 10);
                     _gameManager.ChangeState(GameState.GamePlay);
                     ClearListLevel();
 

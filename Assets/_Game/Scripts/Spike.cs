@@ -12,11 +12,13 @@ public class Spike : MonoBehaviour
 
     private Color dogeColor;
     private GameManager _gameManager;
+    private LevelManager _levelManager;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager)
     {
         _gameManager = gameManager;
+        _levelManager = levelManager;
     }
     
     private void Start()
@@ -36,7 +38,7 @@ public class Spike : MonoBehaviour
                 if (clockTimer.RemainingDuration <= 0)
                     return;
             }
-            LevelManager.Instance.currentLevel.DestroyAllBees();
+            _levelManager.currentLevel.DestroyAllBees();
             StartCoroutine(DeadBySpike(other));
         }
     }

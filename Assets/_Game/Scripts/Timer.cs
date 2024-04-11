@@ -17,13 +17,15 @@ public class Timer : MonoBehaviour
     private int duration;
     private Coroutine coroutineInstance;
     private GameManager _gameManager;
+    private LevelManager _levelManager;
     
     public float RemainingDuration => remainingDuration;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager)
     {
         _gameManager = gameManager;
+        _levelManager = levelManager;
     }
     
     void Start()
@@ -63,10 +65,10 @@ public class Timer : MonoBehaviour
         Level currentLevel = GameObject.FindObjectOfType<Level>();
         if (currentLevel.DogeStillAlive())
         {
-            _gameManager.currentIndexState = LevelManager.Instance.stateIndex;
+            _gameManager.currentIndexState = _levelManager.stateIndex;
             currentLevel.SetAnimWin();
             currentLevel.TurnOffHealthBar();
-            LevelManager.Instance.currentLevel.DestroyAllBees();
+            _levelManager.currentLevel.DestroyAllBees();
 
             AudioManager.instance.Play(Constant.AUDIO_SFX_WOOHOO);
 

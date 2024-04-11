@@ -27,11 +27,15 @@ public class UIWin : UICanvas
     private List<Skin> skins;
     private Skin currentSkin;
     private GameManager _gameManager;
+    private LevelManager _levelManager;
+    private DataPersistence _dataPersistence;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence)
     {
         _gameManager = gameManager;
+        _levelManager = levelManager;
+        _dataPersistence = dataPersistence;
     }
     
     
@@ -68,8 +72,8 @@ public class UIWin : UICanvas
         //    + LevelManager.Instance.CurrentLevelIndex);
         // Check level done, if done hide coin reward 
         //Debug.Log(LevelManager.Instance.CurrentLevelIndex + " va " + DataController.Instance.currentGameData.currentLevelInProgress);
-        if (LevelManager.Instance.CurrentLevelIndex < DataController.Instance.currentGameData.currentLevelInProgress ||
-            DataController.Instance.currentGameData.starDoneInLevels[LevelManager.Instance.CurrentLevelIndex] != 0)
+        if (_levelManager.CurrentLevelIndex < DataController.Instance.currentGameData.currentLevelInProgress ||
+            DataController.Instance.currentGameData.starDoneInLevels[_levelManager.CurrentLevelIndex] != 0)
         {
             amount = 0;
             coverCoinGain.SetActive(false);
@@ -131,9 +135,9 @@ public class UIWin : UICanvas
     public void NextLevelButton()
     {
         // check level next act
-        if ((LevelManager.Instance.CurrentLevelIndex + 1) % 10 == 0)
+        if ((_levelManager.CurrentLevelIndex + 1) % 10 == 0)
         {
-            int act = (LevelManager.Instance.CurrentLevelIndex + 1) / 10;
+            int act = (_levelManager.CurrentLevelIndex + 1) / 10;
 
             // not enough star
             if (!UIManager.Instance.IsLoaded<UiListAct>())
@@ -215,7 +219,7 @@ public class UIWin : UICanvas
         UIManager.Instance.CloseUI<UIWin>();
         UIManager.Instance.OpenUI<UIGameplay>();
         UIManager.Instance.GetUI<UIGameplay>().OnInit();
-        LevelManager.Instance.OnLoadNextLevel();
+        _levelManager.OnLoadNextLevel();
         _gameManager.ChangeState(GameState.GamePlay);
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
@@ -223,7 +227,7 @@ public class UIWin : UICanvas
 
         LinesDrawer.instance.HideLineCantDraw();
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
 
 
@@ -233,13 +237,13 @@ public class UIWin : UICanvas
         UIManager.Instance.CloseUI<UIWin>();
         UIManager.Instance.OpenUI<UIGameplay>();
         UIManager.Instance.GetUI<UIGameplay>().OnInit();
-        LevelManager.Instance.OnRetry();
+        _levelManager.OnRetry();
         _gameManager.ChangeState(GameState.GamePlay);
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
 
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
     public void SetAnimationForUIWin()
     {
@@ -279,10 +283,10 @@ public class UIWin : UICanvas
                 DataController.Instance.currentGameData.starDoneInLevels.Add(0);
             }
         }
-        star = LevelManager.Instance.currentLevel.star;
-        if (DataController.Instance.currentGameData.starDoneInLevels[LevelManager.Instance.currentLevel.levelNumberInGame] < star)
+        star = _levelManager.currentLevel.star;
+        if (DataController.Instance.currentGameData.starDoneInLevels[_levelManager.currentLevel.levelNumberInGame] < star)
         {
-            DataController.Instance.currentGameData.starDoneInLevels[LevelManager.Instance.currentLevel.levelNumberInGame] = star;
+            DataController.Instance.currentGameData.starDoneInLevels[_levelManager.currentLevel.levelNumberInGame] = star;
         }
     }
     public void SetColorStarWhenWin()

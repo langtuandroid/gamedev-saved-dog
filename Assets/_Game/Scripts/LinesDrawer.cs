@@ -48,11 +48,13 @@ public class LinesDrawer : MonoBehaviour
     }
     
     private GameManager _gameManager;
+    private LevelManager _levelManager;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager)
     {
         _gameManager = gameManager;
+        _levelManager = levelManager;
     }
 
     private void Awake()
@@ -130,12 +132,12 @@ public class LinesDrawer : MonoBehaviour
                 {
                     CameraShaker.Invoke();
                     OnEndDraw?.Invoke();
-                    if (LevelManager.Instance.currentLevel.levelNumberInGame != 0) blade.gameObject.SetActive(true);
-                    if (LevelManager.Instance.currentLevel.levelNumberInGame == 1)
+                    if (_levelManager.currentLevel.levelNumberInGame != 0) blade.gameObject.SetActive(true);
+                    if (_levelManager.currentLevel.levelNumberInGame == 1)
                     {
                         if (DataController.Instance.currentGameData.levelDoneInGame[1] == 0)
                         {
-                            Transform tutAttack = LevelManager.Instance.currentLevel.transform.Find("TutAttack");
+                            Transform tutAttack = _levelManager.currentLevel.transform.Find("TutAttack");
                             tutAttack.gameObject.SetActive(true);
                         }
                     }

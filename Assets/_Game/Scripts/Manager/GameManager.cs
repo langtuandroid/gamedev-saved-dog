@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 
 public enum GameState
 {
@@ -23,6 +24,15 @@ public class GameManager : MonoBehaviour
     
     private GameState gameState;
     private Tweener scaleTween;
+    private LevelManager _levelManager;
+    private DataPersistence _dataPersistence;
+
+   [Inject]
+   private void Construct (LevelManager levelManager, DataPersistence dataPersistence)
+   {
+       _levelManager = levelManager;
+       _dataPersistence = dataPersistence;
+   }
 
     protected void Awake()
     {
@@ -42,7 +52,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(FIRST_LOAD, 1);
             ChangeState(GameState.GamePlay);
             UIManager.Instance.OpenUI<UIGameplay>();
-            LevelManager.Instance.OnLoadLevel(0);
+            _levelManager.OnLoadLevel(0);
         }
         else
         {
@@ -57,17 +67,17 @@ public class GameManager : MonoBehaviour
 
         blade.gameObject.SetActive(false);
 
-        LevelManager.Instance.OnWin();
+        _levelManager.OnWin();
 
-        if (currentIndexState != LevelManager.Instance.stateIndex)
+        if (currentIndexState != _levelManager.stateIndex)
         {
-            currentIndexState = LevelManager.Instance.stateIndex;
+            currentIndexState = _levelManager.stateIndex;
             return;
         }
 
         ChangeState(GameState.Win);
         UIManager.Instance.CloseUI<UIGameplay>();
-        if (LevelManager.Instance.currentLevel.levelNumberInGame > 1)
+        if (_levelManager.currentLevel.levelNumberInGame > 1)
         {
             StartCoroutine(iShowWin());
         }
@@ -75,7 +85,7 @@ public class GameManager : MonoBehaviour
         {
             UIManager.Instance.OpenUI<UIWin>();
         }
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
 
     IEnumerator iShowWin()
@@ -89,7 +99,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Lose);
         blade.gameObject.SetActive(false);
 
-        LevelManager.Instance.currentLevel.ClockTimer.StopClock();
+        _levelManager.currentLevel.ClockTimer.StopClock();
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_LOSE);
 
@@ -97,7 +107,7 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(StartScale());
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
 
     }
 
@@ -108,9 +118,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         // new version lose state
-        LevelManager.Instance.OnLose();
+        _levelManager.OnLose();
         UIManager.Instance.CloseUI<UIGameplay>();
-        if (LevelManager.Instance.currentLevel.levelNumberInGame > 1)
+        if (_levelManager.currentLevel.levelNumberInGame > 1)
         {
             StartCoroutine(iShowLose());
         }

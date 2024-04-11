@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Zenject;
 
 public class UISettings : UICanvas
 {
     [SerializeField] private Image musicButtonIcon, soundButtonIcon, vibrateButtonIcon;
     [SerializeField] private Sprite musicOn, musicOff, soundOn, soundOff, vibrateOn, vibrateOff;
     [SerializeField] private RectTransform boxRect;
+
+    private DataPersistence _dataPersistence;
+
+    [Inject]
+    private void Construct(DataPersistence dataPersistence)
+    {
+        _dataPersistence = dataPersistence;
+    }
+    
     private void OnEnable()
     {
         SetAnimationForSetting();
@@ -49,7 +59,7 @@ public class UISettings : UICanvas
         }
         DataController.Instance.currentGameData.music = !DataController.Instance.currentGameData.music;
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
     public void SoundButton()
     {
@@ -65,7 +75,7 @@ public class UISettings : UICanvas
         }
         DataController.Instance.currentGameData.sound = !DataController.Instance.currentGameData.sound;
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
     public void VibrateButton()
     {
@@ -73,6 +83,6 @@ public class UISettings : UICanvas
         vibrateButtonIcon.sprite = (DataController.Instance.currentGameData.vibrate == true) ? vibrateOn : vibrateOff;
         DataController.Instance.currentGameData.vibrate = !DataController.Instance.currentGameData.vibrate;
 
-        DataPersistence.Instance.SaveGame();
+        _dataPersistence.SaveGame();
     }
 }
