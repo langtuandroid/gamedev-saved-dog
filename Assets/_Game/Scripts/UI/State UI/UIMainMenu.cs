@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Zenject;
 
 public class UIMainMenu : UICanvas
 {
     [SerializeField] private Text coinText;
     [SerializeField] private RectTransform playButtonRect, listButtonRect, shopButtonRect, settingButtonRect, coinRect, titleRect;
     private Tweener scaleTween;
+    private GameManager _gameManager;
 
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+    
     private void OnEnable()
     {
         //SetAnimationForMainMenu();
@@ -52,7 +60,7 @@ public class UIMainMenu : UICanvas
     public void PlayButton()
     {
        
-        GameManager.Instance.ChangeState(GameState.GamePlay);
+        _gameManager.ChangeState(GameState.GamePlay);
         AudioManager.instance.Play(Constant.AUDIO_SFX_PLAY);
 
         UIManager.Instance.OpenUI<UIGameplay>();

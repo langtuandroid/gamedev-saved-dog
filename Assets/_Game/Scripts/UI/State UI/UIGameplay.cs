@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Zenject;
 
 public class UIGameplay : UICanvas
 {
@@ -30,6 +31,14 @@ public class UIGameplay : UICanvas
     [SerializeField] private Text levelText, coinText;
 
     public Image tickWin, tickLose;
+    private GameManager _gameManager;
+
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+    
     private void Awake()
     {
         initPosClock = clockCover.position;
@@ -140,7 +149,7 @@ public class UIGameplay : UICanvas
         LevelManager.Instance.stateIndex++;
 
         UIManager.Instance.OpenUI<UIMainMenu>();
-        GameManager.Instance.ChangeState(GameState.MainMenu);
+        _gameManager.ChangeState(GameState.MainMenu);
 
         LevelManager.Instance.Despawn();
         LinesDrawer.instance.OnLoadNewLevelOrUI();
@@ -159,11 +168,11 @@ public class UIGameplay : UICanvas
         LevelManager.Instance.stateIndex++;
 
         Debug.Log("Retry");
-        if (!GameManager.Instance.IsState(GameState.GamePlay))
+        if (!_gameManager.IsState(GameState.GamePlay))
         {
-            GameManager.Instance.ChangeState(GameState.GamePlay);
+            _gameManager.ChangeState(GameState.GamePlay);
         }
-        GameManager.Instance.StopTween();
+        _gameManager.StopTween();
         LevelManager.Instance.OnRetry();
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class UIListLevel : UICanvas
 {
@@ -21,7 +22,13 @@ public class UIListLevel : UICanvas
     private Button button;
 
     private int currentAct;
+    private GameManager _gameManager;
 
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
 
     private void OnEnable()
     {
@@ -71,7 +78,7 @@ public class UIListLevel : UICanvas
                 {
                     UIManager.Instance.OpenUI<UIGameplay>();
                     LevelManager.Instance.OnLoadLevel(index + currentAct * 10);
-                    GameManager.Instance.ChangeState(GameState.GamePlay);
+                    _gameManager.ChangeState(GameState.GamePlay);
                     ClearListLevel();
 
                     AudioManager.instance.Play(Constant.AUDIO_SFX_PLAY);

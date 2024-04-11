@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Zenject;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -17,6 +18,8 @@ public class LevelManager : Singleton<LevelManager>
 
     public event Action OnWinLevel, OnLoseLevel;
     public int stateIndex;
+    
+   [Inject] private DiContainer _diContainer;
     void Start()
     {
         //levelIndexInProgress = 0;
@@ -41,7 +44,7 @@ public class LevelManager : Singleton<LevelManager>
         {
             level = 0;
         }
-        currentLevel = Instantiate(levels[level]);
+        currentLevel = _diContainer.InstantiatePrefabForComponent<Level>(levels[level]);
 
         LoadSkinForCharacter();
 

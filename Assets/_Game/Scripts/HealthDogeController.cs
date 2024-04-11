@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class HealthDogeController : MonoBehaviour
 {
@@ -30,6 +31,14 @@ public class HealthDogeController : MonoBehaviour
             }
             return tf;
         }
+    }
+    
+    private GameManager _gameManager;
+
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
     }
 
     void Start()
@@ -76,7 +85,7 @@ public class HealthDogeController : MonoBehaviour
                 die = true;
                 OffHealthBar();
                 animDoge.SetAnimForDoge(Constant.DOGE_ANIM_HURT);
-                GameManager.Instance.WhenLose();
+                _gameManager.WhenLose();
             }
         }
     }
@@ -96,7 +105,7 @@ public class HealthDogeController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (die || !GameManager.Instance.IsState(GameState.GamePlay))
+        if (die || !_gameManager.IsState(GameState.GamePlay))
             return;
         if (collision.gameObject.CompareTag(Constant.BEE))
         {

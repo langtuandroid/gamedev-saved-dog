@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using Zenject;
 
 public class LinesDrawer : MonoBehaviour
 {
@@ -45,6 +46,14 @@ public class LinesDrawer : MonoBehaviour
             return tf;
         }
     }
+    
+    private GameManager _gameManager;
+
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
 
     private void Awake()
     {
@@ -80,7 +89,7 @@ public class LinesDrawer : MonoBehaviour
     }
     void Update()
     {
-        if (GameManager.Instance.IsState(GameState.GamePlay) && currentNumLines < maxLineCanDraw)
+        if (_gameManager.IsState(GameState.GamePlay) && currentNumLines < maxLineCanDraw)
         {
 
             if (Input.GetMouseButtonDown(0) && !MouseOverLayerCantDraw() && !MouseOverTilemap())

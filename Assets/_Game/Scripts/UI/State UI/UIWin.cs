@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using Spine;
 using Spine.Unity;
+using Zenject;
 
 public class UIWin : UICanvas
 {
@@ -25,7 +26,15 @@ public class UIWin : UICanvas
     private SkeletonData skeletonData = new SkeletonData();
     private List<Skin> skins;
     private Skin currentSkin;
+    private GameManager _gameManager;
 
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+    
+    
     private void OnEnable()
     {
 
@@ -207,7 +216,7 @@ public class UIWin : UICanvas
         UIManager.Instance.OpenUI<UIGameplay>();
         UIManager.Instance.GetUI<UIGameplay>().OnInit();
         LevelManager.Instance.OnLoadNextLevel();
-        GameManager.Instance.ChangeState(GameState.GamePlay);
+        _gameManager.ChangeState(GameState.GamePlay);
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
 
@@ -225,7 +234,7 @@ public class UIWin : UICanvas
         UIManager.Instance.OpenUI<UIGameplay>();
         UIManager.Instance.GetUI<UIGameplay>().OnInit();
         LevelManager.Instance.OnRetry();
-        GameManager.Instance.ChangeState(GameState.GamePlay);
+        _gameManager.ChangeState(GameState.GamePlay);
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
 

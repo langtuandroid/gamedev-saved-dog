@@ -1,22 +1,28 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
-using UnityEngine.Events;
 using DG.Tweening;
 
-
-public enum GameState { MainMenu, GamePlay, Win, Setting, Skin, Lose}
-public class GameManager : Singleton<GameManager>
+public enum GameState
 {
-    private GameState gameState;
+    MainMenu,
+    GamePlay,
+    Win, 
+    Setting,
+    Skin,
+    Lose
+}
 
-    private Tweener scaleTween;
-    private const string firstLoad = "firstload";
+public class GameManager : MonoBehaviour
+{
+    private const string FIRST_LOAD = "firstload";
 
     public int currentIndexState;
 
-    [SerializeField] private Blade blade;
+    [SerializeField]
+    private Blade blade;
+    
+    private GameState gameState;
+    private Tweener scaleTween;
 
     protected void Awake()
     {
@@ -25,15 +31,15 @@ public class GameManager : Singleton<GameManager>
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
         int maxScreenHeight = 1280;
-        float ratio = (float)Screen.currentResolution.width / (float)Screen.currentResolution.height;
+        float ratio = Screen.currentResolution.width / (float)Screen.currentResolution.height;
         if (Screen.currentResolution.height > maxScreenHeight)
         {
             Screen.SetResolution(Mathf.RoundToInt(ratio * (float)maxScreenHeight), maxScreenHeight, true);
         }
 
-        if (!PlayerPrefs.HasKey(firstLoad))
+        if (!PlayerPrefs.HasKey(FIRST_LOAD))
         {
-            PlayerPrefs.SetInt(firstLoad, 1);
+            PlayerPrefs.SetInt(FIRST_LOAD, 1);
             ChangeState(GameState.GamePlay);
             UIManager.Instance.OpenUI<UIGameplay>();
             LevelManager.Instance.OnLoadLevel(0);
@@ -121,7 +127,6 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(1);
          UIManager.Instance.OpenUI<UILose>();
     }
-
 
     public void ChangeState(GameState state)
     {

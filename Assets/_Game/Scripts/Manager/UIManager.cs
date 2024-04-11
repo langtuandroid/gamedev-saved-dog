@@ -18,6 +18,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -37,6 +38,8 @@ public class UIManager : Singleton<UIManager>
     //canvas chua dung cac canvas con, nen la mot canvas - root de chua cac canvas nay
     public Transform CanvasParentTF;
 
+   [Inject] private DiContainer _diContainer;
+    
     #region Canvas
 
     //open UI
@@ -92,7 +95,7 @@ public class UIManager : Singleton<UIManager>
     {
         if (!IsLoaded<T>())
         {
-            UICanvas canvas = Instantiate(GetUIPrefab<T>(), CanvasParentTF);
+            UICanvas canvas = _diContainer.InstantiatePrefabForComponent<UICanvas>(GetUIPrefab<T>(), CanvasParentTF);
             uiCanvas[typeof(T)] = canvas;
         }
 

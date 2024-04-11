@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Doge : MonoBehaviour
 {
@@ -9,6 +10,14 @@ public class Doge : MonoBehaviour
     private LevelManager levelManager;
     private AnimationControllerDoge animDoge;
     private HealthDogeController healthDoge;
+    private GameManager _gameManager;
+
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -54,12 +63,12 @@ public class Doge : MonoBehaviour
     {
         if (collision.gameObject.CompareTag(Constant.SAW))
         {
-            if (!GameManager.Instance.IsState(GameState.GamePlay))
+            if (!_gameManager.IsState(GameState.GamePlay))
                 return;
             animDoge.SetAnimForDoge(Constant.DOGE_ANIM_DIE);
             healthDoge.die = true;
 
-            GameManager.Instance.WhenLose();
+            _gameManager.WhenLose();
         }
     }
 }

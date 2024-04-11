@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Axit : MonoBehaviour
 {
@@ -8,8 +9,15 @@ public class Axit : MonoBehaviour
     [SerializeField] private float timeToDead;
 
     private Timer clockTimer;
-
     private Color dogeColor;
+    private GameManager _gameManager;
+
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+    
     private void Start()
     {
         clockTimer = GameObject.FindObjectOfType<Timer>();
@@ -35,8 +43,8 @@ public class Axit : MonoBehaviour
         other.gameObject.GetComponent<AnimationControllerDoge>().SetAnimForDoge(Constant.DOGE_ANIM_DIE);
         other.gameObject.GetComponent<HealthDogeController>().die = true;
         //Destroy(other.gameObject, timeToDead);
-        if (GameManager.Instance.IsState(GameState.GamePlay))
-            GameManager.Instance.WhenLose();
+        if (_gameManager.IsState(GameState.GamePlay))
+            _gameManager.WhenLose();
         yield return new WaitForSeconds(timeToDead);
     }
 }

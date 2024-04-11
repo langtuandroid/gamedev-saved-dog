@@ -5,19 +5,26 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Spine;
 using Spine.Unity;
+using Zenject;
 
 public class UILose : UICanvas
 {
     public RectTransform PopupLose, dog1, dog2;
     public Text coinText;
-
-
+    
     private bool onceClick;
 
     // Render Skin
     private SkeletonData skeletonData = new SkeletonData();
     private List<Skin> skins;
     private Skin currentSkin;
+    private GameManager _gameManager;
+
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
 
     [SerializeField] private SkeletonGraphic skeletonAnimation1, skeletonAnimation2;
     private void OnEnable()
@@ -76,7 +83,7 @@ public class UILose : UICanvas
         UIManager.Instance.OpenUI<UIGameplay>();
         UIManager.Instance.GetUI<UIGameplay>().OnInit();
         LevelManager.Instance.OnRetry();
-        GameManager.Instance.ChangeState(GameState.GamePlay);
+        _gameManager.ChangeState(GameState.GamePlay);
 
         AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
 
@@ -93,7 +100,7 @@ public class UILose : UICanvas
             LevelManager.Instance.stateIndex++;
 
             UIManager.Instance.OpenUI<UIMainMenu>();
-            GameManager.Instance.ChangeState(GameState.MainMenu);
+            _gameManager.ChangeState(GameState.MainMenu);
 
             LevelManager.Instance.Despawn();
             LinesDrawer.instance.OnLoadNewLevelOrUI();
@@ -110,7 +117,7 @@ public class UILose : UICanvas
         LevelManager.Instance.stateIndex++;
 
         UIManager.Instance.OpenUI<UIMainMenu>();
-        GameManager.Instance.ChangeState(GameState.MainMenu);
+        _gameManager.ChangeState(GameState.MainMenu);
 
         LevelManager.Instance.Despawn();
         LinesDrawer.instance.OnLoadNewLevelOrUI();
@@ -130,7 +137,7 @@ public class UILose : UICanvas
         else
         {
             UIManager.Instance.OpenUI<UIShop>();
-            GameManager.Instance.ChangeState(GameState.MainMenu);
+            _gameManager.ChangeState(GameState.MainMenu);
 
             LevelManager.Instance.Despawn();
             LinesDrawer.instance.OnLoadNewLevelOrUI();
@@ -147,7 +154,7 @@ public class UILose : UICanvas
         yield return new WaitForSeconds(1);
 
         UIManager.Instance.OpenUI<UIShop>();
-        GameManager.Instance.ChangeState(GameState.MainMenu);
+        _gameManager.ChangeState(GameState.MainMenu);
 
         LevelManager.Instance.Despawn();
         LinesDrawer.instance.OnLoadNewLevelOrUI();

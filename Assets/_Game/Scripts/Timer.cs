@@ -5,18 +5,27 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using DG.Tweening;
+using Zenject;
 
 public class Timer : MonoBehaviour
 {
     [SerializeField] public Image clockFill;
     [SerializeField] public TextMeshProUGUI timeText;
 
-    private int duration;
-
-    Coroutine coroutineInstance;
-
-    private float remainingDuration; public float RemainingDuration { get { return remainingDuration; } }
+    private float remainingDuration;
     private float fillAmount;
+    private int duration;
+    private Coroutine coroutineInstance;
+    private GameManager _gameManager;
+    
+    public float RemainingDuration => remainingDuration;
+
+    [Inject]
+    private void Construct(GameManager gameManager)
+    {
+        _gameManager = gameManager;
+    }
+    
     void Start()
     {
         LinesDrawer.instance.OnEndDraw += CallClock;
@@ -54,7 +63,7 @@ public class Timer : MonoBehaviour
         Level currentLevel = GameObject.FindObjectOfType<Level>();
         if (currentLevel.DogeStillAlive())
         {
-            GameManager.Instance.currentIndexState = LevelManager.Instance.stateIndex;
+            _gameManager.currentIndexState = LevelManager.Instance.stateIndex;
             currentLevel.SetAnimWin();
             currentLevel.TurnOffHealthBar();
             LevelManager.Instance.currentLevel.DestroyAllBees();
@@ -68,7 +77,7 @@ public class Timer : MonoBehaviour
     private void AnimTickWinThenWin()
     {
         UIManager.Instance.GetUI<UIGameplay>().tickWin.gameObject.SetActive(true);
-        UIManager.Instance.GetUI<UIGameplay>().tickWin.rectTransform.DOScale(8f, 2f).SetEase(Ease.InOutSine).OnComplete(GameManager.Instance.WhenVictory);
+        UIManager.Instance.GetUI<UIGameplay>().tickWin.rectTransform.DOScale(8f, 2f).SetEase(Ease.InOutSine).OnComplete(_gameManager.WhenVictory);
     }
 
     public void SetDuration(int duration)
