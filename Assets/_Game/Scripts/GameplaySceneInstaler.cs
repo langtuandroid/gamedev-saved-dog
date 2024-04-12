@@ -17,9 +17,12 @@ public class GameplaySceneInstaler : MonoInstaller
   [SerializeField]
   private AudioManager _audioManager;
 
+
   [Header("Other"), Space]
   [SerializeField]
   private ObjectPool _objectPool;
+  [SerializeField]
+  private DailyReward _dailyReward;
   public override void InstallBindings()
   {
     Container.Bind<GameManager>().FromInstance(_gameManager).AsSingle().NonLazy();
@@ -30,5 +33,6 @@ public class GameplaySceneInstaler : MonoInstaller
     Container.Bind<AudioManager>().FromInstance(_audioManager).AsSingle().NonLazy();
     
     Container.Bind<ObjectPool>().FromInstance(_objectPool).AsSingle().NonLazy();
+    Container.Bind<DailyReward>().FromInstance(_dailyReward).AsSingle().NonLazy();
   }
 }

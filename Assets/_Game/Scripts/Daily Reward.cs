@@ -1,9 +1,19 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-public enum DayState { Day1, Day2, Day3, Day4, Day5, Day6, Day7};
-public class DailyReward : Singleton<DailyReward>
+
+public enum DayState
+{
+    Day1,
+    Day2,
+    Day3,
+    Day4,
+    Day5,
+    Day6,
+    Day7
+};
+
+public class DailyReward : MonoBehaviour
 {
     public event Action onGainReward, onCanGainNextDay;
     public DayState currentDayState;

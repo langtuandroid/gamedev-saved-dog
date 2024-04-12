@@ -16,40 +16,43 @@ public class UIDailyReward : UICanvas
 
     private DayState dayState;
     private DataController _dataController;
+    private DailyReward _dailyReward;
 
     [Inject]
-    private void Construct(DataController dataController)
+    private void Construct(DataController dataController, DailyReward dailyReward)
     {
         _dataController = dataController;
+        _dailyReward = dailyReward;
     }
     private void OnEnable()
     {
         LoadUIReward();
         AnimDailyRewardUI();
-
-        // Check can press button ?
-        if (DailyReward.Instance.canClaim) claimButton.interactable = true;
-        else claimButton.interactable = false;
+        
+        claimButton.interactable = _dailyReward.canClaim;
 
         coinReward.updateCoin += UpdateCoin;
     }
+    
     private void OnDisable()
     {
         ResetAnimDailyRewardUI();
     }
+    
     public void CloseButton()
     {
         CloseDirectly();
     }
+    
     public void ClaimButton()
     {
-        DailyReward.Instance.InvokeGainReward();
+        _dailyReward.InvokeGainReward();
         claimButton.interactable = false;
         ChangeUIWhenClaim();
-        DailyReward.Instance.PassToNextDay();
+       _dailyReward.PassToNextDay();
     }
 
-    public void ChangeUIWhenClaim()
+    private void ChangeUIWhenClaim()
     {
         int dayNum = (int)dayState;
         boxDay[dayNum].sprite = claimed;
@@ -59,31 +62,33 @@ public class UIDailyReward : UICanvas
         coinReward.Anim(coin, coinAdded, pos);
     }
 
-    public void UpdateCoin(int value)
+    private void UpdateCoin(int value)
     {
         _dataController.currentGameData.coin = value;
         UIManager.Instance.GetUI<UIMainMenu>().UpdateCoinText();
     }
-    public void LoadUIReward()
+
+    private void LoadUIReward()
     {
-        dayState = DailyReward.Instance.currentDayState;
+        dayState = _dailyReward.currentDayState;
         int dayNum = (int)dayState;
         for (int i = 0; i < dayNum; i++)
         {
             boxDay[i].sprite = claimed;
         }
-        if (DailyReward.Instance.canClaim) boxDay[dayNum].sprite = ready;
-        else boxDay[dayNum].sprite = wait;
+        boxDay[dayNum].sprite = _dailyReward.canClaim ? ready : wait;
         for (int i = dayNum + 1; i < boxDay.Count; i++)
         {
             boxDay[i].sprite = wait;
         }
     }
-    public void AnimDailyRewardUI()
+
+    private void AnimDailyRewardUI()
     {
         popup.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.OutSine);
     }
-    public void ResetAnimDailyRewardUI()
+
+    private void ResetAnimDailyRewardUI()
     {
         popup.DOAnchorPos(new Vector2(0f, -1554f), 0f);
     }
