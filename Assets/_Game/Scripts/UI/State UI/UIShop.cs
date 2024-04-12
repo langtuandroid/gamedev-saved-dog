@@ -39,15 +39,13 @@ public class UIShop : UICanvas
     private DataPersistence _dataPersistence;
     private DataController _dataController;
     private AudioManager _audioManager;
-    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(DataPersistence dataPersistence, DataController dataController, AudioManager audioManager, UIManager uiManager)
+    private void Construct(DataPersistence dataPersistence, DataController dataController, AudioManager audioManager)
     {
         _dataPersistence = dataPersistence;
         _dataController = dataController;
         _audioManager = audioManager;
-        _uiManager = uiManager;
     }
 
     private void OnEnable()

@@ -12,7 +12,7 @@ public class UICanvas : MonoBehaviour
     private Animator m_Animator;
     private float m_OffsetY = 0;
 
-    private UIManager _uiManager;
+    protected UIManager _uiManager;
 
     [Inject]
     private void Construct (UIManager uiManager)

@@ -15,16 +15,14 @@ public class UIMainMenu : UICanvas
     private LevelManager _levelManager;
     private DataController _dataController;
     private AudioManager _audioManager;
-    private UIManager _uiManager;
 
     [Inject]
-    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager, UIManager uiManager)
+    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataController = dataController;
         _audioManager = audioManager;
-        _uiManager = uiManager;
     }
     
     private void OnEnable()

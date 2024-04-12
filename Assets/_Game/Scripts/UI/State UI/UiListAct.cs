@@ -23,14 +23,12 @@ public class UiListAct : UICanvas
 
     private DataController _dataController;
     private AudioManager _audioManager;
-    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(DataController dataController, AudioManager audioManager, UIManager uiManager)
+    private void Construct(DataController dataController, AudioManager audioManager)
     {
         _dataController = dataController;
         _audioManager = audioManager;
-        _uiManager = uiManager;
     }
     
     void OnEnable() 

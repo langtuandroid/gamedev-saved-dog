@@ -17,14 +17,12 @@ public class UIDailyReward : UICanvas
     private DayState dayState;
     private DataController _dataController;
     private DailyReward _dailyReward;
-    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(DataController dataController, DailyReward dailyReward, UIManager uiManager)
+    private void Construct(DataController dataController, DailyReward dailyReward)
     {
         _dataController = dataController;
         _dailyReward = dailyReward;
-        _uiManager = uiManager;
     }
     private void OnEnable()
     {
