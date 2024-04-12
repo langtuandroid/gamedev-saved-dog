@@ -8,7 +8,7 @@ public class Spike : MonoBehaviour
     [SerializeField] private Color deathColor;
     [SerializeField] private float timeToDead;
 
-    private Timer clockTimer;
+    private TimerUI clockTimerUI;
 
     private Color dogeColor;
     private GameManager _gameManager;
@@ -23,19 +23,19 @@ public class Spike : MonoBehaviour
     
     private void Start()
     {
-        clockTimer = GameObject.FindObjectOfType<Timer>();
+        clockTimerUI = GameObject.FindObjectOfType<TimerUI>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(Constant.DOGE))
         {
-            if (clockTimer == null)
+            if (clockTimerUI == null)
             {
                 return;
             } else
             {
-                if (clockTimer.RemainingDuration <= 0)
+                if (clockTimerUI.RemainingDuration <= 0)
                     return;
             }
             _levelManager.currentLevel.DestroyAllBees();

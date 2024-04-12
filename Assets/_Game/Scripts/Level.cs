@@ -7,30 +7,30 @@ public class Level : MonoBehaviour
     public int levelNumberInGame;
     public int star;
     public bool Done = true;
-    private Timer clockTimer; public Timer ClockTimer { get { return clockTimer; } }
+    private TimerUI clockTimerUI; public TimerUI ClockTimerUI { get { return clockTimerUI; } }
     [SerializeField] private int LengthOfLevel;
     [SerializeField] private List<HealthDogeController> healthDogeList;
     [SerializeField] private List<Beehive> beehiveList;
     void Start()
     {
         star = 3;
-        clockTimer = GameObject.FindObjectOfType<Timer>();
-        if (clockTimer != null)
+        clockTimerUI = GameObject.FindObjectOfType<TimerUI>();
+        if (clockTimerUI != null)
         {
-            clockTimer.SetDuration(LengthOfLevel);
+            clockTimerUI.SetDurationOfLevel(LengthOfLevel);
         }
     }
     public void OnInit()
     {
-        clockTimer = GameObject.FindObjectOfType<Timer>();
-        clockTimer.SetDuration(LengthOfLevel);
+        clockTimerUI = GameObject.FindObjectOfType<TimerUI>();
+        clockTimerUI.SetDurationOfLevel(LengthOfLevel);
     }
     public void SetTime()
     {
-        clockTimer = GameObject.FindObjectOfType<Timer>();
-        if (clockTimer != null)
+        clockTimerUI = GameObject.FindObjectOfType<TimerUI>();
+        if (clockTimerUI != null)
         {
-            clockTimer.SetDuration(LengthOfLevel);
+            clockTimerUI.SetDurationOfLevel(LengthOfLevel);
         }
         //clockTimer.SetUIClockFalse();
     }
@@ -61,7 +61,7 @@ public class Level : MonoBehaviour
     }
     public float GetTimeRemain()
     {
-        return clockTimer.RemainingDuration;
+        return clockTimerUI.RemainingDuration;
     }
     public void DestroyAllBees()
     {

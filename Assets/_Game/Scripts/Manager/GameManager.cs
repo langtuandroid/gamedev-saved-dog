@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Lose);
         blade.gameObject.SetActive(false);
 
-        _levelManager.currentLevel.ClockTimer.StopClock();
+        _levelManager.currentLevel.ClockTimerUI.StopTimer();
 
         _audioManager.Play(Constant.AUDIO_SFX_LOSE);
 
