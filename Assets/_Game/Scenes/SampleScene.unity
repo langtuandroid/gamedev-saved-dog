@@ -1658,6 +1658,8 @@ MonoBehaviour:
   _skinController: {fileID: 1195218093}
   _objectPool: {fileID: 57643278}
   _dailyReward: {fileID: 603343015}
+  _cheerNotify: {fileID: 649519485}
+  _phoneVibrate: {fileID: 34597094}
 --- !u!114 &1380508479
 MonoBehaviour:
   m_ObjectHideFlags: 0

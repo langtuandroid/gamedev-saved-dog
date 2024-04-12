@@ -49,12 +49,14 @@ public class Bee : MonoBehaviour
 
     private AudioManager _audioManager;
     private ObjectPool _objectPool;
+    private CheerNotify _cheerNotify;
 
     [Inject]
-    private void Construct(AudioManager audioManager, ObjectPool objectPool)
+    private void Construct(AudioManager audioManager, ObjectPool objectPool, CheerNotify cheerNotify)
     {
         _audioManager = audioManager;
         _objectPool = objectPool;
+        _cheerNotify = cheerNotify;
     }
     
     void Start()
@@ -123,7 +125,7 @@ public class Bee : MonoBehaviour
         this.lives--;
         if (lives <= 0)
         {
-            CheerNotify.Instance.KeepStreak();
+            _cheerNotify.KeepStreak();
             _audioManager.Play(Constant.AUDIO_SFX_BEE_DEAD);
 
             ChooseEffect();

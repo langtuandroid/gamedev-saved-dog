@@ -3,7 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using Zenject;
 
-public class CheerNotify : Singleton<CheerNotify>
+public class CheerNotify : MonoBehaviour
 {
     public List<Transform> transformList;
     public List<SpriteRenderer> srList;

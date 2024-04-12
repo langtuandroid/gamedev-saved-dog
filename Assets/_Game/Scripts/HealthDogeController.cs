@@ -36,13 +36,15 @@ public class HealthDogeController : MonoBehaviour
     private GameManager _gameManager;
     private AudioManager _audioManager;
     private ObjectPool _objectPool;
+    private PhoneVibrate _phoneVibrate;
 
     [Inject]
-    private void Construct(GameManager gameManager, AudioManager audioManager, ObjectPool objectPool)
+    private void Construct(GameManager gameManager, AudioManager audioManager, ObjectPool objectPool, PhoneVibrate phoneVibrate)
     {
         _gameManager = gameManager;
         _audioManager = audioManager;
         _objectPool = objectPool;
+        _phoneVibrate = phoneVibrate;
     }
 
     private void Start()
@@ -136,7 +138,7 @@ public class HealthDogeController : MonoBehaviour
         {
             counterTimeHurt = coolDownDogHurt;
             _audioManager.Play(Constant.AUDIO_SFX_DOGHURT);
-            PhoneVibrate.Instance.VibrateDevice();
+            _phoneVibrate.VibrateDevice();
         }
     }
 }
