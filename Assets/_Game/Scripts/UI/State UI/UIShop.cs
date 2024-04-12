@@ -39,13 +39,15 @@ public class UIShop : UICanvas
     private DataPersistence _dataPersistence;
     private DataController _dataController;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(DataPersistence dataPersistence, DataController dataController, AudioManager audioManager)
+    private void Construct(DataPersistence dataPersistence, DataController dataController, AudioManager audioManager, UIManager uiManager)
     {
         _dataPersistence = dataPersistence;
         _dataController = dataController;
         _audioManager = audioManager;
+        _uiManager = uiManager;
     }
 
     private void OnEnable()
@@ -205,7 +207,7 @@ public class UIShop : UICanvas
 
     public void CloseButton()
     {
-        UIManager.Instance.OpenUI<UIMainMenu>();
+        _uiManager.OpenUI<UIMainMenu>();
         CloseDirectly();
 
         _audioManager.PlayBGM(Constant.AUDIO_MUSIC_BG);

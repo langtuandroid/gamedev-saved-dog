@@ -50,13 +50,15 @@ public class LinesDrawer : MonoBehaviour
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataController _dataController;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataController dataController)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataController dataController, UIManager uiManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataController = dataController;
+        _uiManager = uiManager;
     }
 
     private void Awake()
@@ -180,12 +182,12 @@ public class LinesDrawer : MonoBehaviour
         if (Input.mousePosition != previousMousePos && !MouseOverLayerCantDraw())
         {
             float lengthMouseMoved = Mathf.Clamp((Input.mousePosition - previousMousePos).magnitude, 0f, 10f);
-            UIManager.Instance.GetUI<UIGameplay>().CurrentInk -= UIManager.Instance.GetUI<UIGameplay>().InkLoseRate * lengthMouseMoved * Time.deltaTime;
+            _uiManager.GetUI<UIGameplay>().CurrentInk -= _uiManager.GetUI<UIGameplay>().InkLoseRate * lengthMouseMoved * Time.deltaTime;
             previousMousePos = Input.mousePosition;
 
-            UIManager.Instance.GetUI<UIGameplay>().UpdateInkBar();
+            _uiManager.GetUI<UIGameplay>().UpdateInkBar();
         }
-        if (UIManager.Instance.GetUI<UIGameplay>().CurrentInk <= 0)
+        if (_uiManager.GetUI<UIGameplay>().CurrentInk <= 0)
         {
             EndDraw();
         }

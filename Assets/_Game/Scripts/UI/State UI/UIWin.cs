@@ -31,15 +31,17 @@ public class UIWin : UICanvas
     private DataPersistence _dataPersistence;
     private DataController _dataController;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager, UIManager uiManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataPersistence = dataPersistence;
         _dataController = dataController;
         _audioManager = audioManager;
+        _uiManager = uiManager;
     }
     
     
@@ -144,13 +146,13 @@ public class UIWin : UICanvas
             int act = (_levelManager.CurrentLevelIndex + 1) / 10;
 
             // not enough star
-            if (!UIManager.Instance.IsLoaded<UiListAct>())
+            if (!_uiManager.IsLoaded<UiListAct>())
             {
-                UIManager.Instance.OpenUI<UiListAct>();
-                UIManager.Instance.GetUI<UiListAct>().ClearListAct();
-                UIManager.Instance.CloseUI<UiListAct>();
+                _uiManager.OpenUI<UiListAct>();
+                _uiManager.GetUI<UiListAct>().ClearListAct();
+                _uiManager.CloseUI<UiListAct>();
             }
-            if (act >= UIManager.Instance.GetUI<UiListAct>().actSOList.Count)
+            if (act >= _uiManager.GetUI<UiListAct>().actSOList.Count)
             {
                 HandleNextLevel();
                 return;
@@ -220,9 +222,9 @@ public class UIWin : UICanvas
     IEnumerator iHandleNextLevel()
     {
         yield return new WaitForSeconds(1);
-        UIManager.Instance.CloseUI<UIWin>();
-        UIManager.Instance.OpenUI<UIGameplay>();
-        UIManager.Instance.GetUI<UIGameplay>().OnInit();
+        _uiManager.CloseUI<UIWin>();
+        _uiManager.OpenUI<UIGameplay>();
+        _uiManager.GetUI<UIGameplay>().OnInit();
         _levelManager.OnLoadNextLevel();
         _gameManager.ChangeState(GameState.GamePlay);
 
@@ -238,9 +240,9 @@ public class UIWin : UICanvas
 
     public void RetryButton()
     {
-        UIManager.Instance.CloseUI<UIWin>();
-        UIManager.Instance.OpenUI<UIGameplay>();
-        UIManager.Instance.GetUI<UIGameplay>().OnInit();
+        _uiManager.CloseUI<UIWin>();
+        _uiManager.OpenUI<UIGameplay>();
+        _uiManager.GetUI<UIGameplay>().OnInit();
         _levelManager.OnRetry();
         _gameManager.ChangeState(GameState.GamePlay);
 

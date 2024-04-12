@@ -12,12 +12,14 @@ public class HeadshotEffect : MonoBehaviour
 
     private AudioManager _audioManager;
     private ObjectPool _objectPool;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(AudioManager audioManager, ObjectPool objectPool)
+    private void Construct(AudioManager audioManager, ObjectPool objectPool, UIManager uiManager)
     {
         _audioManager = audioManager;
         _objectPool = objectPool;
+        _uiManager = uiManager;
     }
     
     private void Awake()
@@ -35,9 +37,9 @@ public class HeadshotEffect : MonoBehaviour
         {
             _audioManager.Play(Constant.AUDIO_SFX_HEADSHOT);
         }
-        if (UIManager.Instance.IsOpened<UIGameplay>())
+        if (_uiManager.IsOpened<UIGameplay>())
         {
-            UIManager.Instance.GetUI<UIGameplay>().HandleCoinGainInGameplay(6);
+            _uiManager.GetUI<UIGameplay>().HandleCoinGainInGameplay(6);
         }
         FadeEffect();
     }

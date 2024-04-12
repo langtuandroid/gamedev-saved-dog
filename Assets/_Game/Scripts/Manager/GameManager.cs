@@ -27,13 +27,15 @@ public class GameManager : MonoBehaviour
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
 
    [Inject]
-   private void Construct (LevelManager levelManager, DataPersistence dataPersistence, AudioManager audioManager)
+   private void Construct (LevelManager levelManager, DataPersistence dataPersistence, AudioManager audioManager, UIManager uiManager)
    {
        _levelManager = levelManager;
        _dataPersistence = dataPersistence;
        _audioManager = audioManager;
+       _uiManager = uiManager;
    }
 
     protected void Awake()
@@ -53,13 +55,12 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt(FIRST_LOAD, 1);
             ChangeState(GameState.GamePlay);
-            UIManager.Instance.OpenUI<UIGameplay>();
+            _uiManager.OpenUI<UIGameplay>();
             _levelManager.OnLoadLevel(0);
-        }
-        else
+        } else
         {
             ChangeState(GameState.MainMenu);
-            UIManager.Instance.OpenUI<UIMainMenu>();
+            _uiManager.OpenUI<UIMainMenu>();
         }
 
     }
@@ -78,24 +79,17 @@ public class GameManager : MonoBehaviour
         }
 
         ChangeState(GameState.Win);
-        UIManager.Instance.CloseUI<UIGameplay>();
+        _uiManager.CloseUI<UIGameplay>();
         if (_levelManager.currentLevel.levelNumberInGame > 1)
         {
-            StartCoroutine(iShowWin());
-        }
-        else
+            StartCoroutine(ShowWin());
+        } else
         {
-            UIManager.Instance.OpenUI<UIWin>();
+            _uiManager.OpenUI<UIWin>();
         }
         _dataPersistence.SaveGame();
     }
-
-    IEnumerator iShowWin()
-    {
-        yield return new WaitForSeconds(1);
-        UIManager.Instance.OpenUI<UIWin>();
-    }
-
+    
     public void WhenLose()
     {
         ChangeState(GameState.Lose);
@@ -105,7 +99,7 @@ public class GameManager : MonoBehaviour
 
         _audioManager.Play(Constant.AUDIO_SFX_LOSE);
 
-        UIManager.Instance.GetUI<UIGameplay>().tickLose.gameObject.SetActive(true);
+        _uiManager.GetUI<UIGameplay>().tickLose.gameObject.SetActive(true);
 
         StartCoroutine(StartScale());
 
@@ -115,29 +109,31 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartScale()
     {
-        scaleTween = UIManager.Instance.GetUI<UIGameplay>().tickLose.rectTransform.DOScale(8f, 2f).SetEase(Ease.Linear);
+        scaleTween = _uiManager.GetUI<UIGameplay>().tickLose.rectTransform.DOScale(8f, 2f).SetEase(Ease.Linear);
 
         yield return new WaitForSeconds(2f);
 
-        // new version lose state
         _levelManager.OnLose();
-        UIManager.Instance.CloseUI<UIGameplay>();
+        _uiManager.CloseUI<UIGameplay>();
         if (_levelManager.currentLevel.levelNumberInGame > 1)
         {
-            StartCoroutine(iShowLose());
-        }
-        else
+            StartCoroutine(ShowLose());
+        } else
         {
-            UIManager.Instance.OpenUI<UILose>();
+            _uiManager.OpenUI<UILose>();
         }
-        // old version lose state
-        //UIManager.Instance.GetUI<UIGameplay>().OnRetryButton();
     }
-
-    IEnumerator iShowLose()
+    
+    private IEnumerator ShowWin()
     {
         yield return new WaitForSeconds(1);
-         UIManager.Instance.OpenUI<UILose>();
+        _uiManager.OpenUI<UIWin>();
+    }
+
+    private IEnumerator ShowLose()
+    {
+        yield return new WaitForSeconds(1);
+        _uiManager.OpenUI<UILose>();
     }
 
     public void ChangeState(GameState state)

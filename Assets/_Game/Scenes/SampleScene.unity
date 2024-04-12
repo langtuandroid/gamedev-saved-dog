@@ -1654,6 +1654,7 @@ MonoBehaviour:
   _dataController: {fileID: 1376426651}
   _timeManager: {fileID: 603343014}
   _audioManager: {fileID: 1989936421}
+  _uiManager: {fileID: 1024355158}
   _objectPool: {fileID: 57643278}
   _dailyReward: {fileID: 603343015}
 --- !u!114 &1380508479

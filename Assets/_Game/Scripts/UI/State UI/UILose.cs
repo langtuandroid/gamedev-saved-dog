@@ -24,15 +24,17 @@ public class UILose : UICanvas
     private DataPersistence _dataPersistence;
     private DataController _dataController;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager, UIManager uiManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataPersistence = dataPersistence;
         _dataController = dataController;
         _audioManager = audioManager;
+        _uiManager = uiManager;
     }
 
     private void OnEnable()
@@ -87,9 +89,9 @@ public class UILose : UICanvas
     IEnumerator iRetry()
     {
         yield return new WaitForSeconds(1);
-        UIManager.Instance.CloseUI<UILose>();
-        UIManager.Instance.OpenUI<UIGameplay>();
-        UIManager.Instance.GetUI<UIGameplay>().OnInit();
+        _uiManager.CloseUI<UILose>();
+        _uiManager.OpenUI<UIGameplay>();
+        _uiManager.GetUI<UIGameplay>().OnInit();
         _levelManager.OnRetry();
         _gameManager.ChangeState(GameState.GamePlay);
 
@@ -107,7 +109,7 @@ public class UILose : UICanvas
         {
             _levelManager.stateIndex++;
 
-            UIManager.Instance.OpenUI<UIMainMenu>();
+            _uiManager.OpenUI<UIMainMenu>();
             _gameManager.ChangeState(GameState.MainMenu);
 
             _levelManager.Despawn();
@@ -124,7 +126,7 @@ public class UILose : UICanvas
         yield return new WaitForSeconds(1);
         _levelManager.stateIndex++;
 
-        UIManager.Instance.OpenUI<UIMainMenu>();
+        _uiManager.OpenUI<UIMainMenu>();
         _gameManager.ChangeState(GameState.MainMenu);
 
         _levelManager.Despawn();
@@ -144,7 +146,7 @@ public class UILose : UICanvas
         }
         else
         {
-            UIManager.Instance.OpenUI<UIShop>();
+            _uiManager.OpenUI<UIShop>();
             _gameManager.ChangeState(GameState.MainMenu);
 
             _levelManager.Despawn();
@@ -161,7 +163,7 @@ public class UILose : UICanvas
         
         yield return new WaitForSeconds(1);
 
-        UIManager.Instance.OpenUI<UIShop>();
+        _uiManager.OpenUI<UIShop>();
         _gameManager.ChangeState(GameState.MainMenu);
 
         _levelManager.Despawn();

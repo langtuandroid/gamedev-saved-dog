@@ -10,7 +10,8 @@ public class LevelManager : MonoBehaviour
 
     //[HideInInspector] public int[] levelDone = new int[100];
     //private int levelIndexInProgress; public int LevelIndexInProgress { get { return levelIndexInProgress; } }
-    private int currentLevelIndex; public int CurrentLevelIndex { get { return currentLevelIndex; } }
+    private int currentLevelIndex;
+    public int CurrentLevelIndex => currentLevelIndex;
 
     private int currentSkinIndex, currentHp;
 
@@ -19,19 +20,17 @@ public class LevelManager : MonoBehaviour
     
     private DiContainer _diContainer;
     private DataController _dataController;
+    private UIManager _uiManager;
 
    [Inject]
-   private void Construct(DiContainer diContainer, DataController dataController)
+   private void Construct(DiContainer diContainer, DataController dataController, UIManager uiManager)
    {
        _diContainer = diContainer;
        _dataController = dataController;
+       _uiManager = uiManager;
    }
-    void Start()
-    {
-        //levelIndexInProgress = 0;
-    }
 
-    public void Despawn()
+   public void Despawn()
     {
         if (currentLevel != null)
         {
@@ -57,7 +56,7 @@ public class LevelManager : MonoBehaviour
         currentLevelIndex = level;
         currentLevel.levelNumberInGame = level;
         LinesDrawer.instance.tilemap = currentLevel.GetComponentInChildren<Tilemap>();
-        UIManager.Instance.GetUI<UIGameplay>().UpdateLevelText(level + 1);
+        _uiManager.GetUI<UIGameplay>().UpdateLevelText(level + 1);
         LinesDrawer.instance.OnLoadNewLevelOrUI();
         currentLevel.SetTime();
     }
@@ -79,40 +78,42 @@ public class LevelManager : MonoBehaviour
     {
         CheckLevelDone();
         OnWinLevel?.Invoke();
-        //Debug.Log("leveldone?--" + DataController.Instance.currentGameData.levelDoneInGame[DataController.Instance.currentGameData.currentLevelInProgress]);
+        
         if (_dataController.currentGameData.levelDoneInGame[_dataController.currentGameData.currentLevelInProgress] == 0)
         {
             _dataController.currentGameData.levelDoneInGame[_dataController.currentGameData.currentLevelInProgress] = 1;
-            //Debug.Log(DataController.Instance.currentGameData.currentLevelInProgress + "--");
         }
     }
+    
     public void OnLose()
     {
         OnLoseLevel?.Invoke();
     }
+    
     private void CheckLevelDone()
     {
-        if (_dataController.currentGameData.levelDoneInGame.Count == 0)
+        if (_dataController.currentGameData.levelDoneInGame.Count != 0)
         {
-            for (int i = 0; i < 999; i++)
-            {
-                _dataController.currentGameData.levelDoneInGame.Add(0);
-            }
+            return;
+        }
+
+        for (int i = 0; i < 999; i++)
+        {
+            _dataController.currentGameData.levelDoneInGame.Add(0);
         }
     }
+    
     public void OnLoadNextLevel()
     {
         if (currentLevelIndex == _dataController.currentGameData.currentLevelInProgress)
         {
             _dataController.currentGameData.currentLevelInProgress++;
             OnLoadLevel(_dataController.currentGameData.currentLevelInProgress);
-        }
-        else if (currentLevelIndex < _dataController.currentGameData.currentLevelInProgress)
+        } else if (currentLevelIndex < _dataController.currentGameData.currentLevelInProgress)
         {
             currentLevelIndex++;
             OnLoadLevel(currentLevelIndex);
-        }
-        else
+        } else
         {
             _dataController.currentGameData.currentLevelInProgress = currentLevelIndex;
             _dataController.currentGameData.currentLevelInProgress++;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class UICanvas : MonoBehaviour
 {
@@ -10,6 +11,14 @@ public class UICanvas : MonoBehaviour
     protected RectTransform m_RectTransform;
     private Animator m_Animator;
     private float m_OffsetY = 0;
+
+    private UIManager _uiManager;
+
+    [Inject]
+    private void Construct (UIManager uiManager)
+    {
+        _uiManager = uiManager;
+    }
 
     private void Start()
     {
@@ -41,8 +50,8 @@ public class UICanvas : MonoBehaviour
     //set up mac dinh cho UI de tranh truong hop bi nhay' hinh
     public virtual void Setup()
     {
-        UIManager.Instance.AddBackUI(this);
-        UIManager.Instance.PushBackAction(this, BackKey);
+        _uiManager.AddBackUI(this);
+        _uiManager.PushBackAction(this, BackKey);
     }
 
 
@@ -64,7 +73,7 @@ public class UICanvas : MonoBehaviour
     //dong truc tiep, ngay lap tuc
     public virtual void CloseDirectly()
     {
-        UIManager.Instance.RemoveBackUI(this);
+        _uiManager.RemoveBackUI(this);
         gameObject.SetActive(false);
         if (IsDestroyOnClose)
         {

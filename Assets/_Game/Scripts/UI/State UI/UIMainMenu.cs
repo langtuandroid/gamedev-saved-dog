@@ -9,19 +9,22 @@ public class UIMainMenu : UICanvas
 {
     [SerializeField] private Text coinText;
     [SerializeField] private RectTransform playButtonRect, listButtonRect, shopButtonRect, settingButtonRect, coinRect, titleRect;
+    
     private Tweener scaleTween;
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataController _dataController;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager)
+    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager, UIManager uiManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataController = dataController;
         _audioManager = audioManager;
+        _uiManager = uiManager;
     }
     
     private void OnEnable()
@@ -69,7 +72,7 @@ public class UIMainMenu : UICanvas
         _gameManager.ChangeState(GameState.GamePlay);
         _audioManager.Play(Constant.AUDIO_SFX_PLAY);
 
-        UIManager.Instance.OpenUI<UIGameplay>();
+        _uiManager.OpenUI<UIGameplay>();
         // Load level
         int level = _dataController.currentGameData.currentLevelInProgress;
         _levelManager.OnLoadLevel(level);
@@ -82,7 +85,7 @@ public class UIMainMenu : UICanvas
     public void SettingButton()
     {
        
-        UIManager.Instance.OpenUI<UISettings>();
+        _uiManager.OpenUI<UISettings>();
         CloseDirectly();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -90,7 +93,7 @@ public class UIMainMenu : UICanvas
     public void SkinShopButton()
     {
        
-        UIManager.Instance.OpenUI<UIShop>();
+        _uiManager.OpenUI<UIShop>();
 
         CloseDirectly();
 
@@ -100,7 +103,7 @@ public class UIMainMenu : UICanvas
     public void ListActButton()
     {
        
-        UIManager.Instance.OpenUI<UiListAct>();
+        _uiManager.OpenUI<UiListAct>();
         CloseDirectly();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -108,7 +111,7 @@ public class UIMainMenu : UICanvas
     public void ClaimButton()
     {
        
-        UIManager.Instance.OpenUI<UIDailyReward>();
+        _uiManager.OpenUI<UIDailyReward>();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }

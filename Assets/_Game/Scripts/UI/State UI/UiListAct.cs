@@ -23,12 +23,14 @@ public class UiListAct : UICanvas
 
     private DataController _dataController;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct(DataController dataController, AudioManager audioManager)
+    private void Construct(DataController dataController, AudioManager audioManager, UIManager uiManager)
     {
         _dataController = dataController;
         _audioManager = audioManager;
+        _uiManager = uiManager;
     }
     
     void OnEnable() 
@@ -74,7 +76,7 @@ public class UiListAct : UICanvas
                 }
                 else  // if unlocked
                 {
-                    UIManager.Instance.OpenUI<UIListLevel>();
+                    _uiManager.OpenUI<UIListLevel>();
                     ClearListAct();
 
                     _audioManager.Play(Constant.AUDIO_SFX_PLAY);
@@ -134,7 +136,7 @@ public class UiListAct : UICanvas
 
     public void BackButton()
     {
-        UIManager.Instance.OpenUI<UIMainMenu>();
+        _uiManager.OpenUI<UIMainMenu>();
         ClearListAct();
         SetDefautPopup();
 

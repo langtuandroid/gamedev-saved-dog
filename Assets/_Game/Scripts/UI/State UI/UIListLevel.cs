@@ -26,14 +26,16 @@ public class UIListLevel : UICanvas
     private LevelManager _levelManager;
     private DataController _dataController;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager)
+    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager, UIManager uiManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataController = dataController;
         _audioManager = audioManager;
+        _uiManager = uiManager;
     }
 
     private void OnEnable()
@@ -41,7 +43,7 @@ public class UIListLevel : UICanvas
         CheckStarInLevels();
         CheckLevelDone();
 
-        currentAct = UIManager.Instance.GetUI<UiListAct>().GetSelectedAct();
+        currentAct = _uiManager.GetUI<UiListAct>().GetSelectedAct();
 
         for (int i = 0; i < actList[currentAct].levelSOList.Count; i++)
         {
@@ -82,7 +84,7 @@ public class UIListLevel : UICanvas
                 }
                 else
                 {
-                    UIManager.Instance.OpenUI<UIGameplay>();
+                    _uiManager.OpenUI<UIGameplay>();
                     _levelManager.OnLoadLevel(index + currentAct * 10);
                     _gameManager.ChangeState(GameState.GamePlay);
                     ClearListLevel();
@@ -159,7 +161,7 @@ public class UIListLevel : UICanvas
 
     public void BackButton()
     {
-        UIManager.Instance.OpenUI<UiListAct>();
+        _uiManager.OpenUI<UiListAct>();
         ClearListLevel();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);

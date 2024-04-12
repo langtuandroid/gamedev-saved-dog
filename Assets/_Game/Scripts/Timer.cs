@@ -19,15 +19,17 @@ public class Timer : MonoBehaviour
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
     
     public float RemainingDuration => remainingDuration;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, AudioManager audioManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, AudioManager audioManager, UIManager uiManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _audioManager = audioManager;
+        _uiManager = uiManager;
     }
     
     void Start()
@@ -80,8 +82,8 @@ public class Timer : MonoBehaviour
 
     private void AnimTickWinThenWin()
     {
-        UIManager.Instance.GetUI<UIGameplay>().tickWin.gameObject.SetActive(true);
-        UIManager.Instance.GetUI<UIGameplay>().tickWin.rectTransform.DOScale(8f, 2f).SetEase(Ease.InOutSine).OnComplete(_gameManager.WhenVictory);
+        _uiManager.GetUI<UIGameplay>().tickWin.gameObject.SetActive(true);
+        _uiManager.GetUI<UIGameplay>().tickWin.rectTransform.DOScale(8f, 2f).SetEase(Ease.InOutSine).OnComplete(_gameManager.WhenVictory);
     }
 
     public void SetDuration(int duration)

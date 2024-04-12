@@ -35,14 +35,16 @@ public class UIGameplay : UICanvas
     private LevelManager _levelManager;
     private DataController _dataController;
     private AudioManager _audioManager;
+    private UIManager _uiManager;
 
     [Inject]
-    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager)
+    private void Construct (GameManager gameManager, LevelManager levelManager, DataController dataController, AudioManager audioManager, UIManager uiManager)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _dataController = dataController;
         _audioManager = audioManager;
+        _uiManager = uiManager;
     }
 
     private void Awake()
@@ -154,7 +156,7 @@ public class UIGameplay : UICanvas
     {
         _levelManager.stateIndex++;
 
-        UIManager.Instance.OpenUI<UIMainMenu>();
+        _uiManager.OpenUI<UIMainMenu>();
         _gameManager.ChangeState(GameState.MainMenu);
 
         _levelManager.Despawn();

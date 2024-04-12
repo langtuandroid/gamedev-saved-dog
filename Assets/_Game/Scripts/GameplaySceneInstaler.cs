@@ -16,6 +16,8 @@ public class GameplaySceneInstaler : MonoInstaller
   private TimeManager _timeManager;
   [SerializeField]
   private AudioManager _audioManager;
+  [SerializeField]
+  private UIManager _uiManager;
 
 
   [Header("Other"), Space]
@@ -31,6 +33,7 @@ public class GameplaySceneInstaler : MonoInstaller
     Container.Bind<DataController>().FromInstance(_dataController).AsSingle().NonLazy();
     Container.Bind<TimeManager>().FromInstance(_timeManager).AsSingle().NonLazy();
     Container.Bind<AudioManager>().FromInstance(_audioManager).AsSingle().NonLazy();
+    Container.Bind<UIManager>().FromInstance(_uiManager).AsSingle().NonLazy();
     
     Container.Bind<ObjectPool>().FromInstance(_objectPool).AsSingle().NonLazy();
     Container.Bind<DailyReward>().FromInstance(_dailyReward).AsSingle().NonLazy();
