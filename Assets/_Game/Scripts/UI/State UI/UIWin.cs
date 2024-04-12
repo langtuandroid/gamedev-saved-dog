@@ -32,9 +32,12 @@ public class UIWin : UICanvas
     private DataController _dataController;
     private AudioManager _audioManager;
     private UIManager _uiManager;
+    private SkinController _skinController;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager, UIManager uiManager)
+    private void Construct(
+        GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager, 
+        UIManager uiManager, SkinController skinController)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
@@ -42,6 +45,7 @@ public class UIWin : UICanvas
         _dataController = dataController;
         _audioManager = audioManager;
         _uiManager = uiManager;
+        _skinController = skinController;
     }
     
     
@@ -55,7 +59,7 @@ public class UIWin : UICanvas
         SetColorStarWhenWin();
         UpdateCoinRewardText();
        
-        DisplayChar(SkinController.Instance.currentSkinIndex);
+        DisplayChar(_skinController.currentSkinIndex);
         SetAnimationForUIWin();
 
        

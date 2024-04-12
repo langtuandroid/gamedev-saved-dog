@@ -18,6 +18,8 @@ public class GameplaySceneInstaler : MonoInstaller
   private AudioManager _audioManager;
   [SerializeField]
   private UIManager _uiManager;
+  [SerializeField]
+  private SkinController _skinController;
 
 
   [Header("Other"), Space]
@@ -34,6 +36,7 @@ public class GameplaySceneInstaler : MonoInstaller
     Container.Bind<TimeManager>().FromInstance(_timeManager).AsSingle().NonLazy();
     Container.Bind<AudioManager>().FromInstance(_audioManager).AsSingle().NonLazy();
     Container.Bind<UIManager>().FromInstance(_uiManager).AsSingle().NonLazy();
+    Container.Bind<SkinController>().FromInstance(_skinController).AsSingle().NonLazy();
     
     Container.Bind<ObjectPool>().FromInstance(_objectPool).AsSingle().NonLazy();
     Container.Bind<DailyReward>().FromInstance(_dailyReward).AsSingle().NonLazy();

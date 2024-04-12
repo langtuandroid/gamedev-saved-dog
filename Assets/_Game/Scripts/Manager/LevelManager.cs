@@ -21,13 +21,15 @@ public class LevelManager : MonoBehaviour
     private DiContainer _diContainer;
     private DataController _dataController;
     private UIManager _uiManager;
+    private SkinController _skinController;
 
    [Inject]
-   private void Construct(DiContainer diContainer, DataController dataController, UIManager uiManager)
+   private void Construct(DiContainer diContainer, DataController dataController, UIManager uiManager, SkinController skinController)
    {
        _diContainer = diContainer;
        _dataController = dataController;
        _uiManager = uiManager;
+       _skinController = skinController;
    }
 
    public void Despawn()
@@ -63,9 +65,9 @@ public class LevelManager : MonoBehaviour
 
     private void LoadSkinForCharacter()
     {
-        SkinController.Instance.LoadDataSkin();
-        currentSkinIndex = SkinController.Instance.currentSkinIndex;
-        currentHp = SkinController.Instance.currentHp;
+        _skinController.LoadDataSkin();
+        currentSkinIndex = _skinController.currentSkinIndex;
+        currentHp = _skinController.currentHp;
 
         currentLevel.SetSkin(currentSkinIndex, currentHp);
     }

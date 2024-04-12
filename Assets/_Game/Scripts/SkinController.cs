@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class SkinController : Singleton<SkinController>
+public class SkinController : MonoBehaviour
 {
     public int currentSkinIndex;
     public int currentHp;
