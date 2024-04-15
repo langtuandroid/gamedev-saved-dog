@@ -1,27 +1,31 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Zenject;
 
 public class UIListLevel : UICanvas
 {
-    public Transform content;
-    public Image levelDoneInAct, starDoneInAct;
-    public Image circleStar;
-    public Text numStarGainedAct, numStarGainedGame, levelDoneText;
+    [SerializeField] private Transform content;
+    [SerializeField] private Image levelDoneInGroupFill;
+    [SerializeField] private Image starsDoneInGroupFill;
+    [SerializeField] private TextMeshProUGUI starsGainedInGroup;
+    [SerializeField] private TextMeshProUGUI starsGainedInGameCount;
+    [SerializeField] private TextMeshProUGUI levelDoneText;
 
-    public GameObject buttonLevelPrefab;
-    public List<Act> actList;
-    public List<Button> btnLevelList;
+    [SerializeField] private GameObject buttonLevelPrefab;
+    [FormerlySerializedAs("actList"),SerializeField] private List<Act> groupList;
 
 
+    private List<Button> buttonLevelList;
     private ButtonLevelDisplay buttonLevel;
     private GameObject buttonLevelTemp;
     private Button button;
 
-    private int currentAct;
+    private int currentGroup;
+    
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataController _dataController;
@@ -38,27 +42,24 @@ public class UIListLevel : UICanvas
 
     private void OnEnable()
     {
-        CheckStarInLevels();
+        CheckStarsInLevels();
         CheckLevelDone();
 
-        currentAct = _uiManager.GetUI<UiListAct>().GetSelectedAct();
+        currentGroup = _uiManager.GetUI<UiListAct>().GetSelectedAct();
 
-        for (int i = 0; i < actList[currentAct].levelSOList.Count; i++)
+        for (int i = 0; i < groupList[currentGroup].levelSOList.Count; i++)
         {
             buttonLevelTemp = Instantiate(buttonLevelPrefab, content);
             buttonLevel = buttonLevelTemp.GetComponent<ButtonLevelDisplay>();
             button = buttonLevelTemp.GetComponent<Button>();
 
-            // load data when unlocked
-            buttonLevel.LoadDataUnlocked(actList[currentAct].levelSOList[i].numLevel, actList[currentAct].levelSOList[i].levelImage, 
-                _dataController.currentGameData.starDoneInLevels[i + currentAct * 10]);
-            
-            // if lock
-            if (i > 0 && _dataController.currentGameData.starDoneInLevels[i + currentAct * 10 - 1] == 0)
+            buttonLevel.LoadDataUnlocked(groupList[currentGroup].levelSOList[i].numLevel, groupList[currentGroup].levelSOList[i].levelImage, 
+                _dataController.currentGameData.starDoneInLevels[i + currentGroup * 10]);
+
+            if (i > 0 && _dataController.currentGameData.starDoneInLevels[i + currentGroup * 10 - 1] == 0)
             {
                 buttonLevel.DisplayLock(true);
-            }
-            else  // if unlocked
+            } else
             {
                 buttonLevel.DisplayLock(false);
             }
@@ -69,23 +70,21 @@ public class UIListLevel : UICanvas
                 buttonLevel.stars[j].color = buttonLevel.starTrue;
             }
 
-            btnLevelList.Add(button);
+            buttonLevelList.Add(button);
         }
-        for (int i = 0; i < btnLevelList.Count; i++)
+        
+        for (int i = 0; i < buttonLevelList.Count; i++)
         {
             int index = i;
-            btnLevelList[i].onClick.AddListener(() =>
+            buttonLevelList[i].onClick.AddListener(() =>
             {
-                if (index > 0 && _dataController.currentGameData.starDoneInLevels[index + currentAct * 10 - 1] == 0)
-                {
-                    // Do sth
-                }
-                else
+                if (index > 0 && _dataController.currentGameData.starDoneInLevels[index + currentGroup * 10 - 1] == 0)
+                {} else
                 {
                     _uiManager.OpenUI<UIGameplay>();
-                    _levelManager.OnLoadLevel(index + currentAct * 10);
+                    _levelManager.OnLoadLevel(index + currentGroup * 10);
                     _gameManager.ChangeState(GameState.GamePlay);
-                    ClearListLevel();
+                    ClearLevelList();
 
                     _audioManager.Play(Constant.AUDIO_SFX_PLAY);
 
@@ -100,16 +99,16 @@ public class UIListLevel : UICanvas
 
     private void SetupUIListLevel()
     {
-        numStarGainedAct.text = GetTotalStarInAct(currentAct) + " / 30";
-        levelDoneText.text = GetTotalLevelDoneInAct(currentAct) + "/10";
-        numStarGainedGame.text = GetTotalStarInGame() + "/999";
+        starsGainedInGroup.text = GetTotalStarInGroup(currentGroup) + " / 30";
+        levelDoneText.text = GetTotalLevelDoneInGroup(currentGroup) + "/10";
+        starsGainedInGameCount.text = GetTotalStarsCount() + "/999";
 
 
-        starDoneInAct.fillAmount = GetTotalStarInAct(currentAct) / 30f;
-        levelDoneInAct.fillAmount = GetTotalLevelDoneInAct(currentAct) / 10f;
+        starsDoneInGroupFill.fillAmount = GetTotalStarInGroup(currentGroup) / 30f;
+        levelDoneInGroupFill.fillAmount = GetTotalLevelDoneInGroup(currentGroup) / 10f;
     }
 
-    private void CheckStarInLevels()
+    private void CheckStarsInLevels()
     {
         if (_dataController.currentGameData.starDoneInLevels.Count == 0)
         {
@@ -121,15 +120,18 @@ public class UIListLevel : UICanvas
     }
     private void CheckLevelDone()
     {
-        if (_dataController.currentGameData.levelDoneInGame.Count == 0)
+        if (_dataController.currentGameData.levelDoneInGame.Count != 0)
         {
-            for (int i = 0; i < 999; i++)
-            {
-                _dataController.currentGameData.levelDoneInGame.Add(0);
-            }
+            return;
+        }
+
+        for (int i = 0; i < 999; i++)
+        {
+            _dataController.currentGameData.levelDoneInGame.Add(0);
         }
     }
-    private int GetTotalStarInAct(int act)
+    
+    private int GetTotalStarInGroup(int act)
     {
         int totalStar = 0;
         for (int i = act * 10; i <= (act * 10) + 9; i++)
@@ -138,7 +140,8 @@ public class UIListLevel : UICanvas
         }
         return totalStar;
     }
-    private int GetTotalLevelDoneInAct(int act)
+    
+    private int GetTotalLevelDoneInGroup(int act)
     {
         int totalLevel = 0;
         for (int i = act * 10; i <= (act * 10) + 9; i++)
@@ -147,28 +150,30 @@ public class UIListLevel : UICanvas
         }
         return totalLevel;
     }
-    private int GetTotalStarInGame()
+    
+    private int GetTotalStarsCount()
     {
         int totalStar = 0;
-        for (int i = 0; i < _dataController.currentGameData.starDoneInLevels.Count; i++)
+        foreach (int t in _dataController.currentGameData.starDoneInLevels)
         {
-            totalStar += _dataController.currentGameData.starDoneInLevels[i];
+            totalStar += t;
         }
         return totalStar;
     }
 
-    public void BackButton()
+    public void BackButtonClick()
     {
         _uiManager.OpenUI<UiListAct>();
-        ClearListLevel();
+        ClearLevelList();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
         CloseImmediately();
     }
-    public void ClearListLevel()
+
+    private void ClearLevelList()
     {
-        btnLevelList.Clear();
+        buttonLevelList.Clear();
         for(int i = 0; i < content.childCount; i++)
         {
             Destroy(content.GetChild(i).gameObject);

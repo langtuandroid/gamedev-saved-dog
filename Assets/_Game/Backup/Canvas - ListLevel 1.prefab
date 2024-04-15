@@ -1375,7 +1375,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8234257370061453799}
         m_TargetAssemblyTypeName: UIListLevel, Assembly-CSharp
-        m_MethodName: BackButton
+        m_MethodName: BackButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
