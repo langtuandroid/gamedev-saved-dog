@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 using Zenject;
 
 public class UIMainMenu : UICanvas
 {
-    [SerializeField] private Text coinText;
+    [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private RectTransform playButtonRect, listButtonRect, shopButtonRect, settingButtonRect, coinRect, titleRect;
     
     private Tweener scaleTween;

@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using Spine;
 using Spine.Unity;
+using TMPro;
 using Zenject;
 
 public class UILose : UICanvas
 {
     public RectTransform PopupLose, dog1, dog2;
-    public Text coinText;
+    public TextMeshProUGUI coinText;
     [SerializeField] private SkeletonGraphic skeletonAnimation1, skeletonAnimation2;
     
     private bool onceClick;
@@ -57,11 +57,12 @@ public class UILose : UICanvas
 
     }
 
-    public new void OnInit()
+    private void OnInit()
     {
         onceClick = false;
     }
-    public void UpdateCoinText()
+
+    private void UpdateCoinText()
     {
         coinText.text = _dataController.currentGameData.coin.ToString();
     }
@@ -76,17 +77,6 @@ public class UILose : UICanvas
     }
     public void RetryButton()
     {
-        //UIManager.Instance.CloseUI<UILose>();
-        //UIManager.Instance.OpenUI<UIGameplay>();
-        //UIManager.Instance.GetUI<UIGameplay>().OnInit();
-        //LevelManager.Instance.OnRetry();
-        //GameManager.Instance.ChangeState(GameState.GamePlay);
-
-        //AudioManager.instance.Play(Constant.AUDIO_SFX_BUTTON);
-
-        //DataPersistence.Instance.SaveGame();
-
-        //UbiAdsManager.Instance.ShowInterstitial(() => { }, () => { }, true);
         StartCoroutine(iRetry());
     }
 
@@ -108,8 +98,7 @@ public class UILose : UICanvas
         if (_levelManager.currentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(iHome());
-        }
-        else
+        } else
         {
             _levelManager.stateIndex++;
 
@@ -147,8 +136,7 @@ public class UILose : UICanvas
         if (_levelManager.currentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(iShop());
-        }
-        else
+        } else
         {
             _uiManager.OpenUI<UIShop>();
             _gameManager.ChangeState(GameState.MainMenu);

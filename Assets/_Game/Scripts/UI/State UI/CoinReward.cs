@@ -95,7 +95,7 @@ public class CoinReward : MonoBehaviour
 
     private void UpdateValue(int value)
     {
-        uiWin.coinText.text = value.ToString();
+        uiWin.UpdateCoinText(value);
         _dataController.currentGameData.coin = value;
     }
 }

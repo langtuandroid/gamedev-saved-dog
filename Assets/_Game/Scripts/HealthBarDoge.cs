@@ -13,24 +13,12 @@ public class HealthBarDoge : MonoBehaviour
     private Vector3 targetPosition, desiredPosition;
     private Camera cam;
     
-    private Transform tfHealthBar;
-    private Transform tf;
-    public Transform TF
-    {
-        get
-        {
-            if (tf == null)
-            {
-                tf = transform;
-            }
-            return tf;
-        }
-    }
+    private Transform _healthBar;
 
     private void Start()
     {
         cam = Camera.main;
-        tfHealthBar = healthBar.transform;
+        _healthBar = healthBar.transform;
     }
     
     private void LateUpdate()
@@ -42,7 +30,7 @@ public class HealthBarDoge : MonoBehaviour
 
         desiredPosition = cam.WorldToScreenPoint(character.position + offset);
         targetPosition = Vector3.Lerp(targetPosition, desiredPosition, SMOOTH_SPEED * Time.smoothDeltaTime);
-        tfHealthBar.position = targetPosition;
+        _healthBar.position = targetPosition;
     }
 
     public void SetHealthBar(int health, int maxHealth)

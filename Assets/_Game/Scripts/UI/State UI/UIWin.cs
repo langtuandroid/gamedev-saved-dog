@@ -5,17 +5,18 @@ using DG.Tweening;
 using UnityEngine.UI;
 using Spine;
 using Spine.Unity;
+using TMPro;
 using Zenject;
 
 public class UIWin : UICanvas
 {
-    public RectTransform nextButton, retryButton, dog1, dog2;
-    public Text coinText, coinRewardText;
+    [SerializeField] private RectTransform nextButton, retryButton, dog1, dog2;
+    [SerializeField] private TextMeshProUGUI coinText, coinRewardText;
     [SerializeField] private Color starGain, starLose;
     [SerializeField] private Image star2, star3, popup;
     [SerializeField] private CoinReward coinReward;
     [SerializeField] private GameObject coverCoinGain;
-    [SerializeField] private Text popupText;
+    [SerializeField] private TextMeshProUGUI popupText;
     [SerializeField] private SkeletonGraphic skeletonAnimation1, skeletonAnimation2;
 
     private Tweener _scaleTween;
@@ -26,6 +27,8 @@ public class UIWin : UICanvas
     private SkeletonData _skeletonData = new SkeletonData();
     private List<Skin> _skinsList;
     private Skin _currentSkin;
+    public TextMeshProUGUI CoinText => coinText;
+
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
@@ -52,7 +55,7 @@ public class UIWin : UICanvas
     {
         OnInit();
         HandleAudioInto();
-        UpdateCoinText();
+        UpdateCoinText(_dataController.currentGameData.coin);
         SetStars();
         SetColorStarWhenWin();
         UpdateCoinRewardText();
@@ -85,9 +88,9 @@ public class UIWin : UICanvas
         }
     }
 
-    private void UpdateCoinText()
+    public void UpdateCoinText(int value)
     {
-        coinText.text = _dataController.currentGameData.coin.ToString();
+        coinText.text = value.ToString();
     }
 
     private void UpdateCoinRewardText()

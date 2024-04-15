@@ -9,8 +9,8 @@ public class Bee : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
 
     private Transform targetDoge;
-    private float moveSpeed,cosAngle, sinAngle, bX, bY, angleInRadians, angleToDog, timeCounterBouncing;
-    private Vector2 bounceDirect, directToDoge, randomPointOnLine, finalPointOnLine, directToPoint, directToDog;
+    private float flySpeed,cosineAngle, sineAngle, beeX, beeY, angleInRadians, angleToCharacter, timeCounterBouncing;
+    private Vector2 bounceDirect, directToDoge, randomPointOnLine, finalPointOnLine, directToPoint, directToCharacter;
     private IState currentState;
     
     private int lives;
@@ -24,8 +24,10 @@ public class Bee : MonoBehaviour
     public readonly ApproachState approachState = new ApproachState();
 
     private Transform tf;
-    public Transform TF {
-        get {
+    public Transform TF
+    {
+        get
+        {
             if (tf == null)
             {
                 tf = transform;
@@ -60,16 +62,16 @@ public class Bee : MonoBehaviour
 
         currentState?.OnExecute(this);
 
-        directToDog = targetDoge.position - transform.position;
-        angleToDog = Mathf.Atan2(directToDog.y, directToDog.x) * Mathf.Rad2Deg;
-        TF.rotation = Quaternion.AngleAxis(angleToDog+180, Vector3.forward);
+        directToCharacter = targetDoge.position - transform.position;
+        angleToCharacter = Mathf.Atan2(directToCharacter.y, directToCharacter.x) * Mathf.Rad2Deg;
+        TF.rotation = Quaternion.AngleAxis(angleToCharacter+180, Vector3.forward);
 
     }
 
     private void OnInit()
     {
         timeCounterBouncing = 0;
-        moveSpeed = 0.08f;
+        flySpeed = 0.08f;
         ChangeState(new FindState());
     }
 
@@ -87,7 +89,7 @@ public class Bee : MonoBehaviour
             timeCounterBouncing -= Time.deltaTime;
         } else
         {
-            moveSpeed = Mathf.Abs(moveSpeed);
+            flySpeed = Mathf.Abs(flySpeed);
         }
     }
 
@@ -95,7 +97,7 @@ public class Bee : MonoBehaviour
     {
         directToDoge = targetDoge.position - TF.position;
         directToDoge = directToDoge.normalized;
-        rb.AddForce(directToDoge * (moveSpeed * 3f), ForceMode2D.Impulse);
+        rb.AddForce(directToDoge * (flySpeed * 3f), ForceMode2D.Impulse);
     }
 
     public void KnockBack()
@@ -160,7 +162,7 @@ public class Bee : MonoBehaviour
     {
         directToPoint = finalPointOnLine - (Vector2)TF.position;
         directToPoint.Normalize();
-        rb.AddForce(directToPoint * (moveSpeed * 1f), ForceMode2D.Impulse);
+        rb.AddForce(directToPoint * (flySpeed * 1f), ForceMode2D.Impulse);
 
     }
 
@@ -180,17 +182,17 @@ public class Bee : MonoBehaviour
 
         bounceDirect.Normalize();
 
-        cosAngle = Mathf.Cos(angleInRadians);
-        sinAngle = Mathf.Sin(angleInRadians);
+        cosineAngle = Mathf.Cos(angleInRadians);
+        sineAngle = Mathf.Sin(angleInRadians);
 
-        bX = bounceDirect.x * cosAngle - bounceDirect.y * sinAngle;
-        bY = bounceDirect.x * sinAngle + bounceDirect.y * cosAngle;
+        beeX = bounceDirect.x * cosineAngle - bounceDirect.y * sineAngle;
+        beeY = bounceDirect.x * sineAngle + bounceDirect.y * cosineAngle;
 
-        bounceDirect = new Vector2(bX, bY);
+        bounceDirect = new Vector2(beeX, beeY);
 
         rb.AddForce(bounceDirect * BOUNCE_FORCE, ForceMode2D.Impulse);
 
-        moveSpeed = -1 * moveSpeed;
+        flySpeed = -1 * flySpeed;
         timeCounterBouncing = TIME_LENGTH_BOUNCING;
     }
 }

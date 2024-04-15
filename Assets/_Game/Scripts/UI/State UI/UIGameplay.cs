@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 using Zenject;
 
 public class UIGameplay : UICanvas
@@ -12,7 +11,6 @@ public class UIGameplay : UICanvas
     public int star;
 
     [SerializeField] private RectTransform coinImage;
-    [SerializeField] private GameObject panelTut;
     [SerializeField] private Transform clockCover;
     [SerializeField] private Image[] stars;
     [SerializeField] private Color colorLoseStar;
@@ -28,7 +26,7 @@ public class UIGameplay : UICanvas
     private int startValue, endValue;
 
     [Header("TextLevel Section")]
-    [SerializeField] private Text levelText, coinText;
+    [SerializeField] private TextMeshProUGUI levelText, coinText;
 
     public Image tickWin, tickLose;
     private GameManager _gameManager;
@@ -84,7 +82,11 @@ public class UIGameplay : UICanvas
         startValue = _dataController.currentGameData.coin;
         endValue = _dataController.currentGameData.coin + loop/2;
         _dataController.currentGameData.coin += loop / 2;
-        coinText.DOText(endValue.ToString(), 0.5f).OnComplete(ResetCoinImage);
+        coinText.DOFade(0, 0.5f).From().SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            coinText.text = endValue.ToString();
+            coinText.DOFade(1, 0.5f).SetEase(Ease.OutQuad);
+        });
     }
     public void ResetCoinImage()
     {

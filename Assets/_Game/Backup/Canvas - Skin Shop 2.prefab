@@ -1558,7 +1558,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 283820573469152535}
         m_TargetAssemblyTypeName: UIShop, Assembly-CSharp
-        m_MethodName: UseButton
+        m_MethodName: UseSkinButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
