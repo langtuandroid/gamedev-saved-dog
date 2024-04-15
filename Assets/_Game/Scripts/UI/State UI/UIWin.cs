@@ -187,7 +187,7 @@ public class UIWin : UICanvas
         retryButton.DOAnchorPos(new Vector2(0, -831f), 0.5f).SetEase(Ease.InOutSine);
        
 
-        coinReward.OnInit();
+        coinReward.Init();
         coinReward.AnimCoinFly(_coinsAmount, false);
     }
 

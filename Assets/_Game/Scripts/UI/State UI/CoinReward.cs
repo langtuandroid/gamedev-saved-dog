@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -8,11 +7,11 @@ public class CoinReward : MonoBehaviour
 {
     [SerializeField] private GameObject pileCoin;
     [SerializeField] private UIWin uiWin;
-    public List<Vector3> initialPos;
-    public List<Quaternion> initialRotation;
-
-    public int startValue, endValue;
-    private float height, width, scale;
+    
+    private List<Vector3> initialPosition = new List<Vector3>();
+    private List<Quaternion> initialRotation = new List<Quaternion>();
+    private int startValue, endValue;
+    private float heightValue, widthValue, scaleValue;
     
     private DataController _dataController;
     private AudioManager _audioManager;
@@ -28,39 +27,39 @@ public class CoinReward : MonoBehaviour
     {
         for(int i = 0; i < pileCoin.transform.childCount; i++)
         {
-            initialPos.Add(pileCoin.transform.GetChild(i).position);
+            initialPosition.Add(pileCoin.transform.GetChild(i).position);
             initialRotation.Add(pileCoin.transform.GetChild(i).rotation);
         }
-        height = Screen.height;
-        width = Screen.width;
-        scale = 0.5625f / (width / height);
+        heightValue = Screen.height;
+        widthValue = Screen.width;
+        scaleValue = 0.5625f / (widthValue / heightValue);
     }
 
-    public void OnInit()
+    public void Init()
     {
         for (int i = 0; i < pileCoin.transform.childCount; i++)
         {
-            initialPos.Add(pileCoin.transform.GetChild(i).position);
+            initialPosition.Add(pileCoin.transform.GetChild(i).position);
             initialRotation.Add(pileCoin.transform.GetChild(i).rotation);
         }
-        height = Screen.height;
-        width = Screen.width;
-        scale = 0.5625f / (width / height);
+        heightValue = Screen.height;
+        widthValue = Screen.width;
+        scaleValue = 0.5625f / (widthValue / heightValue);
     }
 
-    public void SetDefault()
+    private void SetDefault()
     {
         for (int i = 0; i < pileCoin.transform.childCount; i++)
         {
-            pileCoin.transform.GetChild(i).position = initialPos[i];
+            pileCoin.transform.GetChild(i).position = initialPosition[i];
             pileCoin.transform.GetChild(i).rotation = initialRotation[i];
         }
     }
+    
     public void AnimCoinFly(int addCoin, bool canNextLevel)
     {
         if (addCoin == 0)
         {
-            //uiWin.HandleNextLevel();
             return;
         }
 
@@ -73,7 +72,7 @@ public class CoinReward : MonoBehaviour
         for(int i = 0; i < pileCoin.transform.childCount; i++)
         {
             pileCoin.transform.GetChild(i).DOScale(1f, 0.3f).SetDelay(delay).SetEase(Ease.OutBack);
-            pileCoin.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(new Vector2(456f, 870f*scale), 0.8f).SetDelay(delay + 0.5f).SetEase(Ease.InBack);
+            pileCoin.transform.GetChild(i).GetComponent<RectTransform>().DOAnchorPos(new Vector2(456f, 870f*scaleValue), 0.8f).SetDelay(delay + 0.5f).SetEase(Ease.InBack);
             pileCoin.transform.GetChild(i).DORotate(Vector3.zero, 0.5f).SetDelay(delay + 0.5f).SetEase(Ease.Flash);
             pileCoin.transform.GetChild(i).DOScale(0f, 0.3f).SetDelay(1.8f).SetEase(Ease.OutBack);
 

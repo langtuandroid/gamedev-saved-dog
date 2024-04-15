@@ -1,18 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class UIDailyReward : UICanvas
 {
-    [SerializeField] private Sprite ready, wait, claimed;
-    [SerializeField] List<Image> boxDay;
-    [SerializeField] int[] rewards;
+    [FormerlySerializedAs("ready"),SerializeField] private Sprite readyFrameSprite;
+    [FormerlySerializedAs("wait"),SerializeField] private Sprite waitFrameSprite;
+    [FormerlySerializedAs("claimed"),SerializeField] private Sprite claimedFrameSprite;
     [SerializeField] Button claimButton;
-    [SerializeField] RectTransform popup;
+    [SerializeField] RectTransform dailyRewardPopup;
     [SerializeField] CoinRewardPro coinReward;
+    [FormerlySerializedAs("boxDay"),SerializeField] List<Image> dailyImage;
+    [FormerlySerializedAs("rewards"),SerializeField] int[] rewardsPrice;
 
     private DayState dayState;
     private DataController _dataController;
@@ -26,25 +28,25 @@ public class UIDailyReward : UICanvas
     }
     private void OnEnable()
     {
-        LoadUIReward();
-        AnimDailyRewardUI();
+        LoadRewardUI();
+        DailyRewardAnimation();
         
         claimButton.interactable = _dailyReward.canClaim;
 
-        coinReward.updateCoin += UpdateCoin;
+        coinReward.updateCoin += UpdateCoinValue;
     }
     
     private void OnDisable()
     {
-        ResetAnimDailyRewardUI();
+        ResetAnimation();
     }
     
-    public void CloseButton()
+    public void CloseButtonClick()
     {
         CloseImmediately();
     }
     
-    public void ClaimButton()
+    public void ClaimButtonClick()
     {
         _dailyReward.InvokeGainReward();
         claimButton.interactable = false;
@@ -55,41 +57,41 @@ public class UIDailyReward : UICanvas
     private void ChangeUIWhenClaim()
     {
         int dayNum = (int)dayState;
-        boxDay[dayNum].sprite = claimed;
-        Transform pos = boxDay[dayNum].transform;
+        dailyImage[dayNum].sprite = claimedFrameSprite;
+        Transform pos = dailyImage[dayNum].transform;
         int coin = _dataController.currentGameData.coin;
-        int coinAdded = coin + rewards[dayNum];
+        int coinAdded = coin + rewardsPrice[dayNum];
         coinReward.Anim(coin, coinAdded, pos);
     }
 
-    private void UpdateCoin(int value)
+    private void UpdateCoinValue(int value)
     {
         _dataController.currentGameData.coin = value;
         _uiManager.GetUI<UIMainMenu>().UpdateCoinText();
     }
 
-    private void LoadUIReward()
+    private void LoadRewardUI()
     {
         dayState = _dailyReward.currentDayState;
         int dayNum = (int)dayState;
         for (int i = 0; i < dayNum; i++)
         {
-            boxDay[i].sprite = claimed;
+            dailyImage[i].sprite = claimedFrameSprite;
         }
-        boxDay[dayNum].sprite = _dailyReward.canClaim ? ready : wait;
-        for (int i = dayNum + 1; i < boxDay.Count; i++)
+        dailyImage[dayNum].sprite = _dailyReward.canClaim ? readyFrameSprite : waitFrameSprite;
+        for (int i = dayNum + 1; i < dailyImage.Count; i++)
         {
-            boxDay[i].sprite = wait;
+            dailyImage[i].sprite = waitFrameSprite;
         }
     }
 
-    private void AnimDailyRewardUI()
+    private void DailyRewardAnimation()
     {
-        popup.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.OutSine);
+        dailyRewardPopup.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.OutSine);
     }
 
-    private void ResetAnimDailyRewardUI()
+    private void ResetAnimation()
     {
-        popup.DOAnchorPos(new Vector2(0f, -1554f), 0f);
+        dailyRewardPopup.DOAnchorPos(new Vector2(0f, -1554f), 0f);
     }
 }
