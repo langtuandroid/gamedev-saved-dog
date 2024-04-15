@@ -1,15 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class SkinController : MonoBehaviour
 {
-    public int currentSkinIndex;
-    public int currentHp;
-    public List<CharacterSO> charList;
+    [SerializeField] private List<CharacterSO> charList;
     
+    private int currentSkinIndex;
+    private int currentHp;
     private DataController _dataController;
+
+    public int CurrentSkinIndex => currentSkinIndex;
+    public int CurrentHp => currentHp;
 
     [Inject]
     private void Construct(DataController dataController)

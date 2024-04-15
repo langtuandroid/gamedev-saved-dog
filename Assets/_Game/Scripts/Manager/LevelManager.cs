@@ -66,8 +66,8 @@ public class LevelManager : MonoBehaviour
     private void LoadSkinForCharacter()
     {
         _skinController.LoadDataSkin();
-        currentSkinIndex = _skinController.currentSkinIndex;
-        currentHp = _skinController.currentHp;
+        currentSkinIndex = _skinController.CurrentSkinIndex;
+        currentHp = _skinController.CurrentHp;
 
         currentLevel.SetSkin(currentSkinIndex, currentHp);
     }

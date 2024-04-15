@@ -45,7 +45,7 @@ public class UILose : UICanvas
         UpdateCoinText();
         HandleAudioInto();
 
-        DisplayChar(_skinController.currentSkinIndex);
+        DisplayChar(_skinController.CurrentSkinIndex);
         SetAnimationForUILose();
     }
     private void OnDisable()

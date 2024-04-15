@@ -57,7 +57,7 @@ public class UIWin : UICanvas
         SetColorStarWhenWin();
         UpdateCoinRewardText();
        
-        DisplayChar(_skinController.currentSkinIndex);
+        DisplayChar(_skinController.CurrentSkinIndex);
         SetAnimationForUIWin();
 
        
