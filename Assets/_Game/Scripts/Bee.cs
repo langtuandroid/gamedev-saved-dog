@@ -3,42 +3,31 @@ using Zenject;
 
 public class Bee : MonoBehaviour
 {
+    private const float TIME_LENGTH_BOUNCING = 0.1f;
+    private const float BOUNCE_FORCE = 0.4f;
+    
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private float moveSpeed;
 
-    [SerializeField] private Transform beeRenderer;
-    [SerializeField] private Transform targetDoge; public Transform TargetDoge { set { targetDoge = value; } }
-    [SerializeField] private float bounceForce;
-
-    [SerializeField] private float timeLengthBouncing;
-
-    public LayerMask layerMask;
-
-    private float timeCounterBouncing;
-
-    private float cosAngle, sinAngle, bX, bY;
-    private Vector2 bounceDirect, directToDoge;
-    private Vector2 randomPointOnLine; public Vector2 RandomPointOnLine { set { randomPointOnLine = value; } }
-    private Vector2 finalPointOnLine; public Vector2 FinalPointOnLine { set { finalPointOnLine = value; } }
-    private Vector2 directToPoint;
-
-    private Vector2 directToDog;
-    private float angleToDog;
-
+    private Transform targetDoge;
+    private float moveSpeed,cosAngle, sinAngle, bX, bY, angleInRadians, angleToDog, timeCounterBouncing;
+    private Vector2 bounceDirect, directToDoge, randomPointOnLine, finalPointOnLine, directToPoint, directToDog;
     private IState currentState;
+    
+    private int lives;
+    
+    public Transform TargetDoge { set { targetDoge = value; } }
+    public Vector2 RandomPointOnLine { set { randomPointOnLine = value; } }
+    public Vector2 FinalPointOnLine { set { finalPointOnLine = value; } }
+    public int Lives { set { lives = value; } }
 
-    public float angleInRadians;
-
-    private int lives; public int Lives { set { lives = value; } }
-    private float random;
-
-    public FindState findState = new FindState();
-    public ApproachState approachState = new ApproachState();
+    public readonly FindState findState = new FindState();
+    public readonly ApproachState approachState = new ApproachState();
 
     private Transform tf;
     public Transform TF {
         get {
-            if (tf == null) {
+            if (tf == null)
+            {
                 tf = transform;
             }
             return tf;
@@ -56,24 +45,20 @@ public class Bee : MonoBehaviour
         _objectPool = objectPool;
         _cheerNotify = cheerNotify;
     }
-    
-    void Start()
+
+    private void Start()
     {
         OnInit();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (targetDoge == null)
         {
             return;
         }
 
-        if (currentState != null)
-        {
-            currentState.OnExecute(this);
-        }
+        currentState?.OnExecute(this);
 
         directToDog = targetDoge.position - transform.position;
         angleToDog = Mathf.Atan2(directToDog.y, directToDog.x) * Mathf.Rad2Deg;
@@ -84,20 +69,15 @@ public class Bee : MonoBehaviour
     private void OnInit()
     {
         timeCounterBouncing = 0;
+        moveSpeed = 0.08f;
         ChangeState(new FindState());
     }
 
     public void ChangeState(IState newState)
     {
-        if (currentState != null)
-        {
-            currentState.OnExit(this);
-        }
+        currentState?.OnExit(this);
         currentState = newState;
-        if (currentState != null)
-        {
-            currentState.OnEnter(this);
-        }
+        currentState?.OnEnter(this);
     }
 
     public void CountTimeWhenBouncing()
@@ -120,7 +100,8 @@ public class Bee : MonoBehaviour
 
     public void KnockBack()
     {
-        this.lives--;
+        lives--;
+        
         if (lives <= 0)
         {
             _cheerNotify.KeepStreak();
@@ -128,24 +109,16 @@ public class Bee : MonoBehaviour
 
             ChooseEffect();
 
-            _objectPool.ReturnToPool(Constant.BEE, this.gameObject);
+            _objectPool.ReturnToPool(Constant.BEE, gameObject);
             return;
         }
-
         
         ShowEffect(Constant.PAR_KNOCK_VFX);
-
-        //Vector3 directKnockBack = TF.position - targetDoge.position;
-
-        //float distance = directKnockBack.magnitude;
-        //directKnockBack = directKnockBack.normalized;
-
-        //rb.AddForce(directKnockBack * 5f / distance, ForceMode2D.Impulse);
     }
 
     private void ChooseEffect()
     {
-        random = Random.Range(0, 101);
+        var random = Random.Range(0, 101);
 
         if (random <= 12)
         {
@@ -175,13 +148,6 @@ public class Bee : MonoBehaviour
         obj.SetActive(true);
     }
 
-    public bool CanSeeDoge()
-    {
-        directToDoge = targetDoge.position - TF.position;
-        RaycastHit2D hit = Physics2D.Linecast(TF.position, targetDoge.position, layerMask);
-        return hit.collider != null ? true : false;
-    }
-
     public void FlyRandomToLine()
     {
         directToPoint = randomPointOnLine - (Vector2)TF.position;
@@ -198,12 +164,11 @@ public class Bee : MonoBehaviour
 
     }
 
-    public void SetNoForce()
+    public void SetAngle(float angle)
     {
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0;
+        angleInRadians = angle;
     }
-
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag(Constant.BEE))
@@ -211,7 +176,6 @@ public class Bee : MonoBehaviour
             return;
         }
 
-        //bounceDirect = collision.contacts[0].normal;
         bounceDirect = targetDoge.position - TF.position;
 
         bounceDirect.Normalize();
@@ -224,9 +188,9 @@ public class Bee : MonoBehaviour
 
         bounceDirect = new Vector2(bX, bY);
 
-        rb.AddForce(bounceDirect * bounceForce, ForceMode2D.Impulse);
+        rb.AddForce(bounceDirect * BOUNCE_FORCE, ForceMode2D.Impulse);
 
         moveSpeed = -1 * moveSpeed;
-        timeCounterBouncing = timeLengthBouncing;
+        timeCounterBouncing = TIME_LENGTH_BOUNCING;
     }
 }

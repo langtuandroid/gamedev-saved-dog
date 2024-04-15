@@ -61,12 +61,12 @@ public class Beehive : MonoBehaviour
                 if (i < pointsOnLine.Length)
                 {
                     bee1.FinalPointOnLine = pointsOnLine[0];
-                    bee1.angleInRadians = 90f;
+                    bee1.SetAngle(90f);
                 }
             } else
             {
                 bee1.FinalPointOnLine = pointsOnLine[pointsOnLine.Length - 1];
-                bee1.angleInRadians = 180f;
+                bee1.SetAngle(180f);
             }
             beeGroup.Add(bee1);
 

@@ -6,8 +6,7 @@ public class ApproachState : IState
 {
     private float timer;
     private float timeLength;
-
-
+    
     public void OnEnter(Bee bee)
     {
         timer = 0;
@@ -21,15 +20,12 @@ public class ApproachState : IState
         {
             bee.CountTimeWhenBouncing();
             bee.FlyToDoge();
-        }
-        else
+        } else
         {
             bee.ChangeState(bee.findState);
         }
     }
 
     public void OnExit(Bee bee)
-    {
-
-    }
+    {}
 }
