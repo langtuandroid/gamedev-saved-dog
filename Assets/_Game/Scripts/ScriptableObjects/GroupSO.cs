@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class ActSO : ScriptableObject
+public class GroupSO : ScriptableObject
 {
     public string title;
     public string starDoneInAct;

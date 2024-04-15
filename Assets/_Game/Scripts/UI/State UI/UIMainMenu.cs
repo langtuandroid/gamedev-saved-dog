@@ -64,7 +64,7 @@ public class UIMainMenu : UICanvas
     
     public void ListActButton()
     {
-        _uiManager.OpenUI<UiListAct>();
+        _uiManager.OpenUI<UiListGroup>();
         CloseImmediately();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);

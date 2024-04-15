@@ -27,7 +27,6 @@ public class UIWin : UICanvas
     private SkeletonData _skeletonData = new SkeletonData();
     private List<Skin> _skinsList;
     private Skin _currentSkin;
-    public TextMeshProUGUI CoinText => coinText;
 
     private GameManager _gameManager;
     private LevelManager _levelManager;
@@ -126,13 +125,13 @@ public class UIWin : UICanvas
         {
             int act = (_levelManager.CurrentLevelIndex + 1) / 10;
             
-            if (!_uiManager.IsLoaded<UiListAct>())
+            if (!_uiManager.IsLoaded<UiListGroup>())
             {
-                _uiManager.OpenUI<UiListAct>();
-                _uiManager.GetUI<UiListAct>().ClearListAct();
-                _uiManager.CloseUI<UiListAct>();
+                _uiManager.OpenUI<UiListGroup>();
+                _uiManager.GetUI<UiListGroup>().ClearListGroup();
+                _uiManager.CloseUI<UiListGroup>();
             }
-            if (act >= _uiManager.GetUI<UiListAct>().actSOList.Count)
+            if (act >= _uiManager.GetUI<UiListGroup>().GroupSoList.Count)
             {
                 StartCoroutine(HandleNextLevel());
                 return;

@@ -19,7 +19,7 @@ public class UIListLevel : UICanvas
     [FormerlySerializedAs("actList"),SerializeField] private List<Act> groupList;
 
 
-    private List<Button> buttonLevelList;
+    private List<Button> buttonLevelList = new List<Button>();
     private ButtonLevelDisplay buttonLevel;
     private GameObject buttonLevelTemp;
     private Button button;
@@ -45,7 +45,7 @@ public class UIListLevel : UICanvas
         CheckStarsInLevels();
         CheckLevelDone();
 
-        currentGroup = _uiManager.GetUI<UiListAct>().GetSelectedAct();
+        currentGroup = _uiManager.GetUI<UiListGroup>().GetSelectedGroup();
 
         for (int i = 0; i < groupList[currentGroup].levelSOList.Count; i++)
         {
@@ -163,7 +163,7 @@ public class UIListLevel : UICanvas
 
     public void BackButtonClick()
     {
-        _uiManager.OpenUI<UiListAct>();
+        _uiManager.OpenUI<UiListGroup>();
         ClearLevelList();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
