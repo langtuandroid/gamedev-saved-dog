@@ -941,11 +941,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
   PopupLose: {fileID: 8246882572746239999}
-  dog1: {fileID: 5630406873539198148}
-  dog2: {fileID: 6120911276713988602}
+  dogImage1: {fileID: 5630406873539198148}
+  dogImage2: {fileID: 6120911276713988602}
   coinText: {fileID: 4589179271068421411}
-  skeletonAnimation1: {fileID: 3811092401256300787}
-  skeletonAnimation2: {fileID: 7696117375224837358}
+  dogSkeletonAnimation1: {fileID: 3811092401256300787}
+  dogSkeletonAnimation2: {fileID: 7696117375224837358}
 --- !u!1 &6059043169925280809
 GameObject:
   m_ObjectHideFlags: 0
@@ -1577,7 +1577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3234749326576747617, guid: 435f40400ae341a4386cf69aaac59745, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: RetryButton
+      value: RetryButtonClick
       objectReference: {fileID: 0}
     - target: {fileID: 3234749326576747617, guid: 435f40400ae341a4386cf69aaac59745, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -1609,7 +1609,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4287316577597912992, guid: 435f40400ae341a4386cf69aaac59745, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: HomeButton
+      value: MenuButtonClick
       objectReference: {fileID: 0}
     - target: {fileID: 4287316577597912992, guid: 435f40400ae341a4386cf69aaac59745, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -1637,7 +1637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4458337488762616787, guid: 435f40400ae341a4386cf69aaac59745, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShopButton
+      value: ShopButtonClick
       objectReference: {fileID: 0}
     - target: {fileID: 4458337488762616787, guid: 435f40400ae341a4386cf69aaac59745, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

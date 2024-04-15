@@ -9,16 +9,16 @@ using Zenject;
 
 public class UILose : UICanvas
 {
-    public RectTransform PopupLose, dog1, dog2;
-    public TextMeshProUGUI coinText;
-    [SerializeField] private SkeletonGraphic skeletonAnimation1, skeletonAnimation2;
-    
-    private bool onceClick;
+    [SerializeField] private RectTransform PopupLose;
+    [SerializeField] private RectTransform dogImage1;
+    [SerializeField] private RectTransform dogImage2;
+    [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField] private SkeletonGraphic dogSkeletonAnimation1;
+    [SerializeField] private SkeletonGraphic dogSkeletonAnimation2;
 
-    // Render Skin
     private SkeletonData skeletonData = new SkeletonData();
     private List<Skin> skins;
-    private Skin currentSkin;
+    
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
@@ -43,44 +43,40 @@ public class UILose : UICanvas
 
     private void OnEnable()
     {
-        OnInit();
         UpdateCoinText();
-        HandleAudioInto();
+        HandleAudio();
 
-        DisplayChar(_skinController.CurrentSkinIndex);
-        SetAnimationForUILose();
+        DisplayCharacter(_skinController.CurrentSkinIndex);
+        SetAnimationLose();
     }
     private void OnDisable()
     {
         HandleAudioOut();
         ResetAnimation();
-
-    }
-
-    private void OnInit()
-    {
-        onceClick = false;
     }
 
     private void UpdateCoinText()
     {
         coinText.text = _dataController.currentGameData.coin.ToString();
     }
-    private void HandleAudioInto()
+    
+    private void HandleAudio()
     {
         _audioManager.PauseBGM();
         _audioManager.Play(Constant.AUDIO_SFX_LOSE_UI);
     }
+    
     private void HandleAudioOut()
     {
         _audioManager.UnPauseBGM();
     }
-    public void RetryButton()
+    
+    public void RetryButtonClick()
     {
-        StartCoroutine(iRetry());
+        StartCoroutine(Retry());
     }
 
-    IEnumerator iRetry()
+    private IEnumerator Retry()
     {
         yield return new WaitForSeconds(1);
         _uiManager.CloseUI<UILose>();
@@ -93,11 +89,12 @@ public class UILose : UICanvas
 
         _dataPersistence.SaveGame();
     }
-    public void HomeButton()
+    
+    public void MenuButtonClick()
     {
         if (_levelManager.currentLevel.LevelNumberInGame > 1)
         {
-            StartCoroutine(iHome());
+            StartCoroutine(Home());
         } else
         {
             _levelManager.stateIndex++;
@@ -114,7 +111,7 @@ public class UILose : UICanvas
         }
     }
 
-    IEnumerator iHome()
+    private IEnumerator Home()
     {
         yield return new WaitForSeconds(1);
         _levelManager.stateIndex++;
@@ -131,11 +128,11 @@ public class UILose : UICanvas
         
     }
 
-    public void ShopButton()
+    public void ShopButtonClick()
     {
         if (_levelManager.currentLevel.LevelNumberInGame > 1)
         {
-            StartCoroutine(iShop());
+            StartCoroutine(Shop());
         } else
         {
             _uiManager.OpenUI<UIShop>();
@@ -150,9 +147,9 @@ public class UILose : UICanvas
             _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
         }
     }
-    IEnumerator iShop()
+
+    private IEnumerator Shop()
     {
-        
         yield return new WaitForSeconds(1);
 
         _uiManager.OpenUI<UIShop>();
@@ -166,17 +163,17 @@ public class UILose : UICanvas
         _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
-    private void DisplayChar(int index)
+    
+    private void DisplayCharacter(int index)
     {
-        SetSkin(index, skeletonAnimation1);
-        SetSkin(index, skeletonAnimation2);
+        SetDogeSkin(index, dogSkeletonAnimation1);
+        SetDogeSkin(index, dogSkeletonAnimation2);
     }
 
-    private void SetSkin(int skinIndex, SkeletonGraphic skeAnim)
+    private void SetDogeSkin(int skinIndex, SkeletonGraphic skeAnim)
     {
         Constant constant = new Constant();
-
-        // Setup Skin
+        
         skeletonData = skeAnim.SkeletonData;
         skins = new List<Skin>(skeletonData.Skins.ToArray());
         Skin skin = skins[constant.skins[skinIndex]];
@@ -184,13 +181,15 @@ public class UILose : UICanvas
         skeAnim.Skeleton.SetSkin(skin);
         skeAnim.Skeleton.SetSlotsToSetupPose();
     }
-    public void SetAnimationForUILose()
+
+    private void SetAnimationLose()
     {
         PopupLose.DOAnchorPos(new Vector3(0, -196.87f, 0), 0.5f).SetEase(Ease.OutBack);
 
-        dog1.DOPunchRotation(new Vector3(0, 180f, 0), 0.5f, 10, 1f).SetEase(Ease.OutQuad);
-        dog2.DOPunchRotation(new Vector3(0, -180f, 0), 0.5f, 10, 1f).SetEase(Ease.OutQuad);
+        dogImage1.DOPunchRotation(new Vector3(0, 180f, 0), 0.5f, 10, 1f).SetEase(Ease.OutQuad);
+        dogImage2.DOPunchRotation(new Vector3(0, -180f, 0), 0.5f, 10, 1f).SetEase(Ease.OutQuad);
     }
+    
     private void ResetAnimation()
     {
         PopupLose.DOAnchorPos(new Vector3(0, -1230f, 0), 0f);
