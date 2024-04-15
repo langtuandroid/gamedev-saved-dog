@@ -2524,12 +2524,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
   coinText: {fileID: 253110889912235520}
-  playButtonRect: {fileID: 3596158219584197732}
-  listButtonRect: {fileID: 5765048528737614830}
-  shopButtonRect: {fileID: 4044465141375177411}
-  settingButtonRect: {fileID: 8780081379159555264}
-  coinRect: {fileID: 644297848525065589}
-  titleRect: {fileID: 6733729225760426827}
 --- !u!1 &6549642399549039127
 GameObject:
   m_ObjectHideFlags: 0
@@ -2653,7 +2647,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 714362987674007003}
         m_TargetAssemblyTypeName: UIMainMenu, Assembly-CSharp
-        m_MethodName: ChangeCoinTest
+        m_MethodName: UpdateCoinTest
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
