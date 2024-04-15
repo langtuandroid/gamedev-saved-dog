@@ -22,22 +22,24 @@ public class Beehive : MonoBehaviour
     
     private AudioManager _audioManager;
     private ObjectPool _objectPool;
+    private LinesDrawer _linesDrawer;
 
     [Inject]
-    private void Construct(AudioManager audioManager, ObjectPool objectPool)
+    private void Construct(AudioManager audioManager, ObjectPool objectPool, LinesDrawer linesDrawer)
     {
         _audioManager = audioManager;
         _objectPool = objectPool;
+        _linesDrawer = linesDrawer;
     }
     
     
     private void Start()
     {
-        LinesDrawer.instance.OnEndDraw += BeginGenerate;
+        _linesDrawer.OnEndDraw += BeginGenerate;
     }
     private void OnDestroy()
     {
-        LinesDrawer.instance.OnEndDraw -= BeginGenerate;
+       _linesDrawer.OnEndDraw -= BeginGenerate;
         DestroyAllBees();
     }
 
@@ -82,7 +84,7 @@ public class Beehive : MonoBehaviour
 
     private void BeginGenerate() 
     {
-        pointsOnLine = LinesDrawer.instance.GetArrayPointsOfLine();
+        pointsOnLine = _linesDrawer.GetArrayPointsOfLine();
 
         _audioManager.Play(Constant.AUDIO_SFX_BEE);
 

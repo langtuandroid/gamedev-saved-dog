@@ -21,28 +21,30 @@ public class TimerUI : MonoBehaviour
     private LevelManager _levelManager;
     private AudioManager _audioManager;
     private UIManager _uiManager;
+    private LinesDrawer _linesDrawer;
     
     public float RemainingDuration => _remainingDuration;
 
     [Inject]
-    private void Construct(GameManager gameManager, LevelManager levelManager, AudioManager audioManager, UIManager uiManager)
+    private void Construct(GameManager gameManager, LevelManager levelManager, AudioManager audioManager, UIManager uiManager, LinesDrawer linesDrawer)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
         _audioManager = audioManager;
         _uiManager = uiManager;
+        _linesDrawer = linesDrawer;
     }
 
     private void Start()
     {
-        LinesDrawer.instance.OnEndDraw += CallTimer;
+        _linesDrawer.OnEndDraw += CallTimer;
 
         _fillAmount = 1f;
     }
     
     private void OnDestroy()
     {
-        LinesDrawer.instance.OnEndDraw -= CallTimer;
+        _linesDrawer.OnEndDraw -= CallTimer;
     }
     
     public void SetDurationOfLevel(int duration)

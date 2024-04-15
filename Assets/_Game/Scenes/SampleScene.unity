@@ -482,7 +482,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df20971ab7594745a0840de4bdd55b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 0}
   linePrefab: {fileID: 988802454669525637, guid: ca01fd00c0a93c444a0e9e10baa291ac, type: 3}
   lineColor:
     serializedVersion: 2
@@ -523,7 +522,7 @@ MonoBehaviour:
   cantDrawOverLayer:
     serializedVersion: 2
     m_Bits: 512
-  currentNumLines: 0
+  tilemap: {fileID: 0}
 --- !u!4 &247487883
 Transform:
   m_ObjectHideFlags: 0
@@ -1455,8 +1454,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db20c6bacfebf3449b7eb126338dc34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSkinIndex: 0
-  currentHp: 0
   charList:
   - {fileID: 11400000, guid: 34242c1fd98180442bc8910683d51b63, type: 2}
   - {fileID: 11400000, guid: 2e22d03cd1627a649b253dc866dd3407, type: 2}
@@ -1660,6 +1657,7 @@ MonoBehaviour:
   _dailyReward: {fileID: 603343015}
   _cheerNotify: {fileID: 649519485}
   _phoneVibrate: {fileID: 34597094}
+  _linesDrawer: {fileID: 247487882}
 --- !u!114 &1380508479
 MonoBehaviour:
   m_ObjectHideFlags: 0

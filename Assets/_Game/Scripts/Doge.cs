@@ -10,12 +10,15 @@ public class Doge : MonoBehaviour
     private LevelManager levelManager;
     private AnimationControllerDoge animDoge;
     private HealthDogeController healthDoge;
+    
     private GameManager _gameManager;
+    private LinesDrawer _linesDrawer;
 
     [Inject]
-    private void Construct(GameManager gameManager)
+    private void Construct(GameManager gameManager, LinesDrawer linesDrawer)
     {
         _gameManager = gameManager;
+        _linesDrawer = linesDrawer;
     }
     
     void Start()
@@ -28,7 +31,7 @@ public class Doge : MonoBehaviour
 
         levelManager.OnWinLevel += ChangeBodyTypeToKinematic;
         levelManager.OnLoseLevel += ChangeBodyTypeToKinematic;
-        LinesDrawer.instance.OnEndDraw += ChangeBodyTypeToDynamic;
+        _linesDrawer.OnEndDraw += ChangeBodyTypeToDynamic;
     }
 
     private void OnDestroy()
@@ -38,7 +41,8 @@ public class Doge : MonoBehaviour
             levelManager.OnWinLevel -= ChangeBodyTypeToKinematic;
             levelManager.OnLoseLevel -= ChangeBodyTypeToKinematic;
         }
-        LinesDrawer.instance.OnEndDraw -= ChangeBodyTypeToDynamic;
+        
+        _linesDrawer.OnEndDraw -= ChangeBodyTypeToDynamic;
     }
 
     private void ChangeBodyTypeToDynamic()

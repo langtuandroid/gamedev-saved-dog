@@ -5,7 +5,7 @@ using Zenject;
 
 public class LinesDrawer : MonoBehaviour
 {
-    public static LinesDrawer instance;
+    public event Action OnEndDraw;
     
     [SerializeField] private GameObject linePrefab;
     [SerializeField] private Gradient lineColor;
@@ -28,7 +28,6 @@ public class LinesDrawer : MonoBehaviour
     private int currentNumLines;
     private bool canDraw;
 
-    public event Action OnEndDraw;
 
     private Transform tf;
     private Transform TF {
@@ -54,15 +53,6 @@ public class LinesDrawer : MonoBehaviour
         _levelManager = levelManager;
         _dataController = dataController;
         _uiManager = uiManager;
-    }
-
-    private void Awake()
-    {
-        if (instance != null)
-        {
-            Destroy(gameObject);
-        } else
-            instance = this;
     }
 
     private void Start()

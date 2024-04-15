@@ -8,20 +8,22 @@ public class HandTut : MonoBehaviour
     [SerializeField] private GameObject tut;
     
     private DataController _dataController;
+    private LinesDrawer _linesDrawer;
 
     [Inject]
-    private void Construct(DataController dataController)
+    private void Construct(DataController dataController, LinesDrawer linesDrawer)
     {
         _dataController = dataController;
+        _linesDrawer = linesDrawer;
     }
     private void OnEnable()
     {
-        LinesDrawer.instance.OnEndDraw += HideTut;
+        _linesDrawer.OnEndDraw += HideTut;
         SetAnimTut();
     }
     private void OnDisable()
     {
-        LinesDrawer.instance.OnEndDraw -= HideTut;
+       _linesDrawer.OnEndDraw -= HideTut;
     }
     private void SetAnimTut()
     {
@@ -36,7 +38,6 @@ public class HandTut : MonoBehaviour
     }
     private void HideTut()
     {
-
         if (_dataController.currentGameData.levelDoneInGame.Count == 0)
         {
             for (int i = 0; i < 999; i++)
@@ -44,11 +45,6 @@ public class HandTut : MonoBehaviour
                 _dataController.currentGameData.levelDoneInGame.Add(0);
             }
         }
-
-        //if (DataController.Instance.currentGameData.levelDoneInGame[0] == 0)
-        //{
-        //    tutAttack.SetActive(true);
-        //}
         
         tut.SetActive(false);
     }

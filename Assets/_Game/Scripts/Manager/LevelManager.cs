@@ -22,14 +22,16 @@ public class LevelManager : MonoBehaviour
     private DataController _dataController;
     private UIManager _uiManager;
     private SkinController _skinController;
+    private LinesDrawer _linesDrawer;
 
    [Inject]
-   private void Construct(DiContainer diContainer, DataController dataController, UIManager uiManager, SkinController skinController)
+   private void Construct(DiContainer diContainer, DataController dataController, UIManager uiManager, SkinController skinController, LinesDrawer linesDrawer)
    {
        _diContainer = diContainer;
        _dataController = dataController;
        _uiManager = uiManager;
        _skinController = skinController;
+       _linesDrawer = linesDrawer;
    }
 
    public void Despawn()
@@ -57,9 +59,9 @@ public class LevelManager : MonoBehaviour
 
         currentLevelIndex = level;
         currentLevel.levelNumberInGame = level;
-        LinesDrawer.instance.tilemap = currentLevel.GetComponentInChildren<Tilemap>();
+        _linesDrawer.tilemap = currentLevel.GetComponentInChildren<Tilemap>();
         _uiManager.GetUI<UIGameplay>().UpdateLevelText(level + 1);
-        LinesDrawer.instance.OnLoadNewLevelOrUI();
+        _linesDrawer.OnLoadNewLevelOrUI();
         currentLevel.SetTime();
     }
 

@@ -31,6 +31,9 @@ public class GameplaySceneInstaler : MonoInstaller
   private CheerNotify _cheerNotify;
   [SerializeField]
   private PhoneVibrate _phoneVibrate;
+  [SerializeField]
+  private LinesDrawer _linesDrawer;
+  
   public override void InstallBindings()
   {
     Container.Bind<GameManager>().FromInstance(_gameManager).AsSingle().NonLazy();
@@ -46,5 +49,6 @@ public class GameplaySceneInstaler : MonoInstaller
     Container.Bind<DailyReward>().FromInstance(_dailyReward).AsSingle().NonLazy();
     Container.Bind<CheerNotify>().FromInstance(_cheerNotify).AsSingle().NonLazy();
     Container.Bind<PhoneVibrate>().FromInstance(_phoneVibrate).AsSingle().NonLazy();
+    Container.Bind<LinesDrawer>().FromInstance(_linesDrawer).AsSingle().NonLazy();
   }
 }

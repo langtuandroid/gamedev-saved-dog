@@ -25,11 +25,12 @@ public class UILose : UICanvas
     private DataController _dataController;
     private AudioManager _audioManager;
     private SkinController _skinController;
+    private LinesDrawer _linesDrawer;
 
     [Inject]
     private void Construct(
         GameManager gameManager, LevelManager levelManager, DataPersistence dataPersistence, DataController dataController, AudioManager audioManager, 
-         SkinController skinController)
+         SkinController skinController, LinesDrawer linesDrawer)
     {
         _gameManager = gameManager;
         _levelManager = levelManager;
@@ -37,6 +38,7 @@ public class UILose : UICanvas
         _dataController = dataController;
         _audioManager = audioManager;
         _skinController = skinController;
+        _linesDrawer = linesDrawer;
     }
 
     private void OnEnable()
@@ -115,7 +117,7 @@ public class UILose : UICanvas
             _gameManager.ChangeState(GameState.MainMenu);
 
             _levelManager.Despawn();
-            LinesDrawer.instance.OnLoadNewLevelOrUI();
+            _linesDrawer.OnLoadNewLevelOrUI();
 
             _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
@@ -132,7 +134,7 @@ public class UILose : UICanvas
         _gameManager.ChangeState(GameState.MainMenu);
 
         _levelManager.Despawn();
-        LinesDrawer.instance.OnLoadNewLevelOrUI();
+        _linesDrawer.OnLoadNewLevelOrUI();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
@@ -152,7 +154,7 @@ public class UILose : UICanvas
             _gameManager.ChangeState(GameState.MainMenu);
 
             _levelManager.Despawn();
-            LinesDrawer.instance.OnLoadNewLevelOrUI();
+            _linesDrawer.OnLoadNewLevelOrUI();
 
             CloseDirectly();
 
@@ -169,7 +171,7 @@ public class UILose : UICanvas
         _gameManager.ChangeState(GameState.MainMenu);
 
         _levelManager.Despawn();
-        LinesDrawer.instance.OnLoadNewLevelOrUI();
+        _linesDrawer.OnLoadNewLevelOrUI();
 
         CloseDirectly();
 
