@@ -131,8 +131,8 @@ public class LinesDrawer : MonoBehaviour
 
         CameraShaker.Invoke();
         OnEndDraw?.Invoke();
-        if (_levelManager.currentLevel.levelNumberInGame != 0) blade.gameObject.SetActive(true);
-        if (_levelManager.currentLevel.levelNumberInGame == 1)
+        if (_levelManager.currentLevel.LevelNumberInGame != 0) blade.gameObject.SetActive(true);
+        if (_levelManager.currentLevel.LevelNumberInGame == 1)
         {
             if (_dataController.currentGameData.levelDoneInGame[1] == 0)
             {

@@ -89,14 +89,14 @@ public class TimerUI : MonoBehaviour
 
         Level currentLevel = FindObjectOfType<Level>();
 
-        if (!currentLevel.DogeStillAlive())
+        if (!currentLevel.IsDogeAlive())
         {
             yield break;
         }
 
         _gameManager.currentIndexState = _levelManager.stateIndex;
-        currentLevel.SetAnimWin();
-        currentLevel.TurnOffHealthBar();
+        currentLevel.SetWinAnimation();
+        currentLevel.DisableHealthBar();
         _levelManager.currentLevel.DestroyAllBees();
 
         _audioManager.Play(Constant.AUDIO_SFX_WOOHOO);

@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
 
         ChangeState(GameState.Win);
         _uiManager.CloseUI<UIGameplay>();
-        if (_levelManager.currentLevel.levelNumberInGame > 1)
+        if (_levelManager.currentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(ShowWin());
         } else
@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
 
         _levelManager.OnLose();
         _uiManager.CloseUI<UIGameplay>();
-        if (_levelManager.currentLevel.levelNumberInGame > 1)
+        if (_levelManager.currentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(ShowLose());
         } else

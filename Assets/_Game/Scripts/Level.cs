@@ -4,78 +4,88 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-    public int levelNumberInGame;
-    public int star;
-    public bool Done = true;
-    private TimerUI clockTimerUI; public TimerUI ClockTimerUI { get { return clockTimerUI; } }
     [SerializeField] private int LengthOfLevel;
     [SerializeField] private List<HealthDogeController> healthDogeList;
     [SerializeField] private List<Beehive> beehiveList;
-    void Start()
+
+    private TimerUI clockTimerUI;
+    private int _starsCount;
+    private int _levelNumberInGame;
+    
+    public TimerUI ClockTimerUI => clockTimerUI;
+    public int StarsCount => _starsCount;
+    public int LevelNumberInGame => _levelNumberInGame;
+
+    private void Start()
     {
-        star = 3;
-        clockTimerUI = GameObject.FindObjectOfType<TimerUI>();
+        _starsCount = 3;
+        clockTimerUI = FindObjectOfType<TimerUI>();
         if (clockTimerUI != null)
         {
             clockTimerUI.SetDurationOfLevel(LengthOfLevel);
         }
     }
-    public void OnInit()
-    {
-        clockTimerUI = GameObject.FindObjectOfType<TimerUI>();
-        clockTimerUI.SetDurationOfLevel(LengthOfLevel);
-    }
+
     public void SetTime()
     {
-        clockTimerUI = GameObject.FindObjectOfType<TimerUI>();
+        clockTimerUI = FindObjectOfType<TimerUI>();
         if (clockTimerUI != null)
         {
             clockTimerUI.SetDurationOfLevel(LengthOfLevel);
         }
-        //clockTimer.SetUIClockFalse();
+
     }
-    public bool DogeStillAlive()
+
+    public void SetStarsCount (int starsCount)
     {
-        for (int i = 0; i < healthDogeList.Count; i++)
+        _starsCount = starsCount;
+    }
+
+    public void SetLevelNumberInGame (int levelNumber)
+    {
+        _levelNumberInGame = levelNumber;
+    }
+    
+    public bool IsDogeAlive()
+    {
+        foreach (HealthDogeController doge in healthDogeList)
         {
-            if (healthDogeList[i].CurrentHealth <= 0)
+            if (doge.CurrentHealth <= 0)
             {
                 return false;
             }
         }
+
         return true;
     }
-    public void SetAnimWin()
+    public void SetWinAnimation()
     {
-        for (int i = 0; i < healthDogeList.Count; i++)
+        foreach (HealthDogeController doge in healthDogeList)
         {
-            healthDogeList[i].SetAnimWin();
+            doge.SetWinAnimation();
         }
     }
-    public void TurnOffHealthBar()
+    public void DisableHealthBar()
     {
-        for (int i = 0; i < healthDogeList.Count; i++)
+        foreach (HealthDogeController doge in healthDogeList)
         {
-            healthDogeList[i].OffHealthBar();
+            doge.OffHealthBar();
         }
     }
-    public float GetTimeRemain()
-    {
-        return clockTimerUI.RemainingDuration;
-    }
+
     public void DestroyAllBees()
     {
-        for (int i = 0; i < beehiveList.Count; i++)
+        foreach (Beehive beehive in beehiveList)
         {
-            beehiveList[i].DestroyAllBees();
+            beehive.DestroyAllBees();
         }
     }
-    public void SetSkin(int index, int hp)
+    public void SetDogeSkin(int index, int hp)
     {
-        for (int i = 0; i < healthDogeList.Count; i++)
+        foreach (HealthDogeController doge in healthDogeList)
         {
-            healthDogeList[i].MaxHealth = hp;
-            healthDogeList[i].gameObject.GetComponent<AnimationControllerDoge>().SetSkinForDoge(index);     
+            doge.MaxHealth = hp;
+            doge.gameObject.GetComponent<AnimationControllerDoge>().SetSkinForDoge(index);
         }
     }
 }

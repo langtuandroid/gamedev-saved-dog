@@ -105,7 +105,7 @@ public class UILose : UICanvas
     }
     public void HomeButton()
     {
-        if (_levelManager.currentLevel.levelNumberInGame > 1)
+        if (_levelManager.currentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(iHome());
         }
@@ -144,7 +144,7 @@ public class UILose : UICanvas
 
     public void ShopButton()
     {
-        if (_levelManager.currentLevel.levelNumberInGame > 1)
+        if (_levelManager.currentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(iShop());
         }

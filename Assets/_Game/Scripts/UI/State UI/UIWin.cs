@@ -293,10 +293,10 @@ public class UIWin : UICanvas
                 _dataController.currentGameData.starDoneInLevels.Add(0);
             }
         }
-        star = _levelManager.currentLevel.star;
-        if (_dataController.currentGameData.starDoneInLevels[_levelManager.currentLevel.levelNumberInGame] < star)
+        star = _levelManager.currentLevel.StarsCount;
+        if (_dataController.currentGameData.starDoneInLevels[_levelManager.currentLevel.LevelNumberInGame] < star)
         {
-            _dataController.currentGameData.starDoneInLevels[_levelManager.currentLevel.levelNumberInGame] = star;
+            _dataController.currentGameData.starDoneInLevels[_levelManager.currentLevel.LevelNumberInGame] = star;
         }
     }
     public void SetColorStarWhenWin()

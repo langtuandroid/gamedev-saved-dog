@@ -124,7 +124,7 @@ public class HealthDogeController : MonoBehaviour
         }
     }
 
-    public void SetAnimWin()
+    public void SetWinAnimation()
     {
         animDoge.SetAnimForDoge(Constant.DOGE_ANIM_WIN);
     }

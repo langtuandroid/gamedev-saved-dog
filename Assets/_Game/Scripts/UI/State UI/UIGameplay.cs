@@ -129,13 +129,13 @@ public class UIGameplay : UICanvas
         if (inkRatio < 2f / 3f && inkRatio > 1f / 3f)
         {
             star = 2;
-            _levelManager.currentLevel.star = 2;
+            _levelManager.currentLevel.SetStarsCount(2);
             stars[2].color = colorLoseStar;
         }
         else if (inkRatio < 1f / 3f && inkRatio > 0)
         {
             star = 1;
-            _levelManager.currentLevel.star = 1;
+            _levelManager.currentLevel.SetStarsCount(1);
             stars[1].color = colorLoseStar;
         }
     }

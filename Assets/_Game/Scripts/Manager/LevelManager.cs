@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour
         LoadSkinForCharacter();
 
         currentLevelIndex = level;
-        currentLevel.levelNumberInGame = level;
+        currentLevel.SetLevelNumberInGame(level);
         _linesDrawer.tilemap = currentLevel.GetComponentInChildren<Tilemap>();
         _uiManager.GetUI<UIGameplay>().UpdateLevelText(level + 1);
         _linesDrawer.OnLoadNewLevelOrUI();
@@ -71,7 +71,7 @@ public class LevelManager : MonoBehaviour
         currentSkinIndex = _skinController.CurrentSkinIndex;
         currentHp = _skinController.CurrentHp;
 
-        currentLevel.SetSkin(currentSkinIndex, currentHp);
+        currentLevel.SetDogeSkin(currentSkinIndex, currentHp);
     }
 
     public void OnRetry()
