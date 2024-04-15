@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8291559746034741786}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.91, y: -5.2, z: 0}
   m_LocalScale: {x: 6.83, y: 3.41, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2854031859558780044
 SpriteRenderer:
@@ -143,5 +143,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2695b52f16369d94b85d8c051c0fa732, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathColor: {r: 0.6509434, g: 0.25485048, b: 0.25485048, a: 1}
-  timeToDead: 0.1
+  _timeToDead: 0.1
