@@ -5,7 +5,7 @@ using Zenject;
 
 public class ParticleBeeKnock : MonoBehaviour
 {
-    private ParticleSystem knockVFX;
+    private ParticleSystem _knockVFX;
     
     private ObjectPool _objectPool;
 
@@ -17,18 +17,18 @@ public class ParticleBeeKnock : MonoBehaviour
 
     private void Awake()
     {
-        knockVFX = GetComponent<ParticleSystem>();
+        _knockVFX = GetComponent<ParticleSystem>();
     }
 
     private void OnEnable()
     {
-        knockVFX.Play();
+        _knockVFX.Play();
         Invoke(nameof(StopParticleSystem), 0.4f);
     }
 
     private void StopParticleSystem()
     {
-        knockVFX.Stop();
+        _knockVFX.Stop();
         _objectPool.ReturnToPool(Constant.PAR_KNOCK_VFX, gameObject);
     }
 }

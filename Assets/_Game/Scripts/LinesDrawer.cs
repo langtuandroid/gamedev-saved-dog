@@ -1,21 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using Zenject;
 
 public class LinesDrawer : MonoBehaviour
 {
     public static LinesDrawer instance;
-
-    public Tilemap tilemap;
-
-    private LineRenderer lineCantDraw;
-    private Camera cam;
-
-    [Space (30f)]
+    
     [SerializeField] private GameObject linePrefab;
     [SerializeField] private Gradient lineColor;
     [SerializeField] private Color lineCantDrawColor;
@@ -26,21 +17,25 @@ public class LinesDrawer : MonoBehaviour
     [SerializeField] private Blade blade;
 
     [SerializeField] private LayerMask cantDrawOverLayer;
-    int cantDrawOverLayerIndex;
 
-    ProtectLine currentLine;
-    public int currentNumLines;
 
-    private Vector2 mousePos, mouseStart;
+    public Tilemap tilemap;
+    private LineRenderer lineCantDraw;
+    private Camera cam;
+    private ProtectLine currentLine;
+    private Vector2 mousePos;
     private Vector3 previousMousePos;
+    private int currentNumLines;
     private bool canDraw;
 
     public event Action OnEndDraw;
 
     private Transform tf;
-    public Transform TF {
-        get {
-            if (tf == null) {
+    private Transform TF {
+        get
+        {
+            if (tf == null)
+            {
                 tf = transform;
             }
             return tf;
@@ -66,23 +61,25 @@ public class LinesDrawer : MonoBehaviour
         if (instance != null)
         {
             Destroy(gameObject);
-        }
-        else
+        } else
             instance = this;
     }
-    void Start()
+
+    private void Start()
     {
         InitLoad();
-        cantDrawOverLayerIndex = LayerMask.NameToLayer("CantDrawOver");
+        LayerMask.NameToLayer("CantDrawOver");
 
         previousMousePos = Input.mousePosition;
 
         InitLineCantDraw();
     }
+    
     private void InitLoad()
     {
         cam = Camera.main;
     }
+    
     private void InitLineCantDraw()
     {
         lineCantDraw = gameObject.AddComponent<LineRenderer>();
@@ -93,88 +90,68 @@ public class LinesDrawer : MonoBehaviour
         lineCantDraw.sortingLayerName = "Line";
         lineCantDraw.material = lineCantDrawMaterial;
     }
-    void Update()
+
+    private void Update()
     {
-        if (_gameManager.IsState(GameState.GamePlay) && currentNumLines < maxLineCanDraw)
+        if (!_gameManager.IsState(GameState.GamePlay) || currentNumLines >= maxLineCanDraw)
         {
-
-            if (Input.GetMouseButtonDown(0) && !MouseOverLayerCantDraw() && !MouseOverTilemap())
-            {
-                canDraw = true;
-                mouseStart = Input.mousePosition;
-                blade.gameObject.SetActive(false);
-                HideLineCantDraw();
-                BeginDraw();
-            }
-            if (currentLine != null)
-            {
-                CalculateInkDraw();
-                Draw();
-            }
-            else
-            {
-                HideLineCantDraw();
-            }
-            if (Input.GetMouseButton(0) && currentLine == null && !MouseOverTilemap())
-            {
-                canDraw = true;
-                mouseStart = Input.mousePosition;
-                blade.gameObject.SetActive(false);
-                BeginDraw();
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                mousePos = Input.mousePosition;
-                EndDraw();
-                HideLineCantDraw();
-                if (currentLine != null)
-                {
-                    if (currentLine.pointsCount < 2)
-                        return;
-                }
-                if (TF.childCount > 0 && canDraw /* && !EventSystem.current.IsPointerOverGameObject()*/)
-                {
-                    CameraShaker.Invoke();
-                    OnEndDraw?.Invoke();
-                    if (_levelManager.currentLevel.levelNumberInGame != 0) blade.gameObject.SetActive(true);
-                    if (_levelManager.currentLevel.levelNumberInGame == 1)
-                    {
-                        if (_dataController.currentGameData.levelDoneInGame[1] == 0)
-                        {
-                            Transform tutAttack = _levelManager.currentLevel.transform.Find("TutAttack");
-                            tutAttack.gameObject.SetActive(true);
-                        }
-                    }
-                    currentNumLines++;
-                    canDraw = false;
-                }
-            }
-            //if (Input.touchCount > 0)
-            //{
-            //    Touch touch = Input.GetTouch(0);
-
-            //    if (touch.phase == TouchPhase.Began)
-            //    {
-            //        BeginDraw();
-            //    }
-
-            //    if (currentLine != null)
-            //    {
-            //        CalculateInkDraw();
-            //        Draw();
-            //    }
-
-            //    if (touch.phase == TouchPhase.Ended)
-            //    {
-            //        EndDraw();
-            //        if (transform.childCount > 0)
-            //        {
-            //            OnEndDraw?.Invoke();
-            //            currentNumLines++;
-            //        }
-            //    }
-            //}
+            return;
         }
+
+        if (Input.GetMouseButtonDown(0) && !MouseOverLayerCantDraw() && !MouseOverTilemap())
+        {
+            canDraw = true;
+            blade.gameObject.SetActive(false);
+            HideLineCantDraw();
+            BeginDraw();
+        }
+        if (currentLine != null)
+        {
+            CalculateInkDraw();
+            Draw();
+        } else
+        {
+            HideLineCantDraw();
+        }
+        if (Input.GetMouseButton(0) && currentLine == null && !MouseOverTilemap())
+        {
+            canDraw = true;
+            blade.gameObject.SetActive(false);
+            BeginDraw();
+        }
+
+        if (!Input.GetMouseButtonUp(0))
+        {
+            return;
+        }
+
+        mousePos = Input.mousePosition;
+        EndDraw();
+        HideLineCantDraw();
+        if (currentLine != null)
+        {
+            if (currentLine.PointsCount < 2)
+                return;
+        }
+
+        if (TF.childCount <= 0 || !canDraw)
+        {
+            return;
+        }
+
+        CameraShaker.Invoke();
+        OnEndDraw?.Invoke();
+        if (_levelManager.currentLevel.levelNumberInGame != 0) blade.gameObject.SetActive(true);
+        if (_levelManager.currentLevel.levelNumberInGame == 1)
+        {
+            if (_dataController.currentGameData.levelDoneInGame[1] == 0)
+            {
+                Transform tutAttack = _levelManager.currentLevel.transform.Find("TutAttack");
+                tutAttack.gameObject.SetActive(true);
+            }
+        }
+        currentNumLines++;
+        canDraw = false;
     }
 
     private void CalculateInkDraw()
@@ -193,10 +170,7 @@ public class LinesDrawer : MonoBehaviour
         }
     }
 
-
-
-    // Begin Draw --------------------------------------------
-    void BeginDraw()
+    private void BeginDraw()
     {
         currentLine = Instantiate(linePrefab, TF).GetComponent<ProtectLine>();
 
@@ -205,8 +179,8 @@ public class LinesDrawer : MonoBehaviour
         currentLine.SetPointMinDistance(linePointsMinDistance);
         currentLine.SetLineWidth(lineWidth);
     }
-    // Draw ---------------------------------------------------
-    void Draw()
+    
+    private void Draw()
     {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.CircleCast(mousePos, lineWidth, Vector2.zero, 0.2f, cantDrawOverLayer);
@@ -214,7 +188,8 @@ public class LinesDrawer : MonoBehaviour
         bool isColliding = false;
         if (currentLine == null)
             return;
-        if (currentLine.pointsCount >= 1)
+        
+        if (currentLine.PointsCount >= 1)
         {
             isColliding = Physics2D.Linecast(currentLine.GetLastPoint(), mousePos, cantDrawOverLayer);
         }
@@ -222,27 +197,23 @@ public class LinesDrawer : MonoBehaviour
         
         if (isColliding || hit)
         {
-            //EndDraw();
             DrawRedLineCantDraw(mousePos);
-        }
-        else
+        } else
         {
             currentLine.AddPoint(mousePos);
             HideLineCantDraw();
         }
     }
-    // End Draw ---------------------------------------------
-    void EndDraw()
+    
+    private void EndDraw()
     {
         if (currentLine != null)
         {
-            if (currentLine.pointsCount < 2)
+            if (currentLine.PointsCount < 2)
             {
                 Destroy(currentLine.gameObject);
-            }
-            else
+            } else
             {
-                //currentLine.gameObject.layer = cantDrawOverLayerIndex;
                 currentLine.UsePhysics(true);
                 currentLine = null;
             }
@@ -256,56 +227,57 @@ public class LinesDrawer : MonoBehaviour
         {
             Destroy(tfChild.gameObject);
         }
-
-        // Reset so luong line ve 0
+        
         currentNumLines = 0;
 
-        // Hide duong mau do
         HideLineCantDraw();
     }
 
     public Vector2[] GetArrayPointsOfLine()
     {
         currentLine = GetComponentInChildren<ProtectLine>();
-        if (currentLine != null)
+
+        if (currentLine == null)
         {
-            Vector2[] linePoints = currentLine.points.ToArray();
-            return linePoints;
+            return null;
         }
-        return null;
+
+        Vector2[] linePoints = currentLine.points.ToArray();
+        return linePoints;
     }
 
     private void DrawRedLineCantDraw(Vector2 mousePos)
     {
-        if (currentLine.pointsCount >= 1)
+        if (currentLine.PointsCount < 1)
         {
-            lineCantDraw.positionCount = 2;
-            lineCantDraw.SetPosition(0, currentLine.GetLastPoint());
-            lineCantDraw.SetPosition(1, mousePos);
+            return;
         }
+
+        lineCantDraw.positionCount = 2;
+        lineCantDraw.SetPosition(0, currentLine.GetLastPoint());
+        lineCantDraw.SetPosition(1, mousePos);
     }
+    
     public void HideLineCantDraw()
     {
         if (lineCantDraw == null)
             return;
         lineCantDraw.positionCount = 0;
     }
+    
     private bool MouseOverLayerCantDraw()
     {
-        mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
-        /*RaycastHit2D hit*/ bool hit = Physics2D.Raycast(mousePos, Vector2.zero, 0f, cantDrawOverLayer);
+        mousePos = cam.ScreenToWorldPoint(Input.mousePosition); 
+        bool hit = Physics2D.Raycast(mousePos, Vector2.zero, 0f, cantDrawOverLayer);
         return hit;
     }
+    
     private bool MouseOverTilemap()
     {
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cellPos = tilemap.WorldToCell(mousePos);
         TileBase tile = tilemap.GetTile(cellPos);
 
-        if (tile != null)
-        {
-            return true;
-        }
-        return false;
+        return tile != null;
     }
 }
