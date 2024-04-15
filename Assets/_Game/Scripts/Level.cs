@@ -69,7 +69,7 @@ public class Level : MonoBehaviour
     {
         foreach (HealthDogeController doge in healthDogeList)
         {
-            doge.OffHealthBar();
+            doge.DisableHealthBar();
         }
     }
 

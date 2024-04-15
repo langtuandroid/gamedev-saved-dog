@@ -6,19 +6,14 @@ using Zenject;
 public class Beehive : MonoBehaviour
 {
     [SerializeField] private Transform generateBeePoint;
-    [SerializeField] private Bee beePrefab;
     [SerializeField] private int quantityBee;
     [SerializeField] private float spawnInterval;
-    [SerializeField] private List<Transform> pointsRandom;
     [SerializeField] private List<Transform> dogePosList;
-
+    
+    private int randomIndex, randomDog, randomLives;
     private Vector2[] pointsOnLine;
-
-    private List<Bee> beeGroup = new List<Bee>();
-
-    private int randomIndex, randomDog;
-    private int randomLives;
     private Vector2 randomVector;
+    private List<Bee> beeGroup = new List<Bee>();
     
     private AudioManager _audioManager;
     private ObjectPool _objectPool;
@@ -31,12 +26,12 @@ public class Beehive : MonoBehaviour
         _objectPool = objectPool;
         _linesDrawer = linesDrawer;
     }
-    
-    
+
     private void Start()
     {
         _linesDrawer.OnEndDraw += BeginGenerate;
     }
+    
     private void OnDestroy()
     {
        _linesDrawer.OnEndDraw -= BeginGenerate;
@@ -49,21 +44,18 @@ public class Beehive : MonoBehaviour
         {
             GameObject obj = _objectPool.GetFromPool(Constant.BEE);
             obj.SetActive(true);
-            Bee bee1 = Cache.GetBeeGO(obj); //obj.GetComponent<Bee>();
+            Bee bee1 = Cache.GetBeeGO(obj);
 
             randomLives = Random.Range(3, 11);
             bee1.Lives = randomLives;
 
             bee1.TF.position = generateBeePoint.position;
-            //bee1.TF.SetParent(generateBeePoint);
 
             randomDog = Random.Range(0, dogePosList.Count);
             bee1.TargetDoge = dogePosList[randomDog];
-
-            // Get random point on line for bee to go
+            
             bee1.RandomPointOnLine = GetRandomPointOnLine(pointsOnLine);
-
-            // Get first or last point on line for bee to go
+            
             if (i < quantityBee/2)
             {
                 if (i < pointsOnLine.Length)
@@ -90,6 +82,7 @@ public class Beehive : MonoBehaviour
 
         StartCoroutine(SpawnBees());
     } 
+    
     public void DestroyAllBees()
     {
         _audioManager.Pause(Constant.AUDIO_SFX_BEE);
@@ -103,6 +96,7 @@ public class Beehive : MonoBehaviour
 
         beeGroup.Clear();
     }
+    
     private Vector2 GetRandomPointOnLine(Vector2[] lines)
     {
         if (lines == null || lines.Length == 0)
@@ -114,17 +108,4 @@ public class Beehive : MonoBehaviour
         randomVector = lines[randomIndex];
         return randomVector;
     }
-    
-    //private Vector2 GetFinalPointOnLine(Vector2[] lines)
-    //{
-    //    if (lines == null || lines.Length == 0)
-    //    {
-    //        return Vector2.zero;
-    //    }
-    //    else
-    //    {
-    //        randomVector = lines[randomIndex];
-    //        return randomVector;
-    //    }
-    //}
 }

@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class BladeTut : MonoBehaviour
 {
-    [SerializeField] GameObject handAttack;
+    [SerializeField]
+    private GameObject handAttack;
     
     private TimeManager _timeManager;
 
@@ -17,11 +16,11 @@ public class BladeTut : MonoBehaviour
     
     private void OnEnable()
     {
-        Invoke("AnimTut", 1.5f);
+        Invoke(nameof(AnimTut), 1.5f);
     }
+    
     private void AnimTut()
     {
-        //UIManager.Instance.GetUI<UIGameplay>().ShowTut();
         _timeManager.SlowTime();
         handAttack.SetActive(true);
     }

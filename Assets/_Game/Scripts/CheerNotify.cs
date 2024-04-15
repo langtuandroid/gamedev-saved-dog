@@ -83,7 +83,6 @@ public class CheerNotify : MonoBehaviour
         transformList[index].DOMove(new Vector3(0f, -0.6f, 0f), 0f);
         srList[index].DOFade(1f, 0f);
 
-
         transformList[index].DOMove(Vector3.zero, 0.9f).SetEase(Ease.OutQuad);
         srList[index].DOFade(0f, 0.9f).SetEase(Ease.OutQuad).OnComplete(() => Hide(index));
 

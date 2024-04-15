@@ -34,7 +34,7 @@ public class HandTut : MonoBehaviour
             listPoints[i] = listPoint[i].position;
         }
 
-        transform.DOPath(listPoints, 3f, PathType.Linear).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart);
+        transform.DOPath(listPoints, 3f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart);
     }
     private void HideTut()
     {

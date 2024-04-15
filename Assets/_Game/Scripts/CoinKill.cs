@@ -24,7 +24,6 @@ public class CoinKill : MonoBehaviour
     {
         textMesh.text = "+" + amount;
 
-
         sr.DOFade(1f, 0f);
         meshRenderer.material.DOFade(1f, 0f);
 

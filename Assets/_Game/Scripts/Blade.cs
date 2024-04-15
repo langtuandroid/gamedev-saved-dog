@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class Blade : MonoBehaviour
 {
+    private const float MIN_SLICE_VELOCITY = 0.01f;
+    
     private Camera mainCamera;
     private bool slicing;
     private TrailRenderer bladeTrail;
@@ -12,12 +12,16 @@ public class Blade : MonoBehaviour
     private float counterSoundBlade, velocity;
     private Vector3 newPosition;
 
-    public Vector3 direction { get; private set; }
-    public float minSliceVelocity = 0.01f;
+    private Vector3 Direction
+    {
+        get;
+        set;
+    }
+
     public float swipeSoundLength;
 
     private Transform tf;
-    public Transform TF
+    private Transform TF
     {
         get
         {
@@ -62,18 +66,14 @@ public class Blade : MonoBehaviour
         {
             counterSoundBlade -= Time.deltaTime;
         }
-        
-
 
         if (Input.GetMouseButtonDown(0))
         {
             StartSlicing();
-        }  
-        else if (Input.GetMouseButtonUp(0)) 
+        } else if (Input.GetMouseButtonUp(0)) 
         {
             StopSlicing();
-        }
-        else if (slicing)
+        } else if (slicing)
         {
             ContinueSlicing();
         }
@@ -85,6 +85,7 @@ public class Blade : MonoBehaviour
         bladeCollider.enabled = false;
         bladeTrail.enabled = false;
     }
+    
     private void StartSlicing()
     {
         newPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -97,37 +98,44 @@ public class Blade : MonoBehaviour
         bladeTrail.enabled = true;
         bladeTrail.Clear();
     }
+    
     private void ContinueSlicing()
     {
         newPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         newPosition.z = 0f;
 
-        direction = newPosition - TF.position;
+        Direction = newPosition - TF.position;
 
-        velocity = direction.magnitude / Time.deltaTime;
+        velocity = Direction.magnitude / Time.deltaTime;
 
-        bladeCollider.enabled = minSliceVelocity < velocity;
+        bladeCollider.enabled = MIN_SLICE_VELOCITY < velocity;
 
         TF.position = newPosition;
 
-        if (velocity >= 20f)
+        if (!(velocity >= 20f))
         {
-            if (counterSoundBlade <= 0)
-            {
-                counterSoundBlade = swipeSoundLength;
-                _audioManager.Play(Constant.AUDIO_SFX_BLADE);
-            }
-        } 
+            return;
+        }
+
+        if (!(counterSoundBlade <= 0))
+        {
+            return;
+        }
+
+        counterSoundBlade = swipeSoundLength;
+        _audioManager.Play(Constant.AUDIO_SFX_BLADE);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(Constant.BEE))
+        if (!other.CompareTag(Constant.BEE))
         {
-            Bee bee = Cache.GetBee(other); //other.GetComponent<Bee>();
-            bee.KnockBack();
-
-            _audioManager.Play(Constant.AUDIO_SFX_BEE_STAB);
+            return;
         }
+
+        Bee bee = Cache.GetBee(other);
+        bee.KnockBack();
+
+        _audioManager.Play(Constant.AUDIO_SFX_BEE_STAB);
     }
 }

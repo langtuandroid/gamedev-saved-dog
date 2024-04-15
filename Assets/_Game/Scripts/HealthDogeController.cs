@@ -1,27 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class HealthDogeController : MonoBehaviour
 {
-    [SerializeField] private int maxHealth; public int MaxHealth { set { maxHealth = value; } }
-
+    private readonly Vector3 offsetText = new Vector3(0f, 0.7f, 0f);
+    private readonly Vector3 offsetBlood = new Vector3(0f, 0.4f, 0f);
+    
+    [SerializeField] private int maxHealth;
     [SerializeField] private float coolDownStingLength, coolDownDogHurt;
-
     [SerializeField] private HealthBarDoge healthBar;
 
-    private AnimationControllerDoge animDoge;
 
-    private int currentHealth; public int CurrentHealth { get { return currentHealth; } } 
-    private float couterTimeSting, counterTimeHurt;
-    Vector3 offsetText = new Vector3(0f, 0.7f, 0f);
-    Vector3 offsetBlood = new Vector3(0f, 0.4f, 0f);
+    private AnimationControllerDoge animDoge;
+    private int currentHealth;
+    private float counterTimeSting;
+    private float counterTimeHurt;
 
     [HideInInspector] public bool hit, die;
 
     private Transform tf;
-    public Transform TF
+    private Transform TF
     {
         get
         {
@@ -32,6 +30,8 @@ public class HealthDogeController : MonoBehaviour
             return tf;
         }
     }
+    public int CurrentHealth => currentHealth;
+    public int MaxHealth { set { maxHealth = value; } }
     
     private GameManager _gameManager;
     private AudioManager _audioManager;
@@ -52,7 +52,7 @@ public class HealthDogeController : MonoBehaviour
         animDoge = GetComponent<AnimationControllerDoge>();
 
         currentHealth = maxHealth;
-        couterTimeSting = 0;
+        counterTimeSting = 0;
         counterTimeHurt = 0;
 
         healthBar.SetHealthBar(currentHealth, maxHealth);
@@ -62,10 +62,11 @@ public class HealthDogeController : MonoBehaviour
     
     private void Update()
     {
-        if (couterTimeSting > 0)
+        if (counterTimeSting > 0)
         {
-            couterTimeSting -= Time.deltaTime;
+            counterTimeSting -= Time.deltaTime;
         }
+        
         if (counterTimeHurt > 0)
         {
             counterTimeHurt -= Time.deltaTime;
@@ -74,26 +75,32 @@ public class HealthDogeController : MonoBehaviour
 
     private void LoseHealth()
     {
-        if (couterTimeSting <= 0)
+        if (!(counterTimeSting <= 0))
         {
-            if (currentHealth > 0)
-            {
-                currentHealth--;
-                healthBar.SetHealthBar(currentHealth, maxHealth);
-                couterTimeSting = coolDownStingLength;
-
-                ShowDamageText();
-                ShowBloodEffect();
-            }
-            if (currentHealth <= 0)
-            {
-                die = true;
-                OffHealthBar();
-                animDoge.SetAnimForDoge(Constant.DOGE_ANIM_HURT);
-                _gameManager.WhenLose();
-            }
+            return;
         }
+
+        if (currentHealth > 0)
+        {
+            currentHealth--;
+            healthBar.SetHealthBar(currentHealth, maxHealth);
+            counterTimeSting = coolDownStingLength;
+
+            ShowDamageText();
+            ShowBloodEffect();
+        }
+
+        if (currentHealth > 0)
+        {
+            return;
+        }
+
+        die = true;
+        DisableHealthBar();
+        animDoge.SetAnimForDoge(Constant.DOGE_ANIM_HURT);
+        _gameManager.WhenLose();
     }
+    
     private void ShowDamageText()
     {
         GameObject obj = _objectPool.GetFromPool(Constant.DMG_TEXT);
@@ -101,6 +108,7 @@ public class HealthDogeController : MonoBehaviour
         obj.transform.rotation = Quaternion.identity;
         obj.SetActive(true);
     }
+    
     private void ShowBloodEffect()
     {
         GameObject obj = _objectPool.GetFromPool(Constant.PAR_BLOOD_VFX);
@@ -108,37 +116,51 @@ public class HealthDogeController : MonoBehaviour
         obj.transform.rotation = Quaternion.identity;
         obj.SetActive(true);
     }
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (die || !_gameManager.IsState(GameState.GamePlay))
-            return;
-        if (collision.gameObject.CompareTag(Constant.BEE))
         {
-            _audioManager.Play(Constant.AUDIO_SFX_STING);
-            DogeHurt();
-            LoseHealth();
-            if (die)
-                return;
-            hit = true;
-            animDoge.SetAnimForDoge(Constant.DOGE_ANIM_GET_HIT);
+            return;
         }
+
+        if (!collision.gameObject.CompareTag(Constant.BEE))
+        {
+            return;
+        }
+
+        _audioManager.Play(Constant.AUDIO_SFX_STING);
+        DogeHurt();
+        LoseHealth();
+
+        if (die)
+        {
+            return;
+        }
+            
+        hit = true;
+        animDoge.SetAnimForDoge(Constant.DOGE_ANIM_GET_HIT);
     }
 
     public void SetWinAnimation()
     {
         animDoge.SetAnimForDoge(Constant.DOGE_ANIM_WIN);
     }
-    public void OffHealthBar()
+    
+    public void DisableHealthBar()
     {
-        healthBar.TurnOffHealthBar();
+        healthBar.DisableHealthBar();
     }
+    
     private void DogeHurt()
     {
-        if (counterTimeHurt <= 0)
+        if (!(counterTimeHurt <= 0))
         {
-            counterTimeHurt = coolDownDogHurt;
-            _audioManager.Play(Constant.AUDIO_SFX_DOGHURT);
-            _phoneVibrate.VibrateDevice();
+            return;
         }
+
+        counterTimeHurt = coolDownDogHurt;
+        _audioManager.Play(Constant.AUDIO_SFX_DOGHURT);
+        _phoneVibrate.VibrateDevice();
     }
 }

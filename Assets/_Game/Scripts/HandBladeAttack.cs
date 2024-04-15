@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using Zenject;
 
 public class HandBladeAttack : MonoBehaviour
@@ -27,15 +25,19 @@ public class HandBladeAttack : MonoBehaviour
         {
             slided = true;
         }
-        if (slided)
+
+        if (!slided)
         {
-            hand.SetActive(false);
-            dashline.SetActive(false);
-            StartCoroutine(BackToGameplay());
-            slided = false;
+            return;
         }
+
+        hand.SetActive(false);
+        dashline.SetActive(false);
+        StartCoroutine(BackToGameplay());
+        slided = false;
     }
-    public IEnumerator BackToGameplay()
+
+    private IEnumerator BackToGameplay()
     {
         yield return new WaitForSeconds(0.4f);
         _timeManager.BackNormalTime();

@@ -1,78 +1,70 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
 public class Doge : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private SpriteRenderer sr;
-    private LevelManager levelManager;
+    private Rigidbody2D _rigidbody2D;
     private AnimationControllerDoge animDoge;
     private HealthDogeController healthDoge;
     
     private GameManager _gameManager;
     private LinesDrawer _linesDrawer;
+    private LevelManager _levelManager;
 
     [Inject]
-    private void Construct(GameManager gameManager, LinesDrawer linesDrawer)
+    private void Construct(GameManager gameManager, LinesDrawer linesDrawer, LevelManager levelManager)
     {
         _gameManager = gameManager;
         _linesDrawer = linesDrawer;
+        _levelManager = levelManager;
     }
-    
-    void Start()
+
+    private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        sr = GetComponentInChildren<SpriteRenderer>();
-        levelManager = GameObject.FindObjectOfType<LevelManager>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
         animDoge = GetComponent<AnimationControllerDoge>();
         healthDoge = GetComponent<HealthDogeController>();
 
-        levelManager.OnWinLevel += ChangeBodyTypeToKinematic;
-        levelManager.OnLoseLevel += ChangeBodyTypeToKinematic;
-        _linesDrawer.OnEndDraw += ChangeBodyTypeToDynamic;
+        _levelManager.OnWinLevel += ChangeToKinematic;
+        _levelManager.OnLoseLevel += ChangeToKinematic;
+        _linesDrawer.OnEndDraw += ChangeToDynamic;
     }
 
     private void OnDestroy()
     {
-        if (levelManager != null)
+        if (_levelManager != null)
         {
-            levelManager.OnWinLevel -= ChangeBodyTypeToKinematic;
-            levelManager.OnLoseLevel -= ChangeBodyTypeToKinematic;
+            _levelManager.OnWinLevel -= ChangeToKinematic;
+            _levelManager.OnLoseLevel -= ChangeToKinematic;
         }
         
-        _linesDrawer.OnEndDraw -= ChangeBodyTypeToDynamic;
+        _linesDrawer.OnEndDraw -= ChangeToDynamic;
     }
 
-    private void ChangeBodyTypeToDynamic()
+    private void ChangeToDynamic()
     {
-        rb.bodyType = RigidbodyType2D.Dynamic;
+        _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     }
-    public SpriteRenderer GetSprite()
+
+    private void ChangeToKinematic()
     {
-        return sr;
+        _rigidbody2D.velocity = Vector2.zero;
+        _rigidbody2D.angularVelocity = 0;
+        _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
     }
-    public void SetColorForDoge(Color color)
-    {
-        sr.color = color;
-    }
-    public void ChangeBodyTypeToKinematic()
-    {
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0;
-        rb.bodyType = RigidbodyType2D.Kinematic;
-    }
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag(Constant.SAW))
+        if (!collision.gameObject.CompareTag(Constant.SAW))
         {
-            if (!_gameManager.IsState(GameState.GamePlay))
-                return;
-            animDoge.SetAnimForDoge(Constant.DOGE_ANIM_DIE);
-            healthDoge.die = true;
-
-            _gameManager.WhenLose();
+            return;
         }
+
+        if (!_gameManager.IsState(GameState.GamePlay))
+            return;
+        animDoge.SetAnimForDoge(Constant.DOGE_ANIM_DIE);
+        healthDoge.die = true;
+
+        _gameManager.WhenLose();
     }
 }

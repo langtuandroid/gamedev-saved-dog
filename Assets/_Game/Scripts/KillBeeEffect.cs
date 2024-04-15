@@ -4,9 +4,10 @@ using Zenject;
 
 public class KillBeeEffect : MonoBehaviour
 {
+    [SerializeField] private Transform text, img;
+    
     private MeshRenderer meshRenderer;
     private SpriteRenderer spriteRenderer;
-    [SerializeField] private Transform text, img;
     
     private AudioManager _audioManager;
     private ObjectPool _objectPool;

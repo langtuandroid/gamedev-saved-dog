@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Zenject;
 
 public class HeadshotEffect : MonoBehaviour
 {
-    private MeshRenderer meshRenderer;
-    private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform text, img;
 
+    private MeshRenderer _meshRenderer;
+    private SpriteRenderer _spriteRenderer;
     private AudioManager _audioManager;
     private ObjectPool _objectPool;
     private UIManager _uiManager;
@@ -24,9 +22,10 @@ public class HeadshotEffect : MonoBehaviour
     
     private void Awake()
     {
-        meshRenderer = GetComponentInChildren<MeshRenderer>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _meshRenderer = GetComponentInChildren<MeshRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
+    
     private void OnEnable()
     {
         ResetEffect();
@@ -46,17 +45,19 @@ public class HeadshotEffect : MonoBehaviour
 
     private void FadeEffect()
     {
-        meshRenderer.material.DOFade(0f, 1f).SetDelay(1.5f).SetEase(Ease.InOutSine);
-        spriteRenderer.DOFade(0f, 1f).SetDelay(1.5f).SetEase(Ease.InOutSine).OnComplete(HideEffect);
+        _meshRenderer.material.DOFade(0f, 1f).SetDelay(1.5f).SetEase(Ease.InOutSine);
+        _spriteRenderer.DOFade(0f, 1f).SetDelay(1.5f).SetEase(Ease.InOutSine).OnComplete(HideEffect);
     }
+    
     private void HideEffect()
     {
         _objectPool.ReturnToPool(Constant.HEADSHOT_VFX, this.gameObject);
     }
+    
     private void ResetEffect()
     {
-        meshRenderer.material.DOFade(1f, 0f);
-        spriteRenderer.DOFade(0.4f, 0f);
+        _meshRenderer.material.DOFade(1f, 0f);
+        _spriteRenderer.DOFade(0.4f, 0f);
         text.DOScale(0.1f, 0f);
         img.DOScale(0.023f, 0f);
     }
