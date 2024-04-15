@@ -87,7 +87,7 @@ public class CoinReward : MonoBehaviour
         { 
             if (canNextLevel)
             {
-                uiWin.HandleNextLevel();
+                uiWin.StartCoroutine(uiWin.HandleNextLevel());
             }
         }));
 

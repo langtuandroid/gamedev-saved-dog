@@ -79,7 +79,7 @@ public class UiListAct : UICanvas
 
                     _audioManager.Play(Constant.AUDIO_SFX_PLAY);
 
-                    CloseDirectly();
+                    CloseImmediately();
                 }
             });
         }
@@ -140,7 +140,7 @@ public class UiListAct : UICanvas
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
-        CloseDirectly();
+        CloseImmediately();
     }
 
     

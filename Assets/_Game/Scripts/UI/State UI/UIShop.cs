@@ -206,7 +206,7 @@ public class UIShop : UICanvas
     public void CloseButton()
     {
         _uiManager.OpenUI<UIMainMenu>();
-        CloseDirectly();
+        CloseImmediately();
 
         _audioManager.PlayBGM(Constant.AUDIO_MUSIC_BG);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);

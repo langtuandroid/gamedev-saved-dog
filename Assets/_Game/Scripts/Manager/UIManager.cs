@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
     {
         if (IsOpened<T>())
         {
-            GetUI<T>().CloseDirectly();
+            GetUI<T>().CloseImmediately();
         }
     }   
     
@@ -93,7 +93,7 @@ public class UIManager : MonoBehaviour
         {
             if (item.Value != null && item.Value.gameObject.activeInHierarchy)
             {
-                item.Value.CloseDirectly();
+                item.Value.CloseImmediately();
             }
         }
     }

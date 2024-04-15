@@ -89,7 +89,7 @@ public class UIListLevel : UICanvas
 
                     _audioManager.Play(Constant.AUDIO_SFX_PLAY);
 
-                    CloseDirectly();
+                    CloseImmediately();
                 }
 
             });
@@ -164,7 +164,7 @@ public class UIListLevel : UICanvas
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
-        CloseDirectly();
+        CloseImmediately();
     }
     public void ClearListLevel()
     {

@@ -78,13 +78,13 @@ public class UIMainMenu : UICanvas
 
         // UI
 
-        CloseDirectly();
+        CloseImmediately();
     }
     public void SettingButton()
     {
        
         _uiManager.OpenUI<UISettings>();
-        CloseDirectly();
+        CloseImmediately();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
@@ -93,7 +93,7 @@ public class UIMainMenu : UICanvas
        
         _uiManager.OpenUI<UIShop>();
 
-        CloseDirectly();
+        CloseImmediately();
 
         _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -102,7 +102,7 @@ public class UIMainMenu : UICanvas
     {
        
         _uiManager.OpenUI<UiListAct>();
-        CloseDirectly();
+        CloseImmediately();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }

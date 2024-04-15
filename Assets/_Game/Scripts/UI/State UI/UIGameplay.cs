@@ -164,7 +164,7 @@ public class UIGameplay : UICanvas
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
-        CloseDirectly();
+        CloseImmediately();
     }
 
     public void RetryButton()

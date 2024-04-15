@@ -41,7 +41,7 @@ public class UIDailyReward : UICanvas
     
     public void CloseButton()
     {
-        CloseDirectly();
+        CloseImmediately();
     }
     
     public void ClaimButton()

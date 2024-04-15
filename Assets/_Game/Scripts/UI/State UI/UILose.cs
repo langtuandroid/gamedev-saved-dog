@@ -121,7 +121,7 @@ public class UILose : UICanvas
 
             _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
-            CloseDirectly();
+            CloseImmediately();
         }
     }
 
@@ -138,7 +138,7 @@ public class UILose : UICanvas
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
-        CloseDirectly();
+        CloseImmediately();
         
     }
 
@@ -156,7 +156,7 @@ public class UILose : UICanvas
             _levelManager.Despawn();
             _linesDrawer.OnLoadNewLevelOrUI();
 
-            CloseDirectly();
+            CloseImmediately();
 
             _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
             _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -173,7 +173,7 @@ public class UILose : UICanvas
         _levelManager.Despawn();
         _linesDrawer.OnLoadNewLevelOrUI();
 
-        CloseDirectly();
+        CloseImmediately();
 
         _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);

@@ -45,7 +45,7 @@ public class UISettings : UICanvas
     public void BackButton()
     {
         _uiManager.OpenUI<UIMainMenu>();
-        CloseDirectly();
+        CloseImmediately();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
