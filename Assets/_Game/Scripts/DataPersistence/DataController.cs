@@ -4,7 +4,7 @@ using Zenject;
 public class DataController : MonoBehaviour, IDataPersistence
 {
     public GameData currentGameData;
-
+    
     private UIManager _uiManager;
 
     [Inject]

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
-
+using UnityEngine;
 public class DataPersistence : MonoBehaviour
 {
     [Header("File Storage Config")]
@@ -11,28 +10,28 @@ public class DataPersistence : MonoBehaviour
     private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
-    public void NewGame()
+
+    private void NewGame()
     {
-        this.gameData = new GameData();
+        gameData = new GameData();
     }
     private void Start()
     {
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
-        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
+        dataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
+        dataPersistenceObjects = FindAllDataPersistenceObjects();
         LoadGame();
     }
-    public void LoadGame()
-    {
-        // Load data from device
-        this.gameData = dataHandler.Load();
 
-        // If no data, initialize to a new data
-        if (this.gameData == null)
+    private void LoadGame()
+    {
+        gameData = dataHandler.Load();
+
+        if (gameData == null)
         {
             Debug.Log("New Game");
             NewGame();
         }
-        //Push data to game
+
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.LoadData(gameData);
@@ -40,14 +39,12 @@ public class DataPersistence : MonoBehaviour
     }
     public void SaveGame()
     {
-        // Pass data to game so game update it
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData(ref gameData);
         }
 
 
-        // Save data to a file using data handler
         dataHandler.Save(gameData);
     }
 
