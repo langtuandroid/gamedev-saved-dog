@@ -10,9 +10,9 @@ public class UIDailyReward : UICanvas
     [FormerlySerializedAs("ready"),SerializeField] private Sprite readyFrameSprite;
     [FormerlySerializedAs("wait"),SerializeField] private Sprite waitFrameSprite;
     [FormerlySerializedAs("claimed"),SerializeField] private Sprite claimedFrameSprite;
-    [SerializeField] Button claimButton;
-    [SerializeField] RectTransform dailyRewardPopup;
-    [SerializeField] CoinRewardPro coinReward;
+    [SerializeField] private Button claimButton;
+    [SerializeField] private RectTransform dailyRewardPopup;
+    [FormerlySerializedAs("coinReward"),SerializeField] private CoinRewardVip coinRewardVip;
     [FormerlySerializedAs("boxDay"),SerializeField] List<Image> dailyImage;
     [FormerlySerializedAs("rewards"),SerializeField] int[] rewardsPrice;
 
@@ -33,7 +33,7 @@ public class UIDailyReward : UICanvas
         
         claimButton.interactable = _dailyReward.canClaim;
 
-        coinReward.updateCoin += UpdateCoinValue;
+        coinRewardVip.OnUpdateCoin += UpdateCoinValue;
     }
     
     private void OnDisable()
@@ -61,7 +61,7 @@ public class UIDailyReward : UICanvas
         Transform pos = dailyImage[dayNum].transform;
         int coin = _dataController.currentGameData.coin;
         int coinAdded = coin + rewardsPrice[dayNum];
-        coinReward.Anim(coin, coinAdded, pos);
+        coinRewardVip.PlayAnimation(coin, coinAdded, pos);
     }
 
     private void UpdateCoinValue(int value)

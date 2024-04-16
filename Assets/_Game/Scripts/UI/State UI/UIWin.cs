@@ -188,7 +188,7 @@ public class UIWin : UICanvas
        
 
         coinReward.Init();
-        coinReward.AnimCoinFly(_coinsAmount, false);
+        coinReward.PlayCoinFlyAnimation(_coinsAmount, false);
     }
 
     private void ResetAnimation()
@@ -253,12 +253,12 @@ public class UIWin : UICanvas
 #region Ad
     void OnReplayReward()
     {
-        coinReward.AnimCoinFly(10, true);
+        coinReward.PlayCoinFlyAnimation(10, true);
     }
 
     void OnSuccess()
     {
-        coinReward.AnimCoinFly(_coinsAmount, true);
+        coinReward.PlayCoinFlyAnimation(_coinsAmount, true);
     }
 
     void OnFailed()

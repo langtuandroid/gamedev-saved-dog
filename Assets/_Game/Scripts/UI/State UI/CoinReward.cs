@@ -56,7 +56,7 @@ public class CoinReward : MonoBehaviour
         }
     }
     
-    public void AnimCoinFly(int addCoin, bool canNextLevel)
+    public void PlayCoinFlyAnimation(int addCoin, bool canNextLevel)
     {
         if (addCoin == 0)
         {

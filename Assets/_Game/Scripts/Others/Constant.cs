@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Constant
 {
-    // Anim Doge
     public const string DOGE_ANIM_IDLE = "start_3";
     public const string DOGE_ANIM_SCARE = "scare";
     public const string DOGE_ANIM_GET_HIT = "get_hit";
@@ -12,23 +7,8 @@ public class Constant
     public const string DOGE_ANIM_DIE = "die";
     public const string DOGE_ANIM_WIN = "win";
 
-    // Skin Doge
-    public const int DOGE_SKIN_SHIBA = 7;
-    public const int DOGE_SKIN_HUSKY = 8;
-    public const int DOGE_SKIN_BULK = 9;
-    public const int DOGE_SKIN_CAPTAIN = 11;
-    public const int DOGE_SKIN_IRONMAN = 12;
-    public const int DOGE_SKIN_ELF = 13;
-    public const int DOGE_SKIN_VALKYRIE = 14;
-    public const int DOGE_SKIN_FLASH = 15;
-    public const int DOGE_SKIN_TREE = 16;
-    public const int DOGE_SKIN_MINION = 17;
-    public const int DOGE_SKIN_RUGBY = 18;
-    public const int DOGE_SKIN_SANTA = 19;
-    public const int DOGE_SKIN_BATMAN = 20;
     public int[] skins = {10, 1, 29, 3, 2, 11, 12 , 13, 17,20,22,23,21,18,19,15, 16,24};
-
-    // Audio
+    
     public const string AUDIO_MUSIC_BG = "Background menu";
     public const string AUDIO_MUSIC_SHOP = "Shop Music";
 
@@ -55,14 +35,12 @@ public class Constant
     public const string AUDIO_SFX_AWESOME = "Awesome";
     public const string AUDIO_SFX_INCREDIBLE = "Incredible";
     public const string AUDIO_SFX_UNBELIEVABLE = "Unbelievable";
-
-    // Object Entity
+    
     public const string DOGE = "Doge";
     public const string BEE = "Bee";
     public const string DMG_TEXT = "TextDmg";
     public const string SAW = "Saw";
-
-    // Particle
+    
     public const string PAR_BLOOD_VFX = "BloodEffect";
     public const string PAR_KNOCK_VFX = "Knock";
     public const string HEADSHOT_VFX = "Headshot";
