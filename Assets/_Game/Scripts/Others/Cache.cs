@@ -1,28 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public static class Cache 
 {
-    private static Dictionary<Collider2D, Bee> bees = new Dictionary<Collider2D, Bee>();
-    private static Dictionary<GameObject, Bee> beeGO = new Dictionary<GameObject, Bee>();
+    private static Dictionary<Collider2D, Bee> beeColider = new Dictionary<Collider2D, Bee>();
+    private static Dictionary<GameObject, Bee> beeObject = new Dictionary<GameObject, Bee>();
 
     public static Bee GetBee(Collider2D collider)
     {
-        if (!bees.ContainsKey(collider))
+        if (!beeColider.ContainsKey(collider))
         {
-            bees.Add(collider, collider.GetComponent<Bee>());
+            beeColider.Add(collider, collider.GetComponent<Bee>());
         }
 
-        return bees[collider];
+        return beeColider[collider];
     }
-    public static Bee GetBeeGO(GameObject go)
+    
+    public static Bee GetBeeGameObject(GameObject gameObject)
     {
-        if (!beeGO.ContainsKey(go))
+        if (!beeObject.ContainsKey(gameObject))
         {
-            beeGO.Add(go, go.GetComponent<Bee>());
+            beeObject.Add(gameObject, gameObject.GetComponent<Bee>());
         }
 
-        return beeGO[go];
+        return beeObject[gameObject];
     }
 }

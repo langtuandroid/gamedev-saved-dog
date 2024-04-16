@@ -1,25 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
 
 public class CameraShaker : MonoBehaviour
 {
+    private static event Action OnShake;
+    
     [SerializeField] private new Transform camera;
     [SerializeField] private Vector3 positionStrength;
     [SerializeField] private Vector3 rotationStrength;
-
-
-    private static event Action Shake;
+    
 
     public static void Invoke()
     {
-        Shake?.Invoke();
+        OnShake?.Invoke();
     }
 
-    private void OnEnable() => Shake += CameraShake;
-    private void OnDisable() => Shake -= CameraShake;
+    private void OnEnable() => OnShake += CameraShake;
+    private void OnDisable() => OnShake -= CameraShake;
 
     private void CameraShake()
     {

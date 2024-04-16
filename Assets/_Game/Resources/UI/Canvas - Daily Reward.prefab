@@ -770,7 +770,7 @@ MonoBehaviour:
   claimedFrameSprite: {fileID: 21300000, guid: a49e1cb7695fda54688b2569afe3b09a, type: 3}
   claimButton: {fileID: 8373074079946011418}
   dailyRewardPopup: {fileID: 4761626326432060224}
-  coinReward: {fileID: 7985377443602509399}
+  coinRewardVip: {fileID: 7985377443602509399}
   dailyImage:
   - {fileID: 5403300940880468381}
   - {fileID: 7816166624893453858}
@@ -793,8 +793,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pileCoin: {fileID: 7070395463519313196}
-  initialPos: []
-  initialRotation: []
 --- !u!1 &6318058245857290794
 GameObject:
   m_ObjectHideFlags: 0

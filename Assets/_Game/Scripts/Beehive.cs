@@ -44,7 +44,7 @@ public class Beehive : MonoBehaviour
         {
             GameObject obj = _objectPool.GetFromPool(Constant.BEE);
             obj.SetActive(true);
-            Bee bee1 = Cache.GetBeeGO(obj);
+            Bee bee1 = Cache.GetBeeGameObject(obj);
 
             randomLives = Random.Range(3, 11);
             bee1.Lives = randomLives;
