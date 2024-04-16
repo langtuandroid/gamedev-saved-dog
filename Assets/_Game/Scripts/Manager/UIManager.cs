@@ -5,131 +5,27 @@ using Zenject;
 
 public class UIManager : MonoBehaviour
 {
-    //dict for quick query UI prefab
-    //dict dung de lu thong tin prefab canvas truy cap cho nhanh
-    private Dictionary<System.Type, UICanvas> uiCanvasPrefab = new Dictionary<System.Type, UICanvas>();
-
-    //list from resource
-    //list load ui resource
-    private UICanvas[] uiResources;
-
-    //dict for UI active
-    //dict luu cac ui dang dung
-    private Dictionary<System.Type, UICanvas> uiCanvas = new Dictionary<System.Type, UICanvas>();
-
-    //canvas container, it should be a canvas - root
-    //canvas chua dung cac canvas con, nen la mot canvas - root de chua cac canvas nay
-    public Transform CanvasParentTF;
-
-   [Inject] private DiContainer _diContainer;
+    private readonly List<UICanvas> backCanvas = new List<UICanvas>();
     
-    #region Canvas
+    [SerializeField] private Transform parentCanvas;
+    
+    private UICanvas[] uiResources;
+    private Dictionary<System.Type, UICanvas> canvasPrefab = new Dictionary<System.Type, UICanvas>();
+    private Dictionary<System.Type, UICanvas> canvas = new Dictionary<System.Type, UICanvas>();
+    private Dictionary<UICanvas, UnityAction> backActionEvent = new Dictionary<UICanvas, UnityAction>();
 
-    //open UI
-    //mo UI canvas
-    public T OpenUI<T>() where T : UICanvas
+    [Inject] private DiContainer _diContainer;
+   
+    public void OpenUI<T>() where T : UICanvas
     {
         UICanvas canvas = GetUI<T>();
 
         canvas.Setup();
         canvas.Open();
-
-        return canvas as T;
     }
-
-    //close UI directly
-    //dong UI canvas ngay lap tuc
-    public void CloseUI<T>() where T : UICanvas
-    {
-        if (IsOpened<T>())
-        {
-            GetUI<T>().CloseImmediately();
-        }
-    }   
     
-    //close UI with delay time
-    //dong ui canvas sau delay time
-    public void CloseUI<T>(float delayTime) where T : UICanvas
+    private UICanvas BackTopUI
     {
-        if (IsOpened<T>())
-        {
-            GetUI<T>().Close(delayTime);
-        }
-    }
-
-    //check UI is Opened
-    //kiem tra UI dang duoc mo len hay khong
-    public bool IsOpened<T>() where T : UICanvas
-    {
-        return IsLoaded<T>() && uiCanvas[typeof(T)].gameObject.activeInHierarchy;
-    }
-
-    //check UI is loaded
-    //kiem tra UI da duoc khoi tao hay chua
-    public bool IsLoaded<T>() where T : UICanvas
-    {
-        System.Type type = typeof(T);
-        return uiCanvas.ContainsKey(type) && uiCanvas[type] != null;
-    }
-
-    //Get component UI 
-    //lay component cua UI hien tai
-    public T GetUI<T>() where T : UICanvas
-    {
-        if (!IsLoaded<T>())
-        {
-            UICanvas canvas = _diContainer.InstantiatePrefabForComponent<UICanvas>(GetUIPrefab<T>(), CanvasParentTF);
-            uiCanvas[typeof(T)] = canvas;
-        }
-
-        return uiCanvas[typeof(T)] as T;
-    }
-
-    //Close all UI
-    //dong tat ca UI ngay lap tuc -> tranh truong hop dang mo UI nao dong ma bi chen 2 UI cung mot luc
-    public void CloseAll()
-    {
-        foreach (var item in uiCanvas)
-        {
-            if (item.Value != null && item.Value.gameObject.activeInHierarchy)
-            {
-                item.Value.CloseImmediately();
-            }
-        }
-    }
-
-    //Get prefab from resource
-    //lay prefab tu Resources/UI 
-    private T GetUIPrefab<T>() where T : UICanvas
-    {
-        if (!uiCanvasPrefab.ContainsKey(typeof(T)))
-        {
-            if (uiResources == null)
-            {
-                uiResources = Resources.LoadAll<UICanvas>("UI/");
-            }
-
-            for (int i = 0; i < uiResources.Length; i++)
-            {
-                if (uiResources[i] is T)
-                {
-                    uiCanvasPrefab[typeof(T)] = uiResources[i];
-                    break;
-                }
-            }
-        }
-
-        return uiCanvasPrefab[typeof(T)] as T;
-    }
-
-
-    #endregion
-
-    #region Back Button
-
-    private Dictionary<UICanvas, UnityAction> BackActionEvents = new Dictionary<UICanvas, UnityAction>();
-    private List<UICanvas> backCanvas = new List<UICanvas>();
-    UICanvas BackTopUI {
         get
         {
             UICanvas canvas = null;
@@ -142,21 +38,73 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void CloseUI<T>() where T : UICanvas
+    {
+        if (IsOpened<T>())
+        {
+            GetUI<T>().CloseImmediately();
+        }
+    }
+
+    public bool IsOpened<T>() where T : UICanvas
+    {
+        return IsLoaded<T>() && canvas[typeof(T)].gameObject.activeInHierarchy;
+    }
+    
+    public bool IsLoaded<T>() where T : UICanvas
+    {
+        System.Type type = typeof(T);
+        return canvas.ContainsKey(type) && canvas[type] != null;
+    }
+    
+    public T GetUI<T>() where T : UICanvas
+    {
+        if (IsLoaded<T>())
+        {
+            return this.canvas[typeof(T)] as T;
+        }
+
+        UICanvas canvas = _diContainer.InstantiatePrefabForComponent<UICanvas>(GetUIPrefab<T>(), parentCanvas);
+        this.canvas[typeof(T)] = canvas;
+
+        return this.canvas[typeof(T)] as T;
+    }
+
+    private T GetUIPrefab<T>() where T : UICanvas
+    {
+        if (canvasPrefab.ContainsKey(typeof(T)))
+        {
+            return canvasPrefab[typeof(T)] as T;
+        }
+
+        uiResources ??= Resources.LoadAll<UICanvas>("UI/");
+
+        foreach (UICanvas t in uiResources)
+        {
+            if (t is not T)
+            {
+                continue;
+            }
+
+            canvasPrefab[typeof(T)] = t;
+            break;
+        }
+
+        return canvasPrefab[typeof(T)] as T;
+    }
 
     private void LateUpdate()
     {
         if (Input.GetKey(KeyCode.Escape) && BackTopUI != null)
         {
-            BackActionEvents[BackTopUI]?.Invoke();
+            backActionEvent[BackTopUI]?.Invoke();
         }
     }
 
     public void PushBackAction(UICanvas canvas, UnityAction action)
     {
-        if (!BackActionEvents.ContainsKey(canvas))
-        {
-            BackActionEvents.Add(canvas, action);
-        }
+        backActionEvent.TryAdd(canvas, action);
+
     }
 
     public void AddBackUI(UICanvas canvas)
@@ -171,14 +119,4 @@ public class UIManager : MonoBehaviour
     {
         backCanvas.Remove(canvas);
     }
-
-    /// <summary>
-    /// CLear backey when comeback index UI canvas
-    /// </summary>
-    public void ClearBackKey()
-    {
-        backCanvas.Clear();
-    }
-
-    #endregion
 }

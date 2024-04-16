@@ -212,34 +212,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolList:
-  - poolObjectPrefab: {fileID: 3604250474955841274, guid: 6bef83beb8fda724fa79f9d61836d452, type: 3}
-    poolCount: 10
-    canGrow: 1
-    tag: Bee
-  - poolObjectPrefab: {fileID: 2517161855133742507, guid: a26aa4c4068891946a43de88d6fcc548, type: 3}
-    poolCount: 7
-    canGrow: 1
-    tag: TextDmg
-  - poolObjectPrefab: {fileID: 4619482235775213481, guid: a01577f6d5a53e9429287a1740951e63, type: 3}
-    poolCount: 5
-    canGrow: 1
-    tag: BloodEffect
-  - poolObjectPrefab: {fileID: 3520942085305996189, guid: edf52b9e79a807540aaf9627ec4db9aa, type: 3}
-    poolCount: 15
-    canGrow: 1
-    tag: Knock
-  - poolObjectPrefab: {fileID: 3610966747267746717, guid: de5c381f5a4f4ff4299e15f06e5dd4c5, type: 3}
-    poolCount: 5
-    canGrow: 1
-    tag: Headshot
-  - poolObjectPrefab: {fileID: 2656902628619649169, guid: 5865aff3170ffe949a8a506943fa1259, type: 3}
-    poolCount: 10
-    canGrow: 1
-    tag: Kill
-  - poolObjectPrefab: {fileID: 7874147328574559891, guid: c61fbd57a89ccdf42be6e21f80442e16, type: 3}
-    poolCount: 10
-    canGrow: 1
-    tag: Kill Coin
+  - poolPrefab: {fileID: 3604250474955841274, guid: 6bef83beb8fda724fa79f9d61836d452, type: 3}
+    countToSpawn: 10
+    isCanGrow: 1
+    objectTag: Bee
+  - poolPrefab: {fileID: 2517161855133742507, guid: a26aa4c4068891946a43de88d6fcc548, type: 3}
+    countToSpawn: 7
+    isCanGrow: 1
+    objectTag: TextDmg
+  - poolPrefab: {fileID: 4619482235775213481, guid: a01577f6d5a53e9429287a1740951e63, type: 3}
+    countToSpawn: 5
+    isCanGrow: 1
+    objectTag: BloodEffect
+  - poolPrefab: {fileID: 3520942085305996189, guid: edf52b9e79a807540aaf9627ec4db9aa, type: 3}
+    countToSpawn: 15
+    isCanGrow: 1
+    objectTag: Knock
+  - poolPrefab: {fileID: 3610966747267746717, guid: de5c381f5a4f4ff4299e15f06e5dd4c5, type: 3}
+    countToSpawn: 5
+    isCanGrow: 1
+    objectTag: Headshot
+  - poolPrefab: {fileID: 2656902628619649169, guid: 5865aff3170ffe949a8a506943fa1259, type: 3}
+    countToSpawn: 10
+    isCanGrow: 1
+    objectTag: Kill
+  - poolPrefab: {fileID: 7874147328574559891, guid: c61fbd57a89ccdf42be6e21f80442e16, type: 3}
+    countToSpawn: 10
+    isCanGrow: 1
+    objectTag: Kill Coin
 --- !u!1 &175602338
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +686,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3567b7bb6fe1edd47824dca4c0b93590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSliceVelocity: 0.01
   swipeSoundLength: 0
 --- !u!58 &504978401
 CircleCollider2D:
@@ -1158,7 +1157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcba0ab4d3158eb4084119c444681521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanvasParentTF: {fileID: 1024355157}
+  parentCanvas: {fileID: 1024355157}
 --- !u!114 &1024355159
 MonoBehaviour:
   m_ObjectHideFlags: 0
