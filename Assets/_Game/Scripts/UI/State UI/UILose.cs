@@ -81,7 +81,7 @@ public class UILose : UICanvas
         yield return new WaitForSeconds(1);
         _uiManager.CloseUI<UILose>();
         _uiManager.OpenUI<UIGameplay>();
-        _uiManager.GetUI<UIGameplay>().OnInit();
+        _uiManager.GetUI<UIGameplay>().Init();
         _levelManager.RetryLevel();
         _gameManager.ChangeState(GameState.GamePlay);
 

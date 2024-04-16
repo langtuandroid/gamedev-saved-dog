@@ -106,8 +106,8 @@ public class TimerUI : MonoBehaviour
 
     private void AnimTickWinThenWin()
     {
-        _uiManager.GetUI<UIGameplay>().tickWin.gameObject.SetActive(true);
-        _uiManager.GetUI<UIGameplay>().tickWin.rectTransform.DOScale(8f, 2f).SetEase(Ease.InOutSine).OnComplete(_gameManager.WhenVictory);
+        _uiManager.GetUI<UIGameplay>().TickWin.gameObject.SetActive(true);
+        _uiManager.GetUI<UIGameplay>().TickWin.rectTransform.DOScale(8f, 2f).SetEase(Ease.InOutSine).OnComplete(_gameManager.WhenVictory);
     }
 
     private void SetUITimerTrue()

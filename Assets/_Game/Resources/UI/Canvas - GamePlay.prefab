@@ -430,19 +430,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8444515485627608547}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 406934972131469930}
-        m_TargetAssemblyTypeName: UIGameplay, Assembly-CSharp
-        m_MethodName: TryButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &9204269195601857605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1599,19 +1587,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsDestroyOnClose: 0
-  inkBar: {fileID: 835828617031902720}
-  star: 0
-  coinImage: {fileID: 3873806938275063112}
-  clockCover: {fileID: 8862658161106753284}
-  stars:
+  levelCompleteBar: {fileID: 835828617031902720}
+  coinImageTransform: {fileID: 3873806938275063112}
+  timerBG: {fileID: 8862658161106753284}
+  loseStarColor: {r: 0.44313726, g: 0.44313726, b: 0.44313726, a: 1}
+  levelText: {fileID: 754376606627428052}
+  coinText: {fileID: 4086070978637063868}
+  maxInk: 100
+  inkLoseRate: 2
+  starsImages:
   - {fileID: 4957891576359776773}
   - {fileID: 5835928488346985829}
   - {fileID: 1902374923696492106}
-  colorLoseStar: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
-  maxInk: 100
-  inkLoseRate: 2
-  levelText: {fileID: 754376606627428052}
-  coinText: {fileID: 4086070978637063868}
   tickWin: {fileID: 1678102980805860687}
   tickLose: {fileID: 2349973119072757563}
 --- !u!1 &4173374775844913184
@@ -2545,7 +2532,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 406934972131469930}
         m_TargetAssemblyTypeName: UIGameplay, Assembly-CSharp
-        m_MethodName: BackButton
+        m_MethodName: BackButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3548,7 +3535,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 406934972131469930}
         m_TargetAssemblyTypeName: UIGameplay, Assembly-CSharp
-        m_MethodName: RetryButton
+        m_MethodName: RetryButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

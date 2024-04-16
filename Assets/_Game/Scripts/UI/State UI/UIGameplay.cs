@@ -6,29 +6,27 @@ using Zenject;
 
 public class UIGameplay : UICanvas
 {
-    [Header("Ink Section")]
-    public Image inkBar;
-    public int star;
-
-    [SerializeField] private RectTransform coinImage;
-    [SerializeField] private Transform clockCover;
-    [SerializeField] private Image[] stars;
-    [SerializeField] private Color colorLoseStar;
-
-    [SerializeField] private float maxInk; public float MaxInk { get { return maxInk; } }
-    [SerializeField] private float inkLoseRate; public float InkLoseRate { get { return inkLoseRate; } }
-    private float currentInk; public float CurrentInk { get { return currentInk; } set { currentInk = value; } }
+    [SerializeField] private Image levelCompleteBar;
+    [SerializeField] private RectTransform coinImageTransform;
+    [SerializeField] private Transform timerBG;
+    [SerializeField] private Color loseStarColor;
+    [SerializeField] private TextMeshProUGUI levelText, coinText;
+    [SerializeField] private float maxInk;
+    [SerializeField] private float inkLoseRate;
+    [SerializeField] private Image[] starsImages;
+    [SerializeField] private Image tickWin, tickLose;
+    
+    private float currentInk; 
     private float inkRatio;
-
     private Tween tween1, tween2, tween3;
     private Vector3 initPosClock;
+    private int endValue;
+    
+    public float InkLoseRate => inkLoseRate;
+    public float CurrentInk { get { return currentInk; } set { currentInk = value; } }
+    public Image TickWin => tickWin;
+    public Image TickLose => tickLose;
 
-    private int startValue, endValue;
-
-    [Header("TextLevel Section")]
-    [SerializeField] private TextMeshProUGUI levelText, coinText;
-
-    public Image tickWin, tickLose;
     private GameManager _gameManager;
     private LevelManager _levelManager;
     private DataController _dataController;
@@ -47,39 +45,39 @@ public class UIGameplay : UICanvas
 
     private void Awake()
     {
-        initPosClock = clockCover.position;
+        initPosClock = timerBG.position;
     }
-    void OnEnable()
-    {
-        OnInit();
 
-        _linesDrawer.OnEndDraw += AnimClock;
+    private void OnEnable()
+    {
+        Init();
+
+        _linesDrawer.OnEndDraw += PlayClockAnimation;
     }
+    
     private void OnDisable()
     {
-        _linesDrawer.OnEndDraw -= AnimClock;
+        _linesDrawer.OnEndDraw -= PlayClockAnimation;
 
-        ResetAnimClock();
+        ResetClockAnimation();
     }
 
-    public new void OnInit()
+    public void Init()
     {
-        star = 3;
-        inkBar.fillAmount = 1f;
+        levelCompleteBar.fillAmount = 1f;
         currentInk = maxInk;
         ColorStarReturnDefault();
         ResetTickWin();
         ResetTickLose();
         UpdateCoinText();
-        ResetAnimClock();
+        ResetClockAnimation();
         ResetCoinImage();
     }
 
     public void HandleCoinGainInGameplay(int loop)
     {
-        coinImage.DOScale(1.2f, 0.1f).SetEase(Ease.Linear).SetLoops(loop, LoopType.Yoyo);
+        coinImageTransform.DOScale(1.2f, 0.1f).SetEase(Ease.Linear).SetLoops(loop, LoopType.Yoyo);
 
-        startValue = _dataController.currentGameData.coin;
         endValue = _dataController.currentGameData.coin + loop/2;
         _dataController.currentGameData.coin += loop / 2;
         coinText.DOFade(0, 0.5f).From().SetEase(Ease.OutQuad).OnComplete(() =>
@@ -91,24 +89,25 @@ public class UIGameplay : UICanvas
 
     private void ResetCoinImage()
     {
-        coinImage.DOScale(1f, 0f);
+        coinImageTransform.DOScale(1f, 0f);
     }
-    private void AnimClock()
+    
+    private void PlayClockAnimation()
     {
-        tween1 = clockCover.DOShakePosition(1f, 3f, 26, 90f, false).SetEase(Ease.InQuart).SetLoops(-1, LoopType.Yoyo);
-        tween2 = clockCover.DOShakeRotation(1f, 10f, 10, 90f).SetEase(Ease.InQuart).SetLoops(-1, LoopType.Yoyo);
-        tween3 = clockCover.DOShakeScale(1, 0.2f, 10, 90f).SetEase(Ease.InQuart).SetLoops(-1, LoopType.Yoyo);
+        tween1 = timerBG.DOShakePosition(1f, 3f, 26, 90f, false).SetEase(Ease.InQuart).SetLoops(-1, LoopType.Yoyo);
+        tween2 = timerBG.DOShakeRotation(1f, 10f, 10, 90f).SetEase(Ease.InQuart).SetLoops(-1, LoopType.Yoyo);
+        tween3 = timerBG.DOShakeScale(1, 0.2f, 10, 90f).SetEase(Ease.InQuart).SetLoops(-1, LoopType.Yoyo);
     }
 
-    private void ResetAnimClock()
+    private void ResetClockAnimation()
     {
         tween1.Kill();
         tween2.Kill();
         tween3.Kill();
 
-        clockCover.transform.position = initPosClock;
-        clockCover.transform.localRotation = Quaternion.identity;
-        clockCover.transform.localScale = Vector3.one;
+        timerBG.transform.position = initPosClock;
+        timerBG.transform.localRotation = Quaternion.identity;
+        timerBG.transform.localScale = Vector3.one;
     }
 
     private void UpdateCoinText()
@@ -117,40 +116,36 @@ public class UIGameplay : UICanvas
     }
     private void ColorStarReturnDefault()
     {
-        stars[1].color = stars[0].color;
-        stars[2].color = stars[0].color;
+        starsImages[1].color = starsImages[0].color;
+        starsImages[2].color = starsImages[0].color;
     }
 
     public void UpdateInkBar()
     {
-        inkBar.fillAmount = currentInk / maxInk;
+        levelCompleteBar.fillAmount = currentInk / maxInk;
         UpdateStar();
     }
+    
     private void UpdateStar()
     {
-        inkRatio = inkBar.fillAmount;
+        inkRatio = levelCompleteBar.fillAmount;
         if (inkRatio is < 2f / 3f and > 1f / 3f)
         {
-            star = 2;
             _levelManager.CurrentLevel.SetStarsCount(2);
-            stars[2].color = colorLoseStar;
+            starsImages[2].color = loseStarColor;
         } else if (inkRatio is < 1f / 3f and > 0)
         {
-            star = 1;
             _levelManager.CurrentLevel.SetStarsCount(1);
-            stars[1].color = colorLoseStar;
+            starsImages[1].color = loseStarColor;
         }
     }
+    
     public void UpdateLevelText(int level)
     {
         levelText.text = "Level " + level;
     }
-    public void BackButton()
-    {
-        OnBackButton();
-    }
-
-    private void OnBackButton()
+    
+    public void BackButtonClick()
     {
         _levelManager.StateIndex++;
 
@@ -165,11 +160,7 @@ public class UIGameplay : UICanvas
         CloseImmediately();
     }
 
-    public void RetryButton()
-    {
-          OnRetryButton();
-    }
-    public void OnRetryButton()
+    public void RetryButtonClick()
     {
         _levelManager.StateIndex++;
 
@@ -183,27 +174,18 @@ public class UIGameplay : UICanvas
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 
-        OnInit();
+        Init();
     }
+    
     public void ResetTickWin()
     {
         tickWin.rectTransform.localScale = Vector3.one;
         tickWin.gameObject.SetActive(false);
     }
+    
     public void ResetTickLose()
     {
         tickLose.rectTransform.localScale = Vector3.one;
         tickLose.gameObject.SetActive(false);
-    }
-    public void ShowTut()
-    {
-        //panelTut.SetActive(true);
-        //TimeManager.Instance.SlowTime();
-        //Transform handAttack = LevelManager.Instance.currentLevel.transform.Find("Tut Hand Attack");
-        //handAttack.gameObject.SetActive(true);
-    }
-    public void TryButton()
-    {
-        
     }
 }

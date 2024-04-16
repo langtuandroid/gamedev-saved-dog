@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
 
         _audioManager.Play(Constant.AUDIO_SFX_LOSE);
 
-        _uiManager.GetUI<UIGameplay>().tickLose.gameObject.SetActive(true);
+        _uiManager.GetUI<UIGameplay>().TickLose.gameObject.SetActive(true);
 
         StartCoroutine(StartScale());
 
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartScale()
     {
-        scaleTween = _uiManager.GetUI<UIGameplay>().tickLose.rectTransform.DOScale(8f, 2f).SetEase(Ease.Linear);
+        scaleTween = _uiManager.GetUI<UIGameplay>().TickLose.rectTransform.DOScale(8f, 2f).SetEase(Ease.Linear);
 
         yield return new WaitForSeconds(2f);
 

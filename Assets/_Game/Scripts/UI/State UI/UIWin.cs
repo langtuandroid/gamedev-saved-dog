@@ -158,7 +158,7 @@ public class UIWin : UICanvas
         
         _uiManager.CloseUI<UIWin>();
         _uiManager.OpenUI<UIGameplay>();
-        _uiManager.GetUI<UIGameplay>().OnInit();
+        _uiManager.GetUI<UIGameplay>().Init();
         _levelManager.LoadNextLevel();
         _gameManager.ChangeState(GameState.GamePlay);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -170,7 +170,7 @@ public class UIWin : UICanvas
     {
         _uiManager.CloseUI<UIWin>();
         _uiManager.OpenUI<UIGameplay>();
-        _uiManager.GetUI<UIGameplay>().OnInit();
+        _uiManager.GetUI<UIGameplay>().Init();
         _levelManager.RetryLevel();
         _gameManager.ChangeState(GameState.GamePlay);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
