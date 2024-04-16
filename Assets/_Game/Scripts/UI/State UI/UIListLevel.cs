@@ -64,10 +64,9 @@ public class UIListLevel : UICanvas
                 buttonLevel.DisplayLock(false);
             }
 
-
-            for (int j = 0; j < buttonLevel.starDone; j++)
+            for (int j = 0; j < buttonLevel.StarsToComplete; j++)
             {
-                buttonLevel.stars[j].color = buttonLevel.starTrue;
+                buttonLevel.Stars[j].color = buttonLevel.StarReceivedColor;
             }
 
             buttonLevelList.Add(button);

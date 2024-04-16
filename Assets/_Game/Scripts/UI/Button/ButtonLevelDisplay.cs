@@ -1,28 +1,30 @@
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ButtonLevelDisplay : MonoBehaviour
 {
-    public Color starTrue, starFalse;
-    public Text title;
-    public int starDone;
-    public Image imageLevel;
-    public List<Image> stars;
-    public int numLevelToLoad;
+    [SerializeField] private Color starReceivedColor;
+    [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private int starsToComplete;
+    [SerializeField] private Image imageLevelBG;
+    [SerializeField] private GameObject blurImage;
+    [SerializeField] private List<Image> starsImageList;
 
-    public GameObject blur;
+    public Color StarReceivedColor => starReceivedColor;
+    public int StarsToComplete => starsToComplete;
+    public List<Image> Stars => starsImageList;
 
     public void LoadDataUnlocked(int numLevel, Sprite image, int star)
     {
-        this.numLevelToLoad = numLevel;
-        this.title.text = "Level: " + numLevel;
-        this.imageLevel.sprite = image;
-        this.starDone = star;
+        titleText.text = "Level: " + numLevel;
+        imageLevelBG.sprite = image;
+        starsToComplete = star;
     }
-    public void DisplayLock(bool a)
+    
+    public void DisplayLock(bool value)
     {
-        blur.SetActive(a);
+        blurImage.SetActive(value);
     }
 }

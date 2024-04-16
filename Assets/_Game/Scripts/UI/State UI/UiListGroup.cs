@@ -14,7 +14,7 @@ public class UiListGroup : UICanvas
     [SerializeField] private List<GroupSO> groupSOList;
 
     private List<Button> buttonGroupList = new List<Button>();
-    private ButtonActDisplay buttonGroup;
+    private ButtonGroupDisplay buttonGroup;
     private GameObject buttonGroupTemp;
     private Button button;
     private int actSelected;
@@ -39,18 +39,18 @@ public class UiListGroup : UICanvas
         for (int i = 0; i < groupSOList.Count; i++)
         {
             buttonGroupTemp = Instantiate(buttonGroupPrefab, content);
-            buttonGroup = buttonGroupTemp.GetComponent<ButtonActDisplay>();
+            buttonGroup = buttonGroupTemp.GetComponent<ButtonGroupDisplay>();
             button = buttonGroupTemp.GetComponent<Button>();
 
-            buttonGroup.LoadDataWhenUnlocked(groupSOList[i].title, groupSOList[i].actImage, GetTotalStarsCountInAct(i));
-            buttonGroup.LoadDataWhenLock(groupSOList[i].starUnlock);
+            buttonGroup.LoadDataLockedGroup(groupSOList[i].title, groupSOList[i].actImage, GetTotalStarsCountInAct(i));
+            buttonGroup.LoadDataUnlockedGroup(groupSOList[i].starUnlock);
 
             if (groupSOList[i].starUnlock > GetTotalStarsCount())
             {
-                buttonGroup.DisplayLock();
+                buttonGroup.LockGroup();
             } else
             {
-                buttonGroup.DisplayUnlock();
+                buttonGroup.UnlockGroup();
             }
 
             buttonGroupList.Add(button);

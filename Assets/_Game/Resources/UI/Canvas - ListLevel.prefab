@@ -2032,6 +2032,7 @@ MonoBehaviour:
   starsGainedInGroup: {fileID: 379198992913121098}
   starsGainedInGameCount: {fileID: 3828646386600043602}
   levelDoneText: {fileID: 2541513556526660863}
+  starReceivedColor: {r: 0.98039216, g: 0.94509804, b: 0.03137255, a: 0}
   buttonLevelPrefab: {fileID: 1131745220213124465, guid: fb93f10a167d8f449af9f47587415b29, type: 3}
   groupList:
   - levelSOList:

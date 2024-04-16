@@ -106,18 +106,15 @@ public class UIShop : UICanvas
             buttonChar = buttonTemp.GetComponent<ButtonCharDisplay>();
             button = buttonTemp.GetComponent<Button>();
 
-            buttonChar.charImage.sprite = charactersList[i].image;
-            buttonChar.currentAd = _dataController.currentGameData.currentAd[i];
-            buttonChar.maxAd = _dataController.currentGameData.maxAd[i];
-            buttonChar.textAd.text = buttonChar.currentAd + "/" + buttonChar.maxAd;
-            buttonChar.selectedIcon.SetActive(false);
+            buttonChar.CharacterImage.sprite = charactersList[i].image;
+            buttonChar.SelectedIcon.SetActive(false);
 
             if (_dataController.currentGameData.currentChar == i)
             {
                 previousCharacterIndex = i;
 
                 button.image.sprite = boxYellow;
-                buttonChar.selectedIcon.SetActive(true);
+                buttonChar.SelectedIcon.SetActive(true);
 
                 buyButton.gameObject.SetActive(false);
                 useButton.gameObject.SetActive(false);
@@ -126,12 +123,7 @@ public class UIShop : UICanvas
                 SetStateDisplayCharacter(true);
                 DisplayCharacter(i);
             }
-
-            if (charUnlock[i] == 1)
-            {
-                buttonChar.textAd.gameObject.SetActive(false);
-                buttonChar.adImage.gameObject.SetActive(false);
-            }
+            
 
             buttonCharactersList.Add(button);
             buttonCharactersDisplayList.Add(buttonChar);
@@ -145,9 +137,9 @@ public class UIShop : UICanvas
 
                 if (previousCharacterIndex != -1)
                 {
-                    buttonCharactersDisplayList[previousCharacterIndex].selectedIcon.SetActive(false);
+                    buttonCharactersDisplayList[previousCharacterIndex].SelectedIcon.SetActive(false);
                 }
-                buttonCharactersDisplayList[currentCharacterIndex].selectedIcon.SetActive(true);
+                buttonCharactersDisplayList[currentCharacterIndex].SelectedIcon.SetActive(true);
 
                 if (_dataController.currentGameData.charUnlock[index] == 1)
                 {
@@ -235,8 +227,6 @@ public class UIShop : UICanvas
         buyButton.gameObject.SetActive(false);
         useButton.gameObject.SetActive(true);
         usedButton.gameObject.SetActive(false);
-        buttonCharactersDisplayList[currentCharacterIndex].textAd.gameObject.SetActive(false);
-        buttonCharactersDisplayList[currentCharacterIndex].adImage.gameObject.SetActive(false);
 
         _dataPersistence.SaveGame();
     }
@@ -296,9 +286,9 @@ public class UIShop : UICanvas
     }
     void OnWatchVideoSuccess()
     {
-        _dataController.currentGameData.currentAd[currentCharacterIndex]++;
+        /*_dataController.currentGameData.currentAd[currentCharacterIndex]++;
 
-        buttonCharactersDisplayList[currentCharacterIndex].textAd.text = _dataController.currentGameData.currentAd[currentCharacterIndex] + "/"
+        buttonCharactersDisplayList[currentCharacterIndex].TextAd.text = _dataController.currentGameData.currentAd[currentCharacterIndex] + "/"
             + charactersList[currentCharacterIndex].adMustWatch;
         if (_dataController.currentGameData.currentAd[currentCharacterIndex] == charactersList[currentCharacterIndex].adMustWatch)
         {
@@ -310,9 +300,9 @@ public class UIShop : UICanvas
             useButton.gameObject.SetActive(true);
             usedButton.gameObject.SetActive(false);
 
-            buttonCharactersDisplayList[currentCharacterIndex].textAd.gameObject.SetActive(false);
-            buttonCharactersDisplayList[currentCharacterIndex].adImage.gameObject.SetActive(false);
-        }
+            buttonCharactersDisplayList[currentCharacterIndex].TextAd.gameObject.SetActive(false);
+            buttonCharactersDisplayList[currentCharacterIndex].ADImage.gameObject.SetActive(false);
+        }*/
 
     }
 
