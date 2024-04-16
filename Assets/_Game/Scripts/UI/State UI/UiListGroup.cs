@@ -42,10 +42,10 @@ public class UiListGroup : UICanvas
             buttonGroup = buttonGroupTemp.GetComponent<ButtonGroupDisplay>();
             button = buttonGroupTemp.GetComponent<Button>();
 
-            buttonGroup.LoadDataLockedGroup(groupSOList[i].title, groupSOList[i].actImage, GetTotalStarsCountInAct(i));
-            buttonGroup.LoadDataUnlockedGroup(groupSOList[i].starUnlock);
+            buttonGroup.LoadDataLockedGroup(groupSOList[i].levelsInGroupText, groupSOList[i].groupImage, GetTotalStarsCountInAct(i));
+            buttonGroup.LoadDataUnlockedGroup(groupSOList[i].starsToUnlock);
 
-            if (groupSOList[i].starUnlock > GetTotalStarsCount())
+            if (groupSOList[i].starsToUnlock > GetTotalStarsCount())
             {
                 buttonGroup.LockGroup();
             } else
@@ -62,7 +62,7 @@ public class UiListGroup : UICanvas
             {
                 actSelected = index;
 
-                if (groupSOList[index].starUnlock > GetTotalStarsCount())
+                if (groupSOList[index].starsToUnlock > GetTotalStarsCount())
                 {
                     AnimPopup();
 

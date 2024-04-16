@@ -1,17 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu]
 public class CharacterSO : ScriptableObject
 {
-    public Sprite image;
-    public int animIndex;
-    public int hp;
+    [FormerlySerializedAs("image")]
+    public Sprite skinImage;
+    [FormerlySerializedAs("animIndex")]
+    public int animationIndex;
+    [FormerlySerializedAs("hp")]
+    public int health;
     public int price;
     public int adMustWatch;
-    public int currentAd;
-    public bool owned;
-    public new string name;
+    [FormerlySerializedAs("owned")]
+    public bool isOwned;
+    [FormerlySerializedAs("name")]
+    public string skinName;
 }

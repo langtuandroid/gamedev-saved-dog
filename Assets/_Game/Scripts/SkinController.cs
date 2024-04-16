@@ -22,6 +22,6 @@ public class SkinController : MonoBehaviour
     public void LoadDataSkin()
     {
         currentSkinIndex = _dataController.currentGameData.currentChar;
-        currentHp = charList[currentSkinIndex].hp;
+        currentHp = charList[currentSkinIndex].health;
     }
 }

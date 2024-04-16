@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu]
 public class LevelSO : ScriptableObject
 {
-    public int numLevel;
-    public int starDone;
+    [FormerlySerializedAs("numLevel")]
+    public int levelNumber;
     public Sprite levelImage;
 }

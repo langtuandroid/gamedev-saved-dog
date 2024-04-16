@@ -53,7 +53,7 @@ public class UIListLevel : UICanvas
             buttonLevel = buttonLevelTemp.GetComponent<ButtonLevelDisplay>();
             button = buttonLevelTemp.GetComponent<Button>();
 
-            buttonLevel.LoadDataUnlocked(groupList[currentGroup].levelSOList[i].numLevel, groupList[currentGroup].levelSOList[i].levelImage, 
+            buttonLevel.LoadDataUnlocked(groupList[currentGroup].levelSOList[i].levelNumber, groupList[currentGroup].levelSOList[i].levelImage, 
                 _dataController.currentGameData.starDoneInLevels[i + currentGroup * 10]);
 
             if (i > 0 && _dataController.currentGameData.starDoneInLevels[i + currentGroup * 10 - 1] == 0)

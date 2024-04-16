@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu]
 public class GroupSO : ScriptableObject
 {
-    public string title;
-    public string starDoneInAct;
-    public Sprite actImage;
-    public int starUnlock;
+    [FormerlySerializedAs("title")]
+    public string levelsInGroupText;
+    [FormerlySerializedAs("actImage")]
+    public Sprite groupImage;
+    [FormerlySerializedAs("starUnlock")]
+    public int starsToUnlock;
 }

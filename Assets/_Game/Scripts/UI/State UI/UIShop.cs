@@ -76,7 +76,7 @@ public class UIShop : UICanvas
         {
             foreach (CharacterSO character in charactersList)
             {
-                _dataController.currentGameData.charUnlock.Add(character.owned ? 1 : 0);
+                _dataController.currentGameData.charUnlock.Add(character.isOwned ? 1 : 0);
                 _dataController.currentGameData.currentAd.Add(0);
                 _dataController.currentGameData.maxAd.Add(character.adMustWatch);
             }
@@ -84,7 +84,7 @@ public class UIShop : UICanvas
         {
             for(int i = _dataController.currentGameData.charUnlock.Count; i < charactersList.Count; i++)
             {
-                _dataController.currentGameData.charUnlock.Add(charactersList[i].owned ? 1 : 0);
+                _dataController.currentGameData.charUnlock.Add(charactersList[i].isOwned ? 1 : 0);
                 _dataController.currentGameData.currentAd.Add(0);
                 _dataController.currentGameData.maxAd.Add(charactersList[i].adMustWatch);
             }
@@ -106,7 +106,7 @@ public class UIShop : UICanvas
             buttonChar = buttonTemp.GetComponent<ButtonCharDisplay>();
             button = buttonTemp.GetComponent<Button>();
 
-            buttonChar.CharacterImage.sprite = charactersList[i].image;
+            buttonChar.CharacterImage.sprite = charactersList[i].skinImage;
             buttonChar.SelectedIcon.SetActive(false);
 
             if (_dataController.currentGameData.currentChar == i)
@@ -171,9 +171,9 @@ public class UIShop : UICanvas
 
     private void DisplayCharacter(int index)
     {
-        SetCharacterSkin(charactersList[index].animIndex);
-        characterName.text = charactersList[index].name;
-        characterHealth.text = "HP : " + charactersList[index].hp;
+        SetCharacterSkin(charactersList[index].animationIndex);
+        characterName.text = charactersList[index].skinName;
+        characterHealth.text = "HP : " + charactersList[index].health;
     }
 
     private void SetCharacterSkin(int skinIndex)
