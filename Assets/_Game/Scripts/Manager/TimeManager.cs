@@ -6,7 +6,8 @@ public class TimeManager : MonoBehaviour
     {
         Time.timeScale = 0.25f;
     }
-    public void BackNormalTime()
+    
+    public void NormalTime()
     {
         Time.timeScale = 1f;
     }

@@ -40,7 +40,7 @@ public class HandBladeAttack : MonoBehaviour
     private IEnumerator BackToGameplay()
     {
         yield return new WaitForSeconds(0.4f);
-        _timeManager.BackNormalTime();
+        _timeManager.NormalTime();
         parent.SetActive(false);
     }
 }
