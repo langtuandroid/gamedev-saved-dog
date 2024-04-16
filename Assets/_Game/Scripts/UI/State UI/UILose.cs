@@ -82,7 +82,7 @@ public class UILose : UICanvas
         _uiManager.CloseUI<UILose>();
         _uiManager.OpenUI<UIGameplay>();
         _uiManager.GetUI<UIGameplay>().OnInit();
-        _levelManager.OnRetry();
+        _levelManager.RetryLevel();
         _gameManager.ChangeState(GameState.GamePlay);
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -92,17 +92,17 @@ public class UILose : UICanvas
     
     public void MenuButtonClick()
     {
-        if (_levelManager.currentLevel.LevelNumberInGame > 1)
+        if (_levelManager.CurrentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(Home());
         } else
         {
-            _levelManager.stateIndex++;
+            _levelManager.StateIndex++;
 
             _uiManager.OpenUI<UIMainMenu>();
             _gameManager.ChangeState(GameState.MainMenu);
 
-            _levelManager.Despawn();
+            _levelManager.DespawnLevel();
             _linesDrawer.OnLoadNewLevelOrUI();
 
             _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -114,12 +114,12 @@ public class UILose : UICanvas
     private IEnumerator Home()
     {
         yield return new WaitForSeconds(1);
-        _levelManager.stateIndex++;
+        _levelManager.StateIndex++;
 
         _uiManager.OpenUI<UIMainMenu>();
         _gameManager.ChangeState(GameState.MainMenu);
 
-        _levelManager.Despawn();
+        _levelManager.DespawnLevel();
         _linesDrawer.OnLoadNewLevelOrUI();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -130,7 +130,7 @@ public class UILose : UICanvas
 
     public void ShopButtonClick()
     {
-        if (_levelManager.currentLevel.LevelNumberInGame > 1)
+        if (_levelManager.CurrentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(Shop());
         } else
@@ -138,7 +138,7 @@ public class UILose : UICanvas
             _uiManager.OpenUI<UIShop>();
             _gameManager.ChangeState(GameState.MainMenu);
 
-            _levelManager.Despawn();
+            _levelManager.DespawnLevel();
             _linesDrawer.OnLoadNewLevelOrUI();
 
             CloseImmediately();
@@ -155,7 +155,7 @@ public class UILose : UICanvas
         _uiManager.OpenUI<UIShop>();
         _gameManager.ChangeState(GameState.MainMenu);
 
-        _levelManager.Despawn();
+        _levelManager.DespawnLevel();
         _linesDrawer.OnLoadNewLevelOrUI();
 
         CloseImmediately();

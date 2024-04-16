@@ -5,19 +5,25 @@ using Zenject;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private Level[] levels;
-    public Level currentLevel;
-
-    //[HideInInspector] public int[] levelDone = new int[100];
-    //private int levelIndexInProgress; public int LevelIndexInProgress { get { return levelIndexInProgress; } }
-    private int currentLevelIndex;
-    public int CurrentLevelIndex => currentLevelIndex;
-
-    private int currentSkinIndex, currentHp;
-
-    public event Action OnWinLevel, OnLoseLevel;
-    public int stateIndex;
+    public event Action OnWinLevel; 
+    public event Action OnLoseLevel;
     
+    [SerializeField] private Level[] levels;
+    
+    private Level currentLevel;
+    private int currentLevelIndex;
+    private int currentSkinIndex;
+    private int currentHp;
+
+    private int stateIndex;
+    public Level CurrentLevel => currentLevel;
+    public int CurrentLevelIndex => currentLevelIndex;
+    public int StateIndex
+    {
+        get => stateIndex;
+        set => stateIndex = value;
+    }
+
     private DiContainer _diContainer;
     private DataController _dataController;
     private UIManager _uiManager;
@@ -34,7 +40,7 @@ public class LevelManager : MonoBehaviour
        _linesDrawer = linesDrawer;
    }
 
-   public void Despawn()
+   public void DespawnLevel()
     {
         if (currentLevel != null)
         {
@@ -43,16 +49,18 @@ public class LevelManager : MonoBehaviour
         currentLevel = null;
     }
 
-    public void OnLoadLevel(int level)
+    public void LoadLevel(int level)
     {
         if (currentLevel != null)
         {
             Destroy(currentLevel.gameObject);
         }
+        
         if (level >= levels.Length)
         {
             level = 0;
         }
+        
         currentLevel = _diContainer.InstantiatePrefabForComponent<Level>(levels[level]);
 
         LoadSkinForCharacter();
@@ -74,13 +82,14 @@ public class LevelManager : MonoBehaviour
         currentLevel.SetDogeSkin(currentSkinIndex, currentHp);
     }
 
-    public void OnRetry()
+    public void RetryLevel()
     {
-        OnLoadLevel(currentLevelIndex);
+        LoadLevel(currentLevelIndex);
     }
-    public void OnWin()
+    
+    public void CompleteLevel()
     {
-        CheckLevelDone();
+        CheckLevelComplete();
         OnWinLevel?.Invoke();
         
         if (_dataController.currentGameData.levelDoneInGame[_dataController.currentGameData.currentLevelInProgress] == 0)
@@ -89,12 +98,12 @@ public class LevelManager : MonoBehaviour
         }
     }
     
-    public void OnLose()
+    public void LoseLevel()
     {
         OnLoseLevel?.Invoke();
     }
     
-    private void CheckLevelDone()
+    private void CheckLevelComplete()
     {
         if (_dataController.currentGameData.levelDoneInGame.Count != 0)
         {
@@ -107,21 +116,21 @@ public class LevelManager : MonoBehaviour
         }
     }
     
-    public void OnLoadNextLevel()
+    public void LoadNextLevel()
     {
         if (currentLevelIndex == _dataController.currentGameData.currentLevelInProgress)
         {
             _dataController.currentGameData.currentLevelInProgress++;
-            OnLoadLevel(_dataController.currentGameData.currentLevelInProgress);
+            LoadLevel(_dataController.currentGameData.currentLevelInProgress);
         } else if (currentLevelIndex < _dataController.currentGameData.currentLevelInProgress)
         {
             currentLevelIndex++;
-            OnLoadLevel(currentLevelIndex);
+            LoadLevel(currentLevelIndex);
         } else
         {
             _dataController.currentGameData.currentLevelInProgress = currentLevelIndex;
             _dataController.currentGameData.currentLevelInProgress++;
-            OnLoadLevel(_dataController.currentGameData.currentLevelInProgress);
+            LoadLevel(_dataController.currentGameData.currentLevelInProgress);
         }
     }
 }

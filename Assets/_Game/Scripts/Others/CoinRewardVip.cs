@@ -10,8 +10,8 @@ public class CoinRewardVip : MonoBehaviour
     
     [SerializeField] private GameObject pileCoin;
     
-    private List<Vector3> initialPos;
-    private List<Quaternion> initialRotation;
+    private List<Vector3> initialPos = new List<Vector3>();
+    private List<Quaternion> initialRotation = new List<Quaternion>();
 
     private int startValue, endValue;
     private float heightValue, widthValue, scaleValue;

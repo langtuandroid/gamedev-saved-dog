@@ -131,12 +131,12 @@ public class LinesDrawer : MonoBehaviour
 
         CameraShaker.Invoke();
         OnEndDraw?.Invoke();
-        if (_levelManager.currentLevel.LevelNumberInGame != 0) blade.gameObject.SetActive(true);
-        if (_levelManager.currentLevel.LevelNumberInGame == 1)
+        if (_levelManager.CurrentLevel.LevelNumberInGame != 0) blade.gameObject.SetActive(true);
+        if (_levelManager.CurrentLevel.LevelNumberInGame == 1)
         {
             if (_dataController.currentGameData.levelDoneInGame[1] == 0)
             {
-                Transform tutAttack = _levelManager.currentLevel.transform.Find("TutAttack");
+                Transform tutAttack = _levelManager.CurrentLevel.transform.Find("TutAttack");
                 tutAttack.gameObject.SetActive(true);
             }
         }

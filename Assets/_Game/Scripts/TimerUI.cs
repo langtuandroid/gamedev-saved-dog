@@ -94,10 +94,10 @@ public class TimerUI : MonoBehaviour
             yield break;
         }
 
-        _gameManager.currentIndexState = _levelManager.stateIndex;
+        _gameManager.currentIndexState = _levelManager.StateIndex;
         currentLevel.SetWinAnimation();
         currentLevel.DisableHealthBar();
-        _levelManager.currentLevel.DestroyAllBees();
+        _levelManager.CurrentLevel.DestroyAllBees();
 
         _audioManager.Play(Constant.AUDIO_SFX_WOOHOO);
 

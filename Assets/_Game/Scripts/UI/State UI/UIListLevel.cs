@@ -81,7 +81,7 @@ public class UIListLevel : UICanvas
                 {} else
                 {
                     _uiManager.OpenUI<UIGameplay>();
-                    _levelManager.OnLoadLevel(index + currentGroup * 10);
+                    _levelManager.LoadLevel(index + currentGroup * 10);
                     _gameManager.ChangeState(GameState.GamePlay);
                     ClearLevelList();
 

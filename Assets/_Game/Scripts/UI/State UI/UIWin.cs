@@ -159,7 +159,7 @@ public class UIWin : UICanvas
         _uiManager.CloseUI<UIWin>();
         _uiManager.OpenUI<UIGameplay>();
         _uiManager.GetUI<UIGameplay>().OnInit();
-        _levelManager.OnLoadNextLevel();
+        _levelManager.LoadNextLevel();
         _gameManager.ChangeState(GameState.GamePlay);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
         _linesDrawer.HideLineCantDraw();
@@ -171,7 +171,7 @@ public class UIWin : UICanvas
         _uiManager.CloseUI<UIWin>();
         _uiManager.OpenUI<UIGameplay>();
         _uiManager.GetUI<UIGameplay>().OnInit();
-        _levelManager.OnRetry();
+        _levelManager.RetryLevel();
         _gameManager.ChangeState(GameState.GamePlay);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
         _dataPersistence.SaveGame();
@@ -219,10 +219,10 @@ public class UIWin : UICanvas
                 _dataController.currentGameData.starDoneInLevels.Add(0);
             }
         }
-        _starsCount = _levelManager.currentLevel.StarsCount;
-        if (_dataController.currentGameData.starDoneInLevels[_levelManager.currentLevel.LevelNumberInGame] < _starsCount)
+        _starsCount = _levelManager.CurrentLevel.StarsCount;
+        if (_dataController.currentGameData.starDoneInLevels[_levelManager.CurrentLevel.LevelNumberInGame] < _starsCount)
         {
-            _dataController.currentGameData.starDoneInLevels[_levelManager.currentLevel.LevelNumberInGame] = _starsCount;
+            _dataController.currentGameData.starDoneInLevels[_levelManager.CurrentLevel.LevelNumberInGame] = _starsCount;
         }
     }
 

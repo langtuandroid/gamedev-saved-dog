@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(FIRST_LOAD, 1);
             ChangeState(GameState.GamePlay);
             _uiManager.OpenUI<UIGameplay>();
-            _levelManager.OnLoadLevel(0);
+            _levelManager.LoadLevel(0);
         } else
         {
             ChangeState(GameState.MainMenu);
@@ -70,17 +70,17 @@ public class GameManager : MonoBehaviour
 
         blade.gameObject.SetActive(false);
 
-        _levelManager.OnWin();
+        _levelManager.CompleteLevel();
 
-        if (currentIndexState != _levelManager.stateIndex)
+        if (currentIndexState != _levelManager.StateIndex)
         {
-            currentIndexState = _levelManager.stateIndex;
+            currentIndexState = _levelManager.StateIndex;
             return;
         }
 
         ChangeState(GameState.Win);
         _uiManager.CloseUI<UIGameplay>();
-        if (_levelManager.currentLevel.LevelNumberInGame > 1)
+        if (_levelManager.CurrentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(ShowWin());
         } else
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.Lose);
         blade.gameObject.SetActive(false);
 
-        _levelManager.currentLevel.ClockTimerUI.StopTimer();
+        _levelManager.CurrentLevel.ClockTimerUI.StopTimer();
 
         _audioManager.Play(Constant.AUDIO_SFX_LOSE);
 
@@ -113,9 +113,9 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        _levelManager.OnLose();
+        _levelManager.LoseLevel();
         _uiManager.CloseUI<UIGameplay>();
-        if (_levelManager.currentLevel.LevelNumberInGame > 1)
+        if (_levelManager.CurrentLevel.LevelNumberInGame > 1)
         {
             StartCoroutine(ShowLose());
         } else

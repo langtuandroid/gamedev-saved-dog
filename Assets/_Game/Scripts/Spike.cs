@@ -39,7 +39,7 @@ public class Spike : MonoBehaviour
 
         if (clockTimerUI.RemainingDuration <= 0)
             return;
-        _levelManager.currentLevel.DestroyAllBees();
+        _levelManager.CurrentLevel.DestroyAllBees();
         StartCoroutine(KillOther(other));
     }
     private IEnumerator KillOther(Collider2D other)

@@ -88,7 +88,8 @@ public class UIGameplay : UICanvas
             coinText.DOFade(1, 0.5f).SetEase(Ease.OutQuad);
         });
     }
-    public void ResetCoinImage()
+
+    private void ResetCoinImage()
     {
         coinImage.DOScale(1f, 0f);
     }
@@ -128,16 +129,15 @@ public class UIGameplay : UICanvas
     private void UpdateStar()
     {
         inkRatio = inkBar.fillAmount;
-        if (inkRatio < 2f / 3f && inkRatio > 1f / 3f)
+        if (inkRatio is < 2f / 3f and > 1f / 3f)
         {
             star = 2;
-            _levelManager.currentLevel.SetStarsCount(2);
+            _levelManager.CurrentLevel.SetStarsCount(2);
             stars[2].color = colorLoseStar;
-        }
-        else if (inkRatio < 1f / 3f && inkRatio > 0)
+        } else if (inkRatio is < 1f / 3f and > 0)
         {
             star = 1;
-            _levelManager.currentLevel.SetStarsCount(1);
+            _levelManager.CurrentLevel.SetStarsCount(1);
             stars[1].color = colorLoseStar;
         }
     }
@@ -147,21 +147,17 @@ public class UIGameplay : UICanvas
     }
     public void BackButton()
     {
-        
-        
-            OnBackButton();
-        
-        
+        OnBackButton();
     }
-    
-    void OnBackButton()
+
+    private void OnBackButton()
     {
-        _levelManager.stateIndex++;
+        _levelManager.StateIndex++;
 
         _uiManager.OpenUI<UIMainMenu>();
         _gameManager.ChangeState(GameState.MainMenu);
 
-        _levelManager.Despawn();
+        _levelManager.DespawnLevel();
         _linesDrawer.OnLoadNewLevelOrUI();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
@@ -175,7 +171,7 @@ public class UIGameplay : UICanvas
     }
     public void OnRetryButton()
     {
-        _levelManager.stateIndex++;
+        _levelManager.StateIndex++;
 
         Debug.Log("Retry");
         if (!_gameManager.IsState(GameState.GamePlay))
@@ -183,7 +179,7 @@ public class UIGameplay : UICanvas
             _gameManager.ChangeState(GameState.GamePlay);
         }
         _gameManager.StopTween();
-        _levelManager.OnRetry();
+        _levelManager.RetryLevel();
 
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
 

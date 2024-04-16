@@ -39,7 +39,7 @@ public class UIMainMenu : UICanvas
 
         _uiManager.OpenUI<UIGameplay>();
         int level = _dataController.currentGameData.currentLevelInProgress;
-        _levelManager.OnLoadLevel(level);
+        _levelManager.LoadLevel(level);
         
         CloseImmediately();
     }
