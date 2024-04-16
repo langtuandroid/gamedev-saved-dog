@@ -1,18 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class ObjectPool : MonoBehaviour
 {
-    [System.Serializable]
-    public class Pool
-    {
-        public GameObject poolObjectPrefab;
-        public int poolCount;
-        public bool canGrow;
-        public string tag;
-    }
-    public List<Pool> poolList = new List<Pool>();
+    [SerializeField] private List<Pool> poolList = new List<Pool>();
 
     private Dictionary<string, Queue<GameObject>> objectPools = new Dictionary<string, Queue<GameObject>>();
 
@@ -24,15 +17,15 @@ public class ObjectPool : MonoBehaviour
         {
             Queue<GameObject> q = new Queue<GameObject>();
 
-            for (int i = 0; i < pool.poolCount; i++)
+            for (int i = 0; i < pool.countToSpawn; i++)
             {
-                GameObject obj = _diContainer.InstantiatePrefab(pool.poolObjectPrefab);
+                GameObject obj = _diContainer.InstantiatePrefab(pool.poolPrefab);
                 obj.SetActive(false);
 
                 q.Enqueue(obj);
             }
 
-            objectPools.Add(pool.tag, q);
+            objectPools.Add(pool.objectTag, q);
         }
     }
 
@@ -41,24 +34,23 @@ public class ObjectPool : MonoBehaviour
         Pool tempPool = new Pool();
         foreach (Pool pool in poolList)
         {
-            if (tag == pool.tag)
+            if (tag == pool.objectTag)
             {
                 tempPool = pool;
             }
         }
-
 
         if (objectPools[tag].Count > 0)
         {
             return objectPools[tag].Dequeue();
         }
 
-        if (!tempPool.canGrow)
+        if (!tempPool.isCanGrow)
         {
             return null;
         }
 
-        GameObject obj = _diContainer.InstantiatePrefab(tempPool.poolObjectPrefab);
+        GameObject obj = _diContainer.InstantiatePrefab(tempPool.poolPrefab);
         return obj;
 
     }
@@ -67,4 +59,17 @@ public class ObjectPool : MonoBehaviour
         objectPools[tag].Enqueue(obj);
         obj.SetActive(false);
     }
+}
+
+[System.Serializable]
+public class Pool
+{
+    [FormerlySerializedAs("poolObjectPrefab")]
+    public GameObject poolPrefab;
+    [FormerlySerializedAs("poolCount")]
+    public int countToSpawn;
+    [FormerlySerializedAs("canGrow")]
+    public bool isCanGrow;
+    [FormerlySerializedAs("tag")]
+    public string objectTag;
 }
