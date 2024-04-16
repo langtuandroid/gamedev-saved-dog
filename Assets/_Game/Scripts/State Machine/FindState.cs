@@ -1,34 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FindState : IState
 {
-    private float timer;
-    private float timeLength;
+    private float timerValue;
+    private float timeValueLength;
 
     public void OnEnter(Bee bee)
     {
-        timer = 0;
-        timeLength = 0.5f;
+        timerValue = 0;
+        timeValueLength = 0.5f;
     }
 
     public void OnExecute(Bee bee)
     {
-        timer += Time.deltaTime;
-        if (timer < timeLength)
+        timerValue += Time.deltaTime;
+        if (timerValue < timeValueLength)
         {
             bee.CountTimeWhenBouncing();
             bee.FlyRandomToLine();
-        }
-        else
+        } else
         {
             bee.ChangeState(bee.approachState);
         }
     }
 
-    public void OnExit(Bee bee)
-    {
-        
-    }
+    public void OnExit(Bee bee) {}
 }
