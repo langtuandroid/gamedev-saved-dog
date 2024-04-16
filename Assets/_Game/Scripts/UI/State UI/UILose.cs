@@ -62,13 +62,13 @@ public class UILose : UICanvas
     
     private void HandleAudio()
     {
-        _audioManager.PauseBGM();
+        _audioManager.PauseBGMusic();
         _audioManager.Play(Constant.AUDIO_SFX_LOSE_UI);
     }
     
     private void HandleAudioOut()
     {
-        _audioManager.UnPauseBGM();
+        _audioManager.UnPauseBGMusic();
     }
     
     public void RetryButtonClick()
@@ -143,7 +143,7 @@ public class UILose : UICanvas
 
             CloseImmediately();
 
-            _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
+            _audioManager.PlayBG(Constant.AUDIO_MUSIC_SHOP);
             _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
         }
     }
@@ -160,7 +160,7 @@ public class UILose : UICanvas
 
         CloseImmediately();
 
-        _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
+        _audioManager.PlayBG(Constant.AUDIO_MUSIC_SHOP);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
     

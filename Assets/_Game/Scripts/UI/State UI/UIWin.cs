@@ -68,7 +68,7 @@ public class UIWin : UICanvas
         SetColorStarDefault();
         SetDefaultPopup();
         
-        _audioManager.UnPauseBGM();
+        _audioManager.UnPauseBGMusic();
     }
     private void OnInit()
     {
@@ -246,7 +246,7 @@ public class UIWin : UICanvas
     
     private void HandleAudioInto()
     {
-        _audioManager.PauseBGM();
+        _audioManager.PauseBGMusic();
         _audioManager.Play(Constant.AUDIO_SFX_WIN);
     }
 

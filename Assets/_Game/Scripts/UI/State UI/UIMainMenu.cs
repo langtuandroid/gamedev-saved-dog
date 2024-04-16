@@ -58,7 +58,7 @@ public class UIMainMenu : UICanvas
 
         CloseImmediately();
 
-        _audioManager.PlayBGM(Constant.AUDIO_MUSIC_SHOP);
+        _audioManager.PlayBG(Constant.AUDIO_MUSIC_SHOP);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON);
     }
     

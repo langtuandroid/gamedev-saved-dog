@@ -1,17 +1,12 @@
-using UnityEngine.Audio;
 using System;
 using UnityEngine;
-
+using UnityEngine.Audio;
 public class AudioManager : MonoBehaviour
 {
-    public AudioMixer mixer;
-	public AudioMixerGroup musicGroup, sfxGroup;
-
-    public Sound[] soundsBGM;
-    public Sound[] sounds;
-
-	public const string onClickNormal = "OnClickNormal";
-	public const string onClickError = "OnClickError";
+    [SerializeField] private AudioMixer mixer;
+	[SerializeField] private AudioMixerGroup musicGroup, sfxGroup;
+    [SerializeField] private Sound[] soundsBGM;
+    [SerializeField] private Sound[] sounds;
 
     private void Awake()
 	{
@@ -47,10 +42,9 @@ public class AudioManager : MonoBehaviour
             mixer.SetFloat("sfx", -80);
 
 
-        // play background music 
-        PlayBGM(Constant.AUDIO_MUSIC_BG);
+        PlayBG(Constant.AUDIO_MUSIC_BG);
     }
-    public void PlayBGM(string sound)
+    public void PlayBG(string sound)
     {
         foreach (Sound t in soundsBGM)
         {
@@ -65,10 +59,10 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        PlayBgm(sound);
+        PlayMusic(sound);
     }
 
-    private void PlayBgm(string sound)
+    private void PlayMusic(string sound)
     {
         Sound s = Array.Find(soundsBGM, item => item.name == sound);
         if (s == null)
@@ -84,6 +78,7 @@ public class AudioManager : MonoBehaviour
             s.source.Play(); 
         }
     }
+    
     public void Play(string sound)
 	{
         Sound s = Array.Find(sounds, item => item.name == sound);
@@ -92,19 +87,20 @@ public class AudioManager : MonoBehaviour
 			Debug.LogWarning("Sound: " + name + " not found!");
 			return;
 		}
-		s.source.volume = s.volume/* * (1f + UnityEngine.Random.Range(-s.volumeVariance / 2f, s.volumeVariance / 2f))*/;
-		s.source.pitch = s.pitch/* * (1f + UnityEngine.Random.Range(-s.pitchVariance / 2f, s.pitchVariance / 2f))*/;
+		s.source.volume = s.volume;
+		s.source.pitch = s.pitch;
 
 		s.source.PlayOneShot(s.clip);
 	}
-    public void PauseBGM()
+    
+    public void PauseBGMusic()
     {
         foreach (Sound s in soundsBGM)
         {
             s.source.Pause();
         }
     }
-    public void UnPauseBGM()
+    public void UnPauseBGMusic()
     {
         bool didnotplaying = false;
         
@@ -116,23 +112,10 @@ public class AudioManager : MonoBehaviour
         
         if (!didnotplaying)
         {
-            PlayBGM(Constant.AUDIO_MUSIC_BG);
+            PlayBG(Constant.AUDIO_MUSIC_BG);
         }
     }
-    public void PauseSFX()
-    {
-        foreach (Sound s in sounds) 
-        {
-            s.source.Pause();
-        }
-    }
-    public void UnPauseSFX() 
-    {
-        foreach (Sound s in sounds)
-        {
-            s.source.UnPause();
-        }
-    }
+
     public void Pause(string sound)
     {
         Sound s = Array.Find(sounds, item => item.name == sound);
@@ -142,8 +125,8 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        s.source.volume = s.volume /** (1f + UnityEngine.Random.Range(-s.volumeVariance / 2f, s.volumeVariance / 2f))*/;
-        s.source.pitch = s.pitch/* * (1f + UnityEngine.Random.Range(-s.pitchVariance / 2f, s.pitchVariance / 2f))*/;
+        s.source.volume = s.volume;
+        s.source.pitch = s.pitch;
 
         s.source.Pause();
     }
@@ -182,17 +165,11 @@ public class Sound
 
     [Range(0f, 1f)]
     public float volume = .75f;
-    [Range(0f, 1f)]
-    public float volumeVariance = .1f;
 
     [Range(.1f, 3f)]
     public float pitch = 1f;
-    [Range(0f, 1f)]
-    public float pitchVariance = .1f;
 
-    public bool loop = false;
-
-    public AudioMixerGroup mixerGroup;
+    public bool loop;
 
     [HideInInspector]
     public AudioSource source;

@@ -191,7 +191,7 @@ public class UIShop : UICanvas
         _uiManager.OpenUI<UIMainMenu>();
         CloseImmediately();
 
-        _audioManager.PlayBGM(Constant.AUDIO_MUSIC_BG);
+        _audioManager.PlayBG(Constant.AUDIO_MUSIC_BG);
         _audioManager.Play(Constant.AUDIO_SFX_BUTTON); 
     }
     
