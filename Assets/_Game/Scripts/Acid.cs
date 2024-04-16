@@ -46,7 +46,7 @@ public class Acid : MonoBehaviour
 
         if (_gameManager.IsState(GameState.GamePlay))
         {
-            _gameManager.WhenLose();
+            _gameManager.Lose();
         }
         yield return new WaitForSeconds(_timeToDead);
     }

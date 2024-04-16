@@ -65,6 +65,6 @@ public class Doge : MonoBehaviour
         animDoge.SetAnimForDoge(Constant.DOGE_ANIM_DIE);
         healthDoge.die = true;
 
-        _gameManager.WhenLose();
+        _gameManager.Lose();
     }
 }

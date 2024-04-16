@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 {
     private const string FIRST_LOAD = "firstload";
 
-    public int currentIndexState;
+    private int currentIndexState;
 
     [SerializeField]
     private Blade blade;
@@ -62,12 +62,10 @@ public class GameManager : MonoBehaviour
             ChangeState(GameState.MainMenu);
             _uiManager.OpenUI<UIMainMenu>();
         }
-
     }
 
-    public void WhenVictory()
+    public void Victory()
     {
-
         blade.gameObject.SetActive(false);
 
         _levelManager.CompleteLevel();
@@ -82,7 +80,7 @@ public class GameManager : MonoBehaviour
         _uiManager.CloseUI<UIGameplay>();
         if (_levelManager.CurrentLevel.LevelNumberInGame > 1)
         {
-            StartCoroutine(ShowWin());
+            StartCoroutine(ShowWinScreen());
         } else
         {
             _uiManager.OpenUI<UIWin>();
@@ -90,7 +88,7 @@ public class GameManager : MonoBehaviour
         _dataPersistence.SaveGame();
     }
     
-    public void WhenLose()
+    public void Lose()
     {
         ChangeState(GameState.Lose);
         blade.gameObject.SetActive(false);
@@ -117,20 +115,20 @@ public class GameManager : MonoBehaviour
         _uiManager.CloseUI<UIGameplay>();
         if (_levelManager.CurrentLevel.LevelNumberInGame > 1)
         {
-            StartCoroutine(ShowLose());
+            StartCoroutine(ShowLoseScreen());
         } else
         {
             _uiManager.OpenUI<UILose>();
         }
     }
     
-    private IEnumerator ShowWin()
+    private IEnumerator ShowWinScreen()
     {
         yield return new WaitForSeconds(1);
         _uiManager.OpenUI<UIWin>();
     }
 
-    private IEnumerator ShowLose()
+    private IEnumerator ShowLoseScreen()
     {
         yield return new WaitForSeconds(1);
         _uiManager.OpenUI<UILose>();
@@ -145,8 +143,14 @@ public class GameManager : MonoBehaviour
     {
         return gameState == state;
     }
+    
     public void StopTween()
     {
         scaleTween?.Kill();
+    }
+
+    public void SetCurrentIndex(int index)
+    {
+        currentIndexState = index;
     }
 }

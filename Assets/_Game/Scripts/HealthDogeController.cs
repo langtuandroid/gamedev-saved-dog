@@ -98,7 +98,7 @@ public class HealthDogeController : MonoBehaviour
         die = true;
         DisableHealthBar();
         animDoge.SetAnimForDoge(Constant.DOGE_ANIM_HURT);
-        _gameManager.WhenLose();
+        _gameManager.Lose();
     }
     
     private void ShowDamageText()

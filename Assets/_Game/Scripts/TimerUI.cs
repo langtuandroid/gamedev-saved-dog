@@ -94,7 +94,7 @@ public class TimerUI : MonoBehaviour
             yield break;
         }
 
-        _gameManager.currentIndexState = _levelManager.StateIndex;
+        _gameManager.SetCurrentIndex(_levelManager.StateIndex);
         currentLevel.SetWinAnimation();
         currentLevel.DisableHealthBar();
         _levelManager.CurrentLevel.DestroyAllBees();
@@ -107,7 +107,7 @@ public class TimerUI : MonoBehaviour
     private void AnimTickWinThenWin()
     {
         _uiManager.GetUI<UIGameplay>().TickWin.gameObject.SetActive(true);
-        _uiManager.GetUI<UIGameplay>().TickWin.rectTransform.DOScale(8f, 2f).SetEase(Ease.InOutSine).OnComplete(_gameManager.WhenVictory);
+        _uiManager.GetUI<UIGameplay>().TickWin.rectTransform.DOScale(8f, 2f).SetEase(Ease.InOutSine).OnComplete(_gameManager.Victory);
     }
 
     private void SetUITimerTrue()
