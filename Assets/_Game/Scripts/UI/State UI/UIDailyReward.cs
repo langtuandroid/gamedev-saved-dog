@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 using UnityEngine.Serialization;
 using Zenject;
 
@@ -11,7 +10,6 @@ public class UIDailyReward : UICanvas
     [FormerlySerializedAs("wait"),SerializeField] private Sprite waitFrameSprite;
     [FormerlySerializedAs("claimed"),SerializeField] private Sprite claimedFrameSprite;
     [SerializeField] private Button claimButton;
-    [SerializeField] private RectTransform dailyRewardPopup;
     [FormerlySerializedAs("coinReward"),SerializeField] private CoinRewardVip coinRewardVip;
     [FormerlySerializedAs("boxDay"),SerializeField] List<Image> dailyImage;
     [FormerlySerializedAs("rewards"),SerializeField] int[] rewardsPrice;
@@ -29,18 +27,12 @@ public class UIDailyReward : UICanvas
     private void OnEnable()
     {
         LoadRewardUI();
-        DailyRewardAnimation();
-        
+
         claimButton.interactable = _dailyReward.canClaim;
 
         coinRewardVip.OnUpdateCoin += UpdateCoinValue;
     }
-    
-    private void OnDisable()
-    {
-        ResetAnimation();
-    }
-    
+
     public void CloseButtonClick()
     {
         CloseImmediately();
@@ -83,15 +75,5 @@ public class UIDailyReward : UICanvas
         {
             dailyImage[i].sprite = waitFrameSprite;
         }
-    }
-
-    private void DailyRewardAnimation()
-    {
-        dailyRewardPopup.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.OutSine);
-    }
-
-    private void ResetAnimation()
-    {
-        dailyRewardPopup.DOAnchorPos(new Vector2(0f, -1554f), 0f);
     }
 }
