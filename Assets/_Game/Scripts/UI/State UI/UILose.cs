@@ -47,12 +47,12 @@ public class UILose : UICanvas
         HandleAudio();
 
         DisplayCharacter(_skinController.CurrentSkinIndex);
-        SetAnimationLose();
+        //SetAnimationLose();
     }
     private void OnDisable()
     {
         HandleAudioOut();
-        ResetAnimation();
+        //ResetAnimation();
     }
 
     private void UpdateCoinText()
