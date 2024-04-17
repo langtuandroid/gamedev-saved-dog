@@ -18,6 +18,8 @@ public class FlexibleGridLayout : LayoutGroup
   private int _columns;
   [SerializeField]
   private Vector2 _cellSize;
+  [SerializeField]
+  private float _height;
 
   private bool _fitX;
   private bool _fitY;
@@ -55,7 +57,8 @@ public class FlexibleGridLayout : LayoutGroup
   {
     rectTransform.pivot = new Vector2(.5f, 1f);
 
-    float height = _rows * _cellSize.y + _rows * _spacing.y + padding.top /(float) 2;
+    //float height = _rows * _cellSize.y + _rows * _spacing.y + padding.top /(float) 2;
+    float height = _height;
 
     Vector2 currentSize = rectTransform.sizeDelta;
     currentSize.y = height;

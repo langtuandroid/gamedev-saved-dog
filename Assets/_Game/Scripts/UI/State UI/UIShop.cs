@@ -27,7 +27,7 @@ public class UIShop : UICanvas
     [FormerlySerializedAs("buttonCharDisplayList"),SerializeField] private List<ButtonCharDisplay> buttonCharactersDisplayList;
 
     private int currentCharacterIndex, previousCharacterIndex;
-    private List<int> charUnlock = new List<int>();
+   [SerializeField] private List<int> charUnlock = new List<int>();
     private GameObject buttonTemp;
     private ButtonCharDisplay buttonChar;
     private Button button;
@@ -97,81 +97,89 @@ public class UIShop : UICanvas
         shopSpine.SetActive(value);
     }
     
-    private void LoadCharacter()
+   private void LoadCharacter()
+{
+    charUnlock = _dataController.currentGameData.charUnlock;
+    for(int i = 0; i < charactersList.Count; i++)
     {
-        charUnlock = _dataController.currentGameData.charUnlock;
-        for(int i = 0; i < charactersList.Count; i++)
+        buttonTemp = Instantiate(buttonCharacterPrefab, content);
+        buttonChar = buttonTemp.GetComponent<ButtonCharDisplay>();
+        button = buttonTemp.GetComponent<Button>();
+
+        buttonChar.CharacterImage.sprite = charactersList[i].skinImage;
+        buttonChar.SelectedIcon.SetActive(false);
+
+        // Проверяем, разблокирован ли персонаж
+        if (_dataController.currentGameData.charUnlock[i] == 1)
         {
-            buttonTemp = Instantiate(buttonCharacterPrefab, content);
-            buttonChar = buttonTemp.GetComponent<ButtonCharDisplay>();
-            button = buttonTemp.GetComponent<Button>();
-
-            buttonChar.CharacterImage.sprite = charactersList[i].skinImage;
-            buttonChar.SelectedIcon.SetActive(false);
-
-            if (_dataController.currentGameData.currentChar == i)
-            {
-                previousCharacterIndex = i;
-
-                button.image.sprite = boxYellow;
-                buttonChar.SelectedIcon.SetActive(true);
-
-                buyButton.gameObject.SetActive(false);
-                useButton.gameObject.SetActive(false);
-                usedButton.gameObject.SetActive(true);
-
-                SetStateDisplayCharacter(true);
-                DisplayCharacter(i);
-            }
-            
-
-            buttonCharactersList.Add(button);
-            buttonCharactersDisplayList.Add(buttonChar);
+            buttonChar.OwnedText.gameObject.SetActive(true);
         }
-        for(int i = 0; i < buttonCharactersList.Count; i++)
+        
+        if (_dataController.currentGameData.currentChar == i)
         {
-            int index = i;
-            buttonCharactersList[index].onClick.AddListener(() =>
+            previousCharacterIndex = i;
+
+            button.image.sprite = boxYellow;
+            buttonChar.SelectedIcon.SetActive(true);
+
+            buyButton.gameObject.SetActive(false);
+            useButton.gameObject.SetActive(false);
+            usedButton.gameObject.SetActive(true);
+
+            SetStateDisplayCharacter(true);
+            DisplayCharacter(i);
+        }
+        
+
+        buttonCharactersList.Add(button);
+        buttonCharactersDisplayList.Add(buttonChar);
+    }
+    for(int i = 0; i < buttonCharactersList.Count; i++)
+    {
+        int index = i;
+        buttonCharactersList[index].onClick.AddListener(() =>
+        {
+            currentCharacterIndex = index;
+
+            if (previousCharacterIndex != -1)
             {
-                currentCharacterIndex = index;
+                buttonCharactersDisplayList[previousCharacterIndex].SelectedIcon.SetActive(false);
+            }
+            buttonCharactersDisplayList[currentCharacterIndex].SelectedIcon.SetActive(true);
 
-                if (previousCharacterIndex != -1)
+            if (_dataController.currentGameData.charUnlock[index] == 1)
+            {
+                if (_dataController.currentGameData.currentChar != index)
                 {
-                    buttonCharactersDisplayList[previousCharacterIndex].SelectedIcon.SetActive(false);
-                }
-                buttonCharactersDisplayList[currentCharacterIndex].SelectedIcon.SetActive(true);
-
-                if (_dataController.currentGameData.charUnlock[index] == 1)
-                {
-                    if (_dataController.currentGameData.currentChar != index)
-                    {
-                        buyButton.gameObject.SetActive(false);
-                        useButton.gameObject.SetActive(true);
-                        usedButton.gameObject.SetActive(false);
-                    } else
-                    {
-                        buyButton.gameObject.SetActive(false);
-                        useButton.gameObject.SetActive(false);
-                        usedButton.gameObject.SetActive(true);
-                    }
+                    buyButton.gameObject.SetActive(false);
+                    useButton.gameObject.SetActive(true);
+                    usedButton.gameObject.SetActive(false);
                 } else
                 {
-                    buyButton.gameObject.SetActive(true);
+                    buyButton.gameObject.SetActive(false);
                     useButton.gameObject.SetActive(false);
-                    usedButton.gameObject.SetActive(false);
-                    priceCoinText.text = charactersList[index].price.ToString();
+                    usedButton.gameObject.SetActive(true);
                 }
-                SetStateDisplayCharacter(true);
-                DisplayCharacter(index);
+            } else
+            {
+                buyButton.gameObject.SetActive(true);
+                useButton.gameObject.SetActive(false);
+                usedButton.gameObject.SetActive(false);
+                priceCoinText.text = charactersList[index].price.ToString();
+            }
+            SetStateDisplayCharacter(true);
+            DisplayCharacter(index);
 
-                previousCharacterIndex = index;
-            });
-        }
+            previousCharacterIndex = index;
+        });
     }
+}
+   
+
 
     private void DisplayCharacter(int index)
     {
-        SetCharacterSkin(charactersList[index].animationIndex);
+        //SetCharacterSkin(charactersList[index].animationIndex);
         characterName.text = charactersList[index].skinName;
         characterHealth.text = "HP : " + charactersList[index].health;
     }
@@ -224,6 +232,9 @@ public class UIShop : UICanvas
 
         _dataController.currentGameData.charUnlock[currentCharacterIndex] = 1;
 
+        // Включаем текст ownedText после покупки
+        buttonCharactersDisplayList[currentCharacterIndex].OwnedText.gameObject.SetActive(true);
+
         buyButton.gameObject.SetActive(false);
         useButton.gameObject.SetActive(true);
         usedButton.gameObject.SetActive(false);
@@ -265,14 +276,14 @@ public class UIShop : UICanvas
 
     private void SetAnimForUIShop()
     {
-        coverShopRect.DOAnchorPos(new Vector2(0f, -314f), 0.25f).SetEase(Ease.InOutSine);
-        coinRect.DOAnchorPos(new Vector2(355f, 844f), 0.25f).SetEase(Ease.InOutSine);
+        //coverShopRect.DOAnchorPos(new Vector2(0f, -314f), 0.25f).SetEase(Ease.InOutSine);
+        //coinRect.DOAnchorPos(new Vector2(355f, 844f), 0.25f).SetEase(Ease.InOutSine);
     }
 
     private void ResetAnim()
     {
-        coverShopRect.DOAnchorPos(new Vector2(0f, -1622f), 0f).SetEase(Ease.Linear);
-        coinRect.DOAnchorPos(new Vector2(670f, 844f), 0f).SetEase(Ease.InOutSine);
+        //coverShopRect.DOAnchorPos(new Vector2(0f, -1622f), 0f).SetEase(Ease.Linear);
+        //coinRect.DOAnchorPos(new Vector2(670f, 844f), 0f).SetEase(Ease.InOutSine);
     }
 
     #region Ad
