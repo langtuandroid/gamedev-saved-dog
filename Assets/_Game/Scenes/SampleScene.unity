@@ -1104,7 +1104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d122c0c9ab7e04198c9cc68aa8cb96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentIndexState: 0
   blade: {fileID: 504978400}
 --- !u!1 &1024355156
 GameObject:
@@ -1137,7 +1136,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1726211928}
   m_Father: {fileID: 1712075578}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1192,7 +1192,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1439,8 +1439,6 @@ MonoBehaviour:
   - {fileID: 131695172557576833, guid: b694870f60df22c4f838832311f32695, type: 3}
   - {fileID: 131695172557576833, guid: d87c6d49d1aa87045a963bce74033828, type: 3}
   - {fileID: 2661102928408330394, guid: 76c5567860f55744e81672c5e85f2399, type: 3}
-  currentLevel: {fileID: 0}
-  stateIndex: 0
 --- !u!114 &1195218093
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1604,14 +1602,12 @@ MonoBehaviour:
     coin: 0
     currentLevelInProgress: 0
     currentChar: 0
-    totalStarDoneInGame: 0
     music: 0
     sound: 0
     vibrate: 0
     currentAd: 
     maxAd: 
     charUnlock: 0100000000000000
-    totalStarDoneInActs: 
     levelDoneInGame: 
     starDoneInLevels: 
 --- !u!1 &1380508477
@@ -1898,6 +1894,204 @@ Transform:
   - {fileID: 1024355157}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1726211927
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1024355157}
+    m_Modifications:
+    - target: {fileID: 1101199856673268457, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 380
+      objectReference: {fileID: 0}
+    - target: {fileID: 1101199856673268457, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1101199856673268457, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 215
+      objectReference: {fileID: 0}
+    - target: {fileID: 1101199856673268457, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6382008152100741150, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 928.0735
+      objectReference: {fileID: 0}
+    - target: {fileID: 6382008152100741150, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 689.426
+      objectReference: {fileID: 0}
+    - target: {fileID: 6382008152100741150, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6382008152100741150, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6801612761607407876, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 245
+      objectReference: {fileID: 0}
+    - target: {fileID: 6801612761607407876, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 6801612761607407876, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 6801612761607407876, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7452655540233279297, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 380
+      objectReference: {fileID: 0}
+    - target: {fileID: 7452655540233279297, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7452655540233279297, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -215
+      objectReference: {fileID: 0}
+    - target: {fileID: 7452655540233279297, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8294041346294746817, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 245
+      objectReference: {fileID: 0}
+    - target: {fileID: 8294041346294746817, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 8294041346294746817, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8294041346294746817, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725044912635940768, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 245
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725044912635940768, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725044912635940768, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -300
+      objectReference: {fileID: 0}
+    - target: {fileID: 8725044912635940768, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782707573645907068, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+      propertyPath: m_Name
+      value: Canvas - Win
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+--- !u!224 &1726211928 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7139126745762050564, guid: d7c319d03a1c7c84e8cd3bdffe94ad02, type: 3}
+  m_PrefabInstance: {fileID: 1726211927}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1756596535
 GameObject:
   m_ObjectHideFlags: 0
@@ -2033,228 +2227,153 @@ MonoBehaviour:
   - name: Background menu
     clip: {fileID: 8300000, guid: a3e113ac3df64ab4f87eec6322f23657, type: 3}
     volume: 0.328
-    volumeVariance: 0.333
     pitch: 0.97
-    pitchVariance: 0.417
     loop: 1
-    mixerGroup: {fileID: -6595213268930460060, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Shop Music
     clip: {fileID: 8300000, guid: 3c88989c058f39a4dac1b00f2e7d7c08, type: 3}
     volume: 0.5
-    volumeVariance: 0.5
     pitch: 0.97
-    pitchVariance: 0.5
     loop: 1
-    mixerGroup: {fileID: -6595213268930460060, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   sounds:
   - name: Button
     clip: {fileID: 8300000, guid: 55474f4302cb0484284073e9a154a0c8, type: 3}
     volume: 0.442
-    volumeVariance: 0.466
     pitch: 1.08
-    pitchVariance: 0.528
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Play
     clip: {fileID: 8300000, guid: e820d09dcb0df6f46a66d53f2369ef9f, type: 3}
     volume: 0.442
-    volumeVariance: 0.466
     pitch: 1.08
-    pitchVariance: 0.528
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Bee sound
     clip: {fileID: 8300000, guid: f9570e30f69098d4ab751dec4d5eee7f, type: 3}
     volume: 0.408
-    volumeVariance: 0.387
     pitch: 1.08
-    pitchVariance: 0.424
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Sting
     clip: {fileID: 8300000, guid: 47faf1d7e4031184f8ac6cf91d10fa7f, type: 3}
     volume: 1
-    volumeVariance: 0.693
     pitch: 1.08
-    pitchVariance: 0.528
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Hurt
     clip: {fileID: 8300000, guid: cee635c8de4c2c14bb0d6d669a9b9fca, type: 3}
     volume: 0.647
-    volumeVariance: 0.42
     pitch: 1.08
-    pitchVariance: 0.528
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Lose
     clip: {fileID: 8300000, guid: 1f0aca6760f3dee479e585b56d12a975, type: 3}
     volume: 0.413
-    volumeVariance: 0.387
     pitch: 1.08
-    pitchVariance: 0.528
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Wooh
     clip: {fileID: 8300000, guid: fe34a3b08a7e6a34391977c707667748, type: 3}
     volume: 0.429
-    volumeVariance: 0.387
     pitch: 0.6
-    pitchVariance: 0.528
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Win
     clip: {fileID: 8300000, guid: 769e2ff43bb5f7b4e8a101af31ef5bc0, type: 3}
     volume: 0.558
-    volumeVariance: 0.448
     pitch: 1.01
-    pitchVariance: 0.515
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: LoseUI
     clip: {fileID: 8300000, guid: e176516c46bad6d42b87d96ab7363599, type: 3}
     volume: 0.509
-    volumeVariance: 0.441
     pitch: 0.87
-    pitchVariance: 0.447
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: BtnInSetting
     clip: {fileID: 8300000, guid: c283393b1ebf6cf409f39471a76700e2, type: 3}
     volume: 0.429
-    volumeVariance: 0.417
     pitch: 0.56
-    pitchVariance: 0.515
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: CoinGain
     clip: {fileID: 8300000, guid: c630abfa801403d40b64a7d05baca4db, type: 3}
     volume: 0.465
-    volumeVariance: 0.34
     pitch: 0.64
-    pitchVariance: 0.515
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Bee Stab
     clip: {fileID: 8300000, guid: d3ffef9d7b5054845a592be78ff2bcfd, type: 3}
     volume: 0.257
-    volumeVariance: 0.262
     pitch: 1
-    pitchVariance: 0.392
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Blade
     clip: {fileID: 8300000, guid: 97ab88d46b505c041a337d18c31e37a3, type: 3}
     volume: 0.415
-    volumeVariance: 0.371
     pitch: 0.999
-    pitchVariance: 0.512
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Bee Dead
     clip: {fileID: 8300000, guid: 17b9a62d41024944badc84e642c33a0a, type: 3}
     volume: 0.502
-    volumeVariance: 0.449
     pitch: 0.999
-    pitchVariance: 0.512
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Headshot
     clip: {fileID: 8300000, guid: 5c12d23ae46fadc4fb5715ddc9e99df8, type: 3}
     volume: 0.663
-    volumeVariance: 0.605
     pitch: 1.15
-    pitchVariance: 0.512
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Coin Drop
     clip: {fileID: 8300000, guid: 9d3356f8ca0d58744911ec17d15ce3a7, type: 3}
     volume: 0.668
-    volumeVariance: 0.659
     pitch: 1.2
-    pitchVariance: 0.512
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Good
     clip: {fileID: 8300000, guid: 291dffda93a134c47b281fd57ed1c71c, type: 3}
     volume: 0.815
-    volumeVariance: 0.812
     pitch: 1
-    pitchVariance: 0.358
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Great
     clip: {fileID: 8300000, guid: 0f4a373bc59b616439cd7c9c5af59e1f, type: 3}
     volume: 0.738
-    volumeVariance: 0.749
     pitch: 1
-    pitchVariance: 0.368
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Excellent
     clip: {fileID: 8300000, guid: 6d9a44832a22e634da4ae3998e7a34ee, type: 3}
     volume: 0.77
-    volumeVariance: 0.77
     pitch: 1
-    pitchVariance: 0.348
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Amazing
     clip: {fileID: 8300000, guid: d7828d63d9e2e1c428c7650ef30aa720, type: 3}
     volume: 0.791
-    volumeVariance: 0.796
     pitch: 1
-    pitchVariance: 0.358
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Awesome
     clip: {fileID: 8300000, guid: 2e492ef1bb14d3b44b1317029be8f695, type: 3}
     volume: 0.78
-    volumeVariance: 0.702
     pitch: 1
-    pitchVariance: 0.324
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Incredible
     clip: {fileID: 8300000, guid: ccf5eaaf432c795449b964407888fb8d, type: 3}
     volume: 0.723
-    volumeVariance: 0.775
     pitch: 1
-    pitchVariance: 0.377
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
   - name: Unbelievable
     clip: {fileID: 8300000, guid: 53b49200cc7be834b8b6bab2b52e4eac, type: 3}
     volume: 0.754
-    volumeVariance: 0.723
     pitch: 1
-    pitchVariance: 0.348
     loop: 0
-    mixerGroup: {fileID: 4706251908181118861, guid: b16121a9d89129046be19ed19ef5ba9e, type: 2}
     source: {fileID: 0}
 --- !u!1 &2022449684
 GameObject:

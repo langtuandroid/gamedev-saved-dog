@@ -12,7 +12,7 @@ public class UIWin : UICanvas
 {
     [SerializeField] private RectTransform nextButton, retryButton, dog1, dog2;
     [SerializeField] private TextMeshProUGUI coinText, coinRewardText;
-    [SerializeField] private Color starGain, starLose;
+    [SerializeField] private Sprite starGain, starLose;
     [SerializeField] private Image star2, star3, popup;
     [SerializeField] private CoinReward coinReward;
     [SerializeField] private GameObject coverCoinGain;
@@ -60,11 +60,11 @@ public class UIWin : UICanvas
         UpdateCoinRewardText();
        
         DisplayChar(_skinController.CurrentSkinIndex);
-        SetUIWinAnimation();
+        //SetUIWinAnimation();
     }
     private void OnDisable()
     {
-        ResetAnimation();
+       // ResetAnimation();
         SetColorStarDefault();
         SetDefaultPopup();
         
@@ -230,18 +230,18 @@ public class UIWin : UICanvas
     {
         if (_starsCount == 1)
         {
-            star2.color = starLose;
-            star3.color = starLose;
+            star2.sprite = starLose;
+            star3.sprite = starLose;
         } else if (_starsCount == 2)
         {
-            star3.color = starLose;
+            star3.sprite = starLose;
         }
     }
 
     private void SetColorStarDefault()
     {
-        star2.color = starGain;
-        star3.color = starGain;
+        star2.sprite = starGain;
+        star3.sprite = starGain;
     }
     
     private void HandleAudioInto()
