@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -7,9 +6,18 @@ using Zenject;
 
 public class UISettings : UICanvas
 {
+    private const string TERMS_OF_USE = "https://www.google.com.ua/?hl=uk";
+    private const string PRIVACY_POLICY = "https://www.google.com.ua/?hl=uk";
+    
     [SerializeField] private Image musicButtonIcon, soundButtonIcon, vibrateButtonIcon;
     [SerializeField] private Sprite musicOn, musicOff, soundOn, soundOff, vibrateOn, vibrateOff;
     [SerializeField] private RectTransform boxRect;
+
+    [Header("Buttons")]
+    [SerializeField]
+    private Button privacyPolicy;
+    [SerializeField]
+    private Button termOfUse;
 
     private DataPersistence _dataPersistence;
     private DataController _dataController;
@@ -22,11 +30,23 @@ public class UISettings : UICanvas
         _dataController = dataController;
         _audioManager = audioManager;
     }
-    
+
+    private void Awake()
+    {
+        privacyPolicy.onClick.AddListener((() => { Application.OpenURL(PRIVACY_POLICY);}));
+        termOfUse.onClick.AddListener((() => { Application.OpenURL(TERMS_OF_USE);}));
+    }
+
     private void OnEnable()
     {
-        SetAnimationForSetting();
+        //SetAnimationForSetting();
         LoadUISetting();
+    }
+
+    private void OnDestroy()
+    {
+        privacyPolicy.onClick.RemoveAllListeners();
+        termOfUse.onClick.RemoveAllListeners();
     }
 
     private void SetAnimationForSetting()
@@ -56,8 +76,7 @@ public class UISettings : UICanvas
         if (_dataController.currentGameData.music == true)
         {
             _audioManager.MusicOn();
-        }
-        else
+        } else
         {
             _audioManager.MusicOff();
         }
@@ -72,8 +91,7 @@ public class UISettings : UICanvas
         if (_dataController.currentGameData.sound == true)
         {
             _audioManager.SoundOn();
-        }
-        else
+        } else
         {
             _audioManager.SoundOff();
         }
