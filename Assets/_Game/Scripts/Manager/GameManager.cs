@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
             Screen.SetResolution(Mathf.RoundToInt(ratio * (float)maxScreenHeight), maxScreenHeight, true);
         }
 
-        if (!PlayerPrefs.HasKey(FIRST_LOAD))
+        /*if (!PlayerPrefs.HasKey(FIRST_LOAD))
         {
             PlayerPrefs.SetInt(FIRST_LOAD, 1);
             ChangeState(GameState.GamePlay);
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         {
             ChangeState(GameState.MainMenu);
             _uiManager.OpenUI<UIMainMenu>();
-        }
+        }*/
     }
 
     public void Victory()
