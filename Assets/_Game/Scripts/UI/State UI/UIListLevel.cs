@@ -14,7 +14,8 @@ public class UIListLevel : UICanvas
     [SerializeField] private TextMeshProUGUI starsGainedInGroup;
     [SerializeField] private TextMeshProUGUI starsGainedInGameCount;
     [SerializeField] private TextMeshProUGUI levelDoneText;
-
+    [SerializeField]
+    private TextMeshProUGUI _levelsNumberInGroup;
     [SerializeField] private GameObject buttonLevelPrefab;
     [FormerlySerializedAs("actList"),SerializeField] private List<Act> groupList;
 
@@ -66,7 +67,7 @@ public class UIListLevel : UICanvas
 
             for (int j = 0; j < buttonLevel.StarsToComplete; j++)
             {
-                buttonLevel.Stars[j].color = buttonLevel.StarReceivedColor;
+                buttonLevel.Stars[j].sprite = buttonLevel.StarReceivedSprite;
             }
 
             buttonLevelList.Add(button);
@@ -102,6 +103,10 @@ public class UIListLevel : UICanvas
         levelDoneText.text = GetTotalLevelDoneInGroup(currentGroup) + "/10";
         starsGainedInGameCount.text = GetTotalStarsCount() + "/999";
 
+        int startRange = currentGroup * 10 + 1;
+        int endRange = startRange + 9;
+        
+        _levelsNumberInGroup.text = startRange + "-" + endRange;
 
         starsDoneInGroupFill.fillAmount = GetTotalStarInGroup(currentGroup) / 30f;
         levelDoneInGroupFill.fillAmount = GetTotalLevelDoneInGroup(currentGroup) / 10f;
@@ -109,12 +114,14 @@ public class UIListLevel : UICanvas
 
     private void CheckStarsInLevels()
     {
-        if (_dataController.currentGameData.starDoneInLevels.Count == 0)
+        if (_dataController.currentGameData.starDoneInLevels.Count != 0)
         {
-            for (int i = 0; i < 999; i++)
-            {
-                _dataController.currentGameData.starDoneInLevels.Add(0);
-            }
+            return;
+        }
+
+        for (int i = 0; i < 999; i++)
+        {
+            _dataController.currentGameData.starDoneInLevels.Add(0);
         }
     }
     private void CheckLevelDone()
