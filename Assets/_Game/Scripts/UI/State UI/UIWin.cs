@@ -60,11 +60,11 @@ public class UIWin : UICanvas
         UpdateCoinRewardText();
        
         DisplayChar(_skinController.CurrentSkinIndex);
-        //SetUIWinAnimation();
+        SetUIWinAnimation();
     }
     private void OnDisable()
     {
-       // ResetAnimation();
+        ResetAnimation();
         SetColorStarDefault();
         SetDefaultPopup();
         
@@ -180,11 +180,11 @@ public class UIWin : UICanvas
     private void SetUIWinAnimation()
     {
         
-        dog1.DOPunchRotation(new Vector3(0, 180f, 0), 0.5f, 10, 1f).SetEase(Ease.OutQuad);
-        dog2.DOPunchRotation(new Vector3(0, -180f, 0), 0.5f, 10, 1f).SetEase(Ease.OutQuad);
+        //dog1.DOPunchRotation(new Vector3(0, 180f, 0), 0.5f, 10, 1f).SetEase(Ease.OutQuad);
+        //dog2.DOPunchRotation(new Vector3(0, -180f, 0), 0.5f, 10, 1f).SetEase(Ease.OutQuad);
 
-        nextButton.DOAnchorPos(new Vector2(0, -606f), 0.5f).SetEase(Ease.InOutSine);
-        retryButton.DOAnchorPos(new Vector2(0, -831f), 0.5f).SetEase(Ease.InOutSine);
+        //nextButton.DOAnchorPos(new Vector2(0, -606f), 0.5f).SetEase(Ease.InOutSine);
+        //retryButton.DOAnchorPos(new Vector2(0, -831f), 0.5f).SetEase(Ease.InOutSine);
        
 
         coinReward.Init();
@@ -193,8 +193,8 @@ public class UIWin : UICanvas
 
     private void ResetAnimation()
     {
-        nextButton.DOAnchorPos(new Vector2(-784f, -606f), 0f).SetEase(Ease.InOutSine);
-        retryButton.DOAnchorPos(new Vector2(767f, -606f), 0f).SetEase(Ease.InOutSine);
+        //nextButton.DOAnchorPos(new Vector2(-784f, -606f), 0f).SetEase(Ease.InOutSine);
+        //retryButton.DOAnchorPos(new Vector2(767f, -606f), 0f).SetEase(Ease.InOutSine);
          _scaleTween?.Kill();
     }
     private void CheckStars()

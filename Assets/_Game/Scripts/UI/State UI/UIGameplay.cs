@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class UIGameplay : UICanvas
@@ -9,7 +10,7 @@ public class UIGameplay : UICanvas
     [SerializeField] private Image levelCompleteBar;
     [SerializeField] private RectTransform coinImageTransform;
     [SerializeField] private Transform timerBG;
-    [SerializeField] private Color loseStarColor;
+    [SerializeField] private Sprite loseStarSprite;
     [SerializeField] private TextMeshProUGUI levelText, coinText;
     [SerializeField] private float maxInk;
     [SerializeField] private float inkLoseRate;
@@ -132,11 +133,11 @@ public class UIGameplay : UICanvas
         if (inkRatio is < 2f / 3f and > 1f / 3f)
         {
             _levelManager.CurrentLevel.SetStarsCount(2);
-            starsImages[2].color = loseStarColor;
+            starsImages[2].sprite = loseStarSprite;
         } else if (inkRatio is < 1f / 3f and > 0)
         {
             _levelManager.CurrentLevel.SetStarsCount(1);
-            starsImages[1].color = loseStarColor;
+            starsImages[1].sprite = loseStarSprite;
         }
     }
     
