@@ -21,7 +21,7 @@ public class GameData
         sound = false;
         vibrate = false;
         
-        coin = 10000;
+        coin = 0;
         currentChar = 0;
         currentLevelInProgress = 0;
         
