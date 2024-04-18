@@ -80,10 +80,10 @@ public class UIWin : UICanvas
             _dataController.currentGameData.starDoneInLevels[_levelManager.CurrentLevelIndex] != 0)
         {
             _coinsAmount = 0;
-            coverCoinGain.SetActive(false);
+            //coverCoinGain.SetActive(false);
         } else
         {
-            coverCoinGain.SetActive(true);
+            //coverCoinGain.SetActive(true);
         }
     }
 
@@ -187,15 +187,15 @@ public class UIWin : UICanvas
         //retryButton.DOAnchorPos(new Vector2(0, -831f), 0.5f).SetEase(Ease.InOutSine);
        
 
-        coinReward.Init();
-        coinReward.PlayCoinFlyAnimation(_coinsAmount, false);
+        //coinReward.Init();
+        //coinReward.PlayCoinFlyAnimation(_coinsAmount, false);
     }
 
     private void ResetAnimation()
     {
         //nextButton.DOAnchorPos(new Vector2(-784f, -606f), 0f).SetEase(Ease.InOutSine);
         //retryButton.DOAnchorPos(new Vector2(767f, -606f), 0f).SetEase(Ease.InOutSine);
-         _scaleTween?.Kill();
+        // _scaleTween?.Kill();
     }
     private void CheckStars()
     {
