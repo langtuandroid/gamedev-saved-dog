@@ -11,7 +11,8 @@ public class DataPersistence : MonoBehaviour
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
 
-    private void NewGame()
+    [ContextMenu(nameof(NewGame))]
+    public void NewGame()
     {
         gameData = new GameData();
     }
