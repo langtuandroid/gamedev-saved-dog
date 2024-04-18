@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class ButtonGroupDisplay : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI LevelsInGroupText;
+    [SerializeField] private TextMeshProUGUI[] levelsInGroupText;
     [SerializeField] private Image groupImage;
     [SerializeField] private Image starImage;
     [SerializeField] private TextMeshProUGUI starsReceivedText;
@@ -13,7 +13,11 @@ public class ButtonGroupDisplay : MonoBehaviour
 
     public void LoadDataLockedGroup(string title, Sprite image, int starDone)
     {
-        LevelsInGroupText.text = title;
+        foreach (var text in levelsInGroupText)
+        {
+            text.text = title;
+        }
+        
         groupImage.sprite = image;
         starsReceivedText.text = starDone + "/30";
     }
