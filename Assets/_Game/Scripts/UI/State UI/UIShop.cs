@@ -94,7 +94,7 @@ public class UIShop : UICanvas
     {
         characterName.gameObject.SetActive(value);
         characterHealth.gameObject.SetActive(value);
-        shopSpine.SetActive(value);
+       // shopSpine.SetActive(value);
     }
     
    private void LoadCharacter()
