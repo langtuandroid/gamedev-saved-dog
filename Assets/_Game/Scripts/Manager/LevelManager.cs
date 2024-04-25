@@ -1,4 +1,5 @@
 using System;
+using Integration;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Zenject;
@@ -8,14 +9,17 @@ public class LevelManager : MonoBehaviour
     public event Action OnWinLevel; 
     public event Action OnLoseLevel;
     
+    private const string INTEGRATIONS_COUNTER = "IntegrationsCounter";
+    
     [SerializeField] private Level[] levels;
     
     private Level currentLevel;
     private int currentLevelIndex;
     private int currentSkinIndex;
     private int currentHp;
-
     private int stateIndex;
+    private int loadLevelCount = 0;
+    
     public Level CurrentLevel => currentLevel;
     public int CurrentLevelIndex => currentLevelIndex;
     public int StateIndex
@@ -29,15 +33,19 @@ public class LevelManager : MonoBehaviour
     private UIManager _uiManager;
     private SkinController _skinController;
     private LinesDrawer _linesDrawer;
+    private AdMobController _adMobController;
+    private IAPService _iapService;
 
    [Inject]
-   private void Construct(DiContainer diContainer, DataController dataController, UIManager uiManager, SkinController skinController, LinesDrawer linesDrawer)
+   private void Construct(DiContainer diContainer, DataController dataController, UIManager uiManager, SkinController skinController, LinesDrawer linesDrawer,AdMobController adMobController, IAPService iapService)
    {
        _diContainer = diContainer;
        _dataController = dataController;
        _uiManager = uiManager;
        _skinController = skinController;
        _linesDrawer = linesDrawer;
+       _adMobController = adMobController;
+       _iapService = iapService;
    }
 
    public void DespawnLevel()
@@ -51,6 +59,8 @@ public class LevelManager : MonoBehaviour
 
     public void LoadLevel(int level)
     {
+        ShowIntegration();
+        
         if (currentLevel != null)
         {
             Destroy(currentLevel.gameObject);
@@ -73,6 +83,26 @@ public class LevelManager : MonoBehaviour
         currentLevel.SetTime();
     }
 
+    private void ShowIntegration()
+    {
+        loadLevelCount = PlayerPrefs.GetInt(INTEGRATIONS_COUNTER, 0);
+        loadLevelCount++;
+        
+        if (loadLevelCount % 2 == 0)
+        {
+            _adMobController.ShowInterstitialAd();
+        } else if (loadLevelCount % 3 == 0)
+        {
+            _iapService.ShowSubscriptionPanel();
+        }
+        if (loadLevelCount >= 3)
+        {
+            loadLevelCount = 0;
+        }
+        PlayerPrefs.SetInt(INTEGRATIONS_COUNTER, loadLevelCount);
+        PlayerPrefs.Save();
+    }
+    
     private void LoadSkinForCharacter()
     {
         _skinController.LoadDataSkin();

@@ -22,7 +22,8 @@ namespace Integration
 		private InterstitialAdController _interstitialAdController;
 		private RewardedAdController _rewardedAdController;
 
-
+		public bool NoAds => _noAds;
+		
 		[Inject]
 		private void Construct(
 			BannerViewController bannerViewController,

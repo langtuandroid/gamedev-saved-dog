@@ -73,12 +73,19 @@ public class IAPService : MonoBehaviour, IStoreListener
 
         public void ShowSubscriptionPanel()
         {
+            if (_adMobController.NoAds)
+            {
+                return;
+            }
+
             _subscriptionCanvas.SetActive(true);
             _adMobController.ShowBanner(false);
+            Time.timeScale = 0f;
         }
-        
-        public void HideSubscriptionPanel()
+
+        private void HideSubscriptionPanel()
         {
+            Time.timeScale = 1f;
             _subscriptionCanvas.SetActive(false);
             _adMobController.ShowBanner(true);
         }
