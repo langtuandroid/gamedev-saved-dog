@@ -28,14 +28,15 @@ public class SubcscribeDescription : MonoBehaviour , IPointerClickHandler
 
     private void RefreshDescription()
     {
-        string descriptionText = "Auto-renewal subscription info:\n" +
-                                 "Payment will be charged to your iTunes Account at confirmation of purchase.\n" +
-                                 "Free trial subscription is automatically renewed unless cancelled 24 hours before the renewal.\n" +
-                                 "Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.\n" +
-                                 "Any unused portion of a free trial period, if offered, will be forfeited when the user purchases a subscription to that publication.\n" +
-                                 "Subscriptions may be managed by the user and auto-renewal may be turned off by going to the user’s Account Settings after purchase.\n" +
-                                 $"Privacy Policy: <link=\"PrivacyPolicy\"><b><u>{_privacyLink}</u></b></link>\n" +
-                                 $"Terms of Service: <link=\"TermsOfService\"><b><u>{_termsLink}</u></b></link>";
+        string descriptionText = "Subscription Title: Disabling auto-play advertisements\n" + "Subscription Duration: Monthly/Yearly/Forever.\n"
+            + "Subscription Price: $3.99 per month/ $12.99 per year/ $19.99 one time purchase.\n"
+            + "Description: Enjoy ad-free gaming! Subscription disables auto-play advertisements within the application..\n"
+            + "Free Trial Information: Free trial subscription is automatically renewed unless cancelled 24 hours before the renewal\n"
+            + "Any unused portion of a free trial period, if offered, will be forfeited when the user purchases a subscription to that publication.\n"
+            + $"Terms and Conditions: By subscribing, you agree to our <link=\"TermsOfService\"><b><u>{_termsLink}</u></b></link>"
+            + " and acknowledge that your subscription will automatically renew unless canceled at least 24 hours before the end of the current period. Payment will be charged to your iTunes Account upon confirmation of purchase.\n"
+            + $"Privacy Policy: Your privacy is important to us. Please review our <link=\"PrivacyPolicy\"><b><u>{_privacyLink}</u></b></link> to understand how we collect, use, and protect your personal information.\n"
+            + "Subscription Management: You can manage your subscription and turn off auto-renewal by going to your iTunes Account Settings after purchase.";
 
         _descriptionText.text = descriptionText;
     }
