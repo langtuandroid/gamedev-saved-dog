@@ -15,6 +15,7 @@ public class UIShop : UICanvas
     [SerializeField] private GameObject shopSpine;
     [SerializeField] private Transform content;
     [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField] private Image _coinImage;
     [SerializeField] private TextMeshProUGUI priceCoinText;
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI characterHealth;
@@ -22,6 +23,7 @@ public class UIShop : UICanvas
     [SerializeField] private Button buyButton, useButton, usedButton;
     [SerializeField] private RectTransform popupRect;
     [SerializeField] private RectTransform coverShopRect, coinRect;
+    [SerializeField] private Sprite _coinSprite, _diamondSprite;
     [FormerlySerializedAs("charList"),SerializeField] private List<CharacterSO> charactersList;
     [FormerlySerializedAs("buttonCharList"),SerializeField] private List<Button> buttonCharactersList;
     [FormerlySerializedAs("buttonCharDisplayList"),SerializeField] private List<ButtonCharDisplay> buttonCharactersDisplayList;
@@ -166,6 +168,14 @@ public class UIShop : UICanvas
                 useButton.gameObject.SetActive(false);
                 usedButton.gameObject.SetActive(false);
                 priceCoinText.text = charactersList[index].price.ToString();
+
+                if (charactersList[index].shopType == ShopType.Coin)
+                {
+                    _coinImage.sprite = _coinSprite;
+                } else if (charactersList[index].shopType == ShopType.Diamond)
+                {
+                    _coinImage.sprite = _diamondSprite;
+                }
             }
             SetStateDisplayCharacter(true);
             DisplayCharacter(index);

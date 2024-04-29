@@ -1,9 +1,17 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
+public enum ShopType
+{
+    Coin,
+    Ad,
+    Diamond
+}
+
 [CreateAssetMenu]
 public class CharacterSO : ScriptableObject
 {
+    public ShopType shopType;
     [FormerlySerializedAs("image")]
     public Sprite skinImage;
     [FormerlySerializedAs("animIndex")]

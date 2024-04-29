@@ -2055,6 +2055,7 @@ MonoBehaviour:
   shopSpine: {fileID: 5178253733440546226}
   content: {fileID: 8774659761549203487}
   coinText: {fileID: 1113859865435851321}
+  _coinImage: {fileID: 6138590055395094}
   priceCoinText: {fileID: 5161887012158786453}
   characterName: {fileID: 1721515891399078034}
   characterHealth: {fileID: 3935201202896505028}
@@ -2066,6 +2067,8 @@ MonoBehaviour:
   popupRect: {fileID: 6031913442990767109}
   coverShopRect: {fileID: 8969496207638669563}
   coinRect: {fileID: 290204947708686668}
+  _coinSprite: {fileID: 21300000, guid: 44c131486c803784690d604594993b07, type: 3}
+  _diamondSprite: {fileID: 21300000, guid: 5b7485be9477a784aacfa09e405acd95, type: 3}
   charactersList:
   - {fileID: 11400000, guid: 34242c1fd98180442bc8910683d51b63, type: 2}
   - {fileID: 11400000, guid: 2e22d03cd1627a649b253dc866dd3407, type: 2}
