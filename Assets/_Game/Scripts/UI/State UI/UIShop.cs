@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Integration;
 using UnityEngine.UI;
 using Spine;
 using Spine.Unity;
@@ -41,17 +42,22 @@ public class UIShop : UICanvas
     private DataPersistence _dataPersistence;
     private DataController _dataController;
     private AudioManager _audioManager;
+    private AdMobController _adMobController;
+    private RewardedAdController _rewardedAdController;
 
     [Inject]
-    private void Construct(DataPersistence dataPersistence, DataController dataController, AudioManager audioManager)
+    private void Construct(DataPersistence dataPersistence, DataController dataController, AudioManager audioManager, AdMobController adMobController, RewardedAdController rewardedAdController)
     {
         _dataPersistence = dataPersistence;
         _dataController = dataController;
         _audioManager = audioManager;
+        _adMobController = adMobController;
+        _rewardedAdController = rewardedAdController;
     }
 
     private void OnEnable()
     {
+        _rewardedAdController.GetRewarded += OnWatchVideoSuccess;
         currentCharacterIndex = -1;
         previousCharacterIndex = -1;
         CheckData();
@@ -65,6 +71,7 @@ public class UIShop : UICanvas
     
     private void OnDisable()
     {
+        _rewardedAdController.GetRewarded -= OnWatchVideoSuccess;
         ResetAnim();
         ClearShopOnClose();
         SetDefaultPopup();
@@ -120,12 +127,6 @@ public class UIShop : UICanvas
         buttonChar.CharacterImage.sprite = charactersList[i].skinImage;
         buttonChar.SelectedIcon.SetActive(false);
 
-        // Проверяем, разблокирован ли персонаж
-        if (_dataController.currentGameData.charUnlock[i] == 1)
-        {
-            buttonChar.OwnedText.gameObject.SetActive(true);
-        }
-        
         if (charactersList[i].shopType == ShopType.Ad)
         {
             buttonChar.ADObject.SetActive(true);
@@ -137,6 +138,13 @@ public class UIShop : UICanvas
             buttonChar.ADObject.SetActive(false);
         }
         
+        // Проверяем, разблокирован ли персонаж
+        if (_dataController.currentGameData.charUnlock[i] == 1)
+        {
+            buttonChar.OwnedText.gameObject.SetActive(true);
+            buttonChar.ADObject.SetActive(false);
+        }
+
         if (_dataController.currentGameData.currentChar == i)
         {
             previousCharacterIndex = i;
@@ -306,7 +314,6 @@ public class UIShop : UICanvas
 
     private void PopupAnimation(ShopType shopType)
     {
-
         if (shopType == ShopType.Coin)
         {
             _popupText.text = "Not enough money";
@@ -360,32 +367,35 @@ public class UIShop : UICanvas
     #region Ad
     public void AdButton()
     {
-        /*if (currentCharIndex == -1)
+        if (currentCharacterIndex == -1)
             return;
-        if (!buttonCharDisplayList[currentCharIndex].textAd.gameObject.activeSelf)
+        if (!buttonCharactersDisplayList[currentCharacterIndex].ADText.gameObject.activeSelf)
             return;
-        _dataPersistence.SaveGame();*/
+        
+        _adMobController.ShowRewardedAd();
+        _dataPersistence.SaveGame();
     }
-    void OnWatchVideoSuccess()
+
+    private void OnWatchVideoSuccess()
     {
-        /*_dataController.currentGameData.currentAd[currentCharacterIndex]++;
+        _dataController.currentGameData.currentAd[currentCharacterIndex]++;
 
-        buttonCharactersDisplayList[currentCharacterIndex].TextAd.text = _dataController.currentGameData.currentAd[currentCharacterIndex] + "/"
+        buttonCharactersDisplayList[currentCharacterIndex].ADText.text = _dataController.currentGameData.currentAd[currentCharacterIndex] + "/"
             + charactersList[currentCharacterIndex].adMustWatch;
-        if (_dataController.currentGameData.currentAd[currentCharacterIndex] == charactersList[currentCharacterIndex].adMustWatch)
+
+        if (_dataController.currentGameData.currentAd[currentCharacterIndex] != charactersList[currentCharacterIndex].adMustWatch)
         {
-            // owned data
-            _dataController.currentGameData.charUnlock[currentCharacterIndex] = 1;
-
-            // UI
-            buyButton.gameObject.SetActive(false);
-            useButton.gameObject.SetActive(true);
-            usedButton.gameObject.SetActive(false);
-
-            buttonCharactersDisplayList[currentCharacterIndex].TextAd.gameObject.SetActive(false);
-            buttonCharactersDisplayList[currentCharacterIndex].ADImage.gameObject.SetActive(false);
-        }*/
-
+            return;
+        }
+        
+        _dataController.currentGameData.charUnlock[currentCharacterIndex] = 1;
+        
+        buyButton.gameObject.SetActive(false);
+        watchButton.gameObject.SetActive(false);
+        useButton.gameObject.SetActive(true);
+        usedButton.gameObject.SetActive(false);
+        buttonCharactersDisplayList[currentCharacterIndex].ADObject.gameObject.SetActive(false);
+        buttonCharactersDisplayList[currentCharacterIndex].OwnedText.gameObject.SetActive(true);
     }
 
     void OnWatchVideoFailed()
