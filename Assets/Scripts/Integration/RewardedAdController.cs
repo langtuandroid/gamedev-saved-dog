@@ -7,6 +7,7 @@ namespace Integration
     public class RewardedAdController
     {
         public event Action GetRewarded;
+        
         public event Action OnVideoClosed;
         
         private RewardedAd _rewardedAd;

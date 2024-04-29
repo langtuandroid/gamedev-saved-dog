@@ -12,7 +12,7 @@ public class ProjectInstaller : MonoInstaller
     {
         Container.Bind<IAPService>().FromInstance(_iapService).AsSingle().NonLazy();
         Container.Bind<AdMobController>().FromInstance(_adMobController).AsSingle().NonLazy();
-
+        
         Container.Bind<BannerViewController>().AsSingle().NonLazy();
         Container.Bind<InterstitialAdController>().AsSingle().NonLazy();
         Container.Bind<RewardedAdController>().AsSingle().NonLazy();
