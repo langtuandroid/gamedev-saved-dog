@@ -1599,6 +1599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentGameData:
     coin: 0
+    diamonds: 0
     currentLevelInProgress: 0
     currentChar: 0
     music: 0

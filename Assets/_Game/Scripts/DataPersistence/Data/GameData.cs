@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class GameData  
 {
     public int coin;
+    public int diamonds;
     public int currentLevelInProgress;
     public int currentChar;
 
@@ -22,6 +23,7 @@ public class GameData
         vibrate = false;
         
         coin = 0;
+        diamonds = 0;
         currentChar = 0;
         currentLevelInProgress = 0;
         

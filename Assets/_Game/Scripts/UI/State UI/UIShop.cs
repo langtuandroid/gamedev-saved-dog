@@ -15,13 +15,15 @@ public class UIShop : UICanvas
     [SerializeField] private GameObject shopSpine;
     [SerializeField] private Transform content;
     [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField] private TextMeshProUGUI _diamondText;
     [SerializeField] private Image _coinImage;
     [SerializeField] private TextMeshProUGUI priceCoinText;
     [SerializeField] private TextMeshProUGUI characterName;
     [SerializeField] private TextMeshProUGUI characterHealth;
     [SerializeField] private Sprite boxYellow, boxBlue;
-    [SerializeField] private Button buyButton, useButton, usedButton;
+    [SerializeField] private Button buyButton, useButton, usedButton, watchButton;
     [SerializeField] private RectTransform popupRect;
+    [SerializeField] private TextMeshProUGUI _popupText;
     [SerializeField] private RectTransform coverShopRect, coinRect;
     [SerializeField] private Sprite _coinSprite, _diamondSprite;
     [FormerlySerializedAs("charList"),SerializeField] private List<CharacterSO> charactersList;
@@ -56,6 +58,7 @@ public class UIShop : UICanvas
 
         SetStateDisplayCharacter(false);
         UpdateCoinText();
+        UpdateDiamondText();
         SetAnimForUIShop();
         LoadCharacter();
     }
@@ -70,6 +73,11 @@ public class UIShop : UICanvas
     private void UpdateCoinText()
     {
         coinText.text = _dataController.currentGameData.coin.ToString();
+    }
+    
+    private void UpdateDiamondText()
+    {
+        _diamondText.text = _dataController.currentGameData.diamonds.ToString();
     }
 
     private void CheckData()
@@ -102,6 +110,7 @@ public class UIShop : UICanvas
    private void LoadCharacter()
 {
     charUnlock = _dataController.currentGameData.charUnlock;
+    
     for(int i = 0; i < charactersList.Count; i++)
     {
         buttonTemp = Instantiate(buttonCharacterPrefab, content);
@@ -117,6 +126,17 @@ public class UIShop : UICanvas
             buttonChar.OwnedText.gameObject.SetActive(true);
         }
         
+        if (charactersList[i].shopType == ShopType.Ad)
+        {
+            buttonChar.ADObject.SetActive(true);
+            buttonChar.CurrentAd = _dataController.currentGameData.currentAd[i];
+            buttonChar.MaxAd = _dataController.currentGameData.maxAd[i];
+            buttonChar.ADText.text = buttonChar.CurrentAd + "/" + buttonChar.MaxAd;
+        } else
+        {
+            buttonChar.ADObject.SetActive(false);
+        }
+        
         if (_dataController.currentGameData.currentChar == i)
         {
             previousCharacterIndex = i;
@@ -125,6 +145,7 @@ public class UIShop : UICanvas
             buttonChar.SelectedIcon.SetActive(true);
 
             buyButton.gameObject.SetActive(false);
+            watchButton.gameObject.SetActive(false);
             useButton.gameObject.SetActive(false);
             usedButton.gameObject.SetActive(true);
 
@@ -154,27 +175,39 @@ public class UIShop : UICanvas
                 if (_dataController.currentGameData.currentChar != index)
                 {
                     buyButton.gameObject.SetActive(false);
+                    watchButton.gameObject.SetActive(false);
                     useButton.gameObject.SetActive(true);
                     usedButton.gameObject.SetActive(false);
                 } else
                 {
                     buyButton.gameObject.SetActive(false);
+                    watchButton.gameObject.SetActive(false);
                     useButton.gameObject.SetActive(false);
                     usedButton.gameObject.SetActive(true);
                 }
             } else
             {
-                buyButton.gameObject.SetActive(true);
-                useButton.gameObject.SetActive(false);
-                usedButton.gameObject.SetActive(false);
-                priceCoinText.text = charactersList[index].price.ToString();
+                if (charactersList[index].shopType == ShopType.Ad)
+                {
+                    watchButton.gameObject.SetActive(true);
+                    buyButton.gameObject.SetActive(false);
+                    useButton.gameObject.SetActive(false);
+                    usedButton.gameObject.SetActive(false);
+                } else
+                {
+                    buyButton.gameObject.SetActive(true);
+                    watchButton.gameObject.SetActive(false);
+                    useButton.gameObject.SetActive(false);
+                    usedButton.gameObject.SetActive(false);
+                    priceCoinText.text = charactersList[index].price.ToString();
 
-                if (charactersList[index].shopType == ShopType.Coin)
-                {
-                    _coinImage.sprite = _coinSprite;
-                } else if (charactersList[index].shopType == ShopType.Diamond)
-                {
-                    _coinImage.sprite = _diamondSprite;
+                    if (charactersList[index].shopType == ShopType.Coin)
+                    {
+                        _coinImage.sprite = _coinSprite;
+                    } else if (charactersList[index].shopType == ShopType.Diamond)
+                    {
+                        _coinImage.sprite = _diamondSprite;
+                    }
                 }
             }
             SetStateDisplayCharacter(true);
@@ -184,10 +217,8 @@ public class UIShop : UICanvas
         });
     }
 }
-   
 
-
-    private void DisplayCharacter(int index)
+   private void DisplayCharacter(int index)
     {
         //SetCharacterSkin(charactersList[index].animationIndex);
         characterName.text = charactersList[index].skinName;
@@ -231,29 +262,59 @@ public class UIShop : UICanvas
             return;
         }
 
-        if (_dataController.currentGameData.coin < charactersList[currentCharacterIndex].price)
+        ShopType shopType = charactersList[currentCharacterIndex].shopType;
+        int price = charactersList[currentCharacterIndex].price;
+
+        switch (shopType)
         {
-            PopupAnimation();
-            return;
+            case ShopType.Coin:
+                if (!CheckBalance(_dataController.currentGameData.coin, price))
+                {
+                    PopupAnimation(shopType);
+                    return;
+                }
+                _dataController.currentGameData.coin -= price;
+                UpdateCoinText();
+                _dataController.currentGameData.charUnlock[currentCharacterIndex] = 1;
+                break;
+            case ShopType.Diamond:
+                if (!CheckBalance(_dataController.currentGameData.diamonds, price))
+                {
+                    PopupAnimation(shopType);
+                    return;
+                }
+                _dataController.currentGameData.diamonds -= price;
+                UpdateDiamondText();
+                _dataController.currentGameData.charUnlock[currentCharacterIndex] = 1;
+                break;
         }
 
-        _dataController.currentGameData.coin -= charactersList[currentCharacterIndex].price;
-        UpdateCoinText();
-
-        _dataController.currentGameData.charUnlock[currentCharacterIndex] = 1;
-
-        // Включаем текст ownedText после покупки
         buttonCharactersDisplayList[currentCharacterIndex].OwnedText.gameObject.SetActive(true);
 
         buyButton.gameObject.SetActive(false);
+        watchButton.gameObject.SetActive(false);
         useButton.gameObject.SetActive(true);
         usedButton.gameObject.SetActive(false);
 
         _dataPersistence.SaveGame();
     }
 
-    private void PopupAnimation()
+    private bool CheckBalance(int currentBalance, int price)
     {
+        return currentBalance >= price;
+    }
+
+    private void PopupAnimation(ShopType shopType)
+    {
+
+        if (shopType == ShopType.Coin)
+        {
+            _popupText.text = "Not enough money";
+        } else if (shopType == ShopType.Diamond)
+        {
+            _popupText.text = "Not enough diamonds";
+        }
+        
         popupRect.gameObject.SetActive(true);
         popupRect.DOAnchorPos(Vector2.zero, 1.15f, false).SetEase(Ease.InOutQuart);
         popupRect.DOScale(0f, 0.5f).SetDelay(2.5f).OnComplete(SetDefaultPopup);
