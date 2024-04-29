@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f66fdb5e82c1ff4abf17918f0c95cf7, type: 3}
   m_Name: Bulk
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 273b3300c0f0d3743abb2eefb9dbfba2, type: 3}
-  animIndex: 13
-  hp: 6
+  shopType: 1
+  skinImage: {fileID: 21300000, guid: 273b3300c0f0d3743abb2eefb9dbfba2, type: 3}
+  animationIndex: 13
+  health: 6
   price: 12000
   adMustWatch: 3
-  currentAd: 0
-  owned: 0
-  name: Bulk
+  isOwned: 0
+  skinName: Bulk

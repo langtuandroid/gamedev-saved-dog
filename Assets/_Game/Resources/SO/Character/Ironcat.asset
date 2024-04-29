@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f66fdb5e82c1ff4abf17918f0c95cf7, type: 3}
   m_Name: Ironcat
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 86afce6eb61f53847aa4441f6f9f5fcc, type: 3}
-  animIndex: 10
-  hp: 2
-  price: 234
-  adMustWatch: 3
-  currentAd: 1
-  owned: 1
-  name: Ironcat
+  shopType: 0
+  skinImage: {fileID: 21300000, guid: 86afce6eb61f53847aa4441f6f9f5fcc, type: 3}
+  animationIndex: 10
+  health: 2
+  price: 2000
+  adMustWatch: 0
+  isOwned: 1
+  skinName: Ironcat

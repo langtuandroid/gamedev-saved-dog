@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f66fdb5e82c1ff4abf17918f0c95cf7, type: 3}
   m_Name: Minion
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 593543ea1bbc93246b9f5e302153ce86, type: 3}
-  animIndex: 21
-  hp: 15
-  price: 34500
-  adMustWatch: 5
-  currentAd: 0
-  owned: 0
-  name: Minion
+  shopType: 2
+  skinImage: {fileID: 21300000, guid: 593543ea1bbc93246b9f5e302153ce86, type: 3}
+  animationIndex: 21
+  health: 15
+  price: 175
+  adMustWatch: 0
+  isOwned: 0
+  skinName: Minion

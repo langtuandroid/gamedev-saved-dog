@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f66fdb5e82c1ff4abf17918f0c95cf7, type: 3}
   m_Name: Spidereow
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 1604091ce6b1dbb4281d4a2d30dbb433, type: 3}
-  animIndex: 29
-  hp: 3
+  skinImage: {fileID: 21300000, guid: 1604091ce6b1dbb4281d4a2d30dbb433, type: 3}
+  animationIndex: 29
+  health: 3
   price: 1000
-  adMustWatch: 1
-  currentAd: 0
-  owned: 0
-  name: Spidereow
+  adMustWatch: 0
+  isOwned: 0
+  skinName: Spidereow

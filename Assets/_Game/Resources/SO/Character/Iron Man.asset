@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f66fdb5e82c1ff4abf17918f0c95cf7, type: 3}
   m_Name: Iron Man
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 8dba14a46bcea00449410193d07fe3f9, type: 3}
-  animIndex: 16
-  hp: 23
-  price: 49999
-  adMustWatch: 6
-  currentAd: 0
-  owned: 0
-  name: Iron Man
+  shopType: 2
+  skinImage: {fileID: 21300000, guid: 8dba14a46bcea00449410193d07fe3f9, type: 3}
+  animationIndex: 16
+  health: 23
+  price: 2400
+  adMustWatch: 0
+  isOwned: 0
+  skinName: Iron Man

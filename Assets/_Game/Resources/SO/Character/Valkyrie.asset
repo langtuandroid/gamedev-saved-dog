@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f66fdb5e82c1ff4abf17918f0c95cf7, type: 3}
   m_Name: Valkyrie
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 5f08c277cb792f04fadad400d76adca9, type: 3}
-  animIndex: 18
-  hp: 17
-  price: 38000
-  adMustWatch: 5
-  currentAd: 0
-  owned: 0
-  name: Valkyrie
+  shopType: 2
+  skinImage: {fileID: 21300000, guid: 5f08c277cb792f04fadad400d76adca9, type: 3}
+  animationIndex: 18
+  health: 17
+  price: 250
+  adMustWatch: 0
+  isOwned: 0
+  skinName: Valkyrie

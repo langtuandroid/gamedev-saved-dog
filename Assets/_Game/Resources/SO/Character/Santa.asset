@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f66fdb5e82c1ff4abf17918f0c95cf7, type: 3}
   m_Name: Santa
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 85c8097d4bb254e4ab2275bedb11662d, type: 3}
-  animIndex: 23
-  hp: 13
+  shopType: 1
+  skinImage: {fileID: 21300000, guid: 85c8097d4bb254e4ab2275bedb11662d, type: 3}
+  animationIndex: 23
+  health: 13
   price: 28900
-  adMustWatch: 4
-  currentAd: 0
-  owned: 0
-  name: Santa
+  adMustWatch: 5
+  isOwned: 0
+  skinName: Santa
