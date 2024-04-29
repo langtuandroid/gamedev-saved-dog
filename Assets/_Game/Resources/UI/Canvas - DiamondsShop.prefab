@@ -1430,6 +1430,7 @@ GameObject:
   - component: {fileID: 3387822324456291799}
   - component: {fileID: 6689358477614389580}
   - component: {fileID: 5329130826681813228}
+  - component: {fileID: 1416359879440913167}
   m_Layer: 0
   m_Name: Canvas - DiamondsShop
   m_TagString: Untagged
@@ -1522,6 +1523,24 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1416359879440913167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5047510257909095256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17bc2c0e196f3ce4194f9426dba379b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsDestroyOnClose: 0
+  _pack1Button: {fileID: 7234703038868028199}
+  _pack2Button: {fileID: 9156860561633817581}
+  _pack3Button: {fileID: 5180218840858066763}
+  _pack4Button: {fileID: 3366764585464154546}
+  _closeButton: {fileID: 3018570148421143282}
 --- !u!1 &5078899683835780390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1641,19 +1660,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UISettings, Assembly-CSharp
-        m_MethodName: BackButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &5193724511325804688
 GameObject:
   m_ObjectHideFlags: 0

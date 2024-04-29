@@ -8,8 +8,14 @@ public class ProjectInstaller : MonoInstaller
     private AdMobController _adMobController;
     [SerializeField] 
     private IAPService _iapService;
+    [SerializeField]
+    private DataController _dataController;
+    [SerializeField]
+    private DataPersistence _dataPersistence;
     public override void InstallBindings()
     {
+        Container.Bind<DataPersistence>().FromInstance(_dataPersistence).AsSingle().NonLazy();
+        Container.Bind<DataController>().FromInstance(_dataController).AsSingle().NonLazy();
         Container.Bind<IAPService>().FromInstance(_iapService).AsSingle().NonLazy();
         Container.Bind<AdMobController>().FromInstance(_adMobController).AsSingle().NonLazy();
         

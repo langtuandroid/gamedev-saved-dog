@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4484418892947664712}
   - component: {fileID: 3161041155693412658}
   - component: {fileID: 6580532066947998596}
+  - component: {fileID: 7957502117528957672}
+  - component: {fileID: -9157646084794263072}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -78,6 +80,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _adMobController: {fileID: 6580532066947998596}
   _iapService: {fileID: 4518525001007614604}
+  _uiManager: {fileID: 3693263556963609356, guid: 044fd22b73640074d89ca3d9496cd44d, type: 3}
+  _dataController: {fileID: 7957502117528957672}
+  _dataPersistence: {fileID: -9157646084794263072}
 --- !u!114 &6580532066947998596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,6 +98,44 @@ MonoBehaviour:
   _isProdaction: 0
   noAdsKey: NoAds
   _settings: {fileID: 11400000, guid: 02e07132845cd40e88068bb7587771ec, type: 2}
+--- !u!114 &7957502117528957672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2461082093803804320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22eccd7d5ca1b5d47baca2b7c8b43a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentGameData:
+    coin: 0
+    diamonds: 0
+    currentLevelInProgress: 0
+    currentChar: 0
+    music: 0
+    sound: 0
+    vibrate: 0
+    currentAd: 
+    maxAd: 
+    charUnlock: 0100000000000000
+    levelDoneInGame: 
+    starDoneInLevels: 
+--- !u!114 &-9157646084794263072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2461082093803804320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe448fbe7870a948838b7617a9aac3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileName: data.json
 --- !u!1001 &1661377233542124868
 PrefabInstance:
   m_ObjectHideFlags: 0

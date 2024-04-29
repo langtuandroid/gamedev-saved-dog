@@ -36,12 +36,16 @@ public class IAPService : MonoBehaviour, IStoreListener
         private GameObject _subscriptionCanvas;
         
         private AdMobController _adMobController;
+        private DataController _dataController;
+        private DataPersistence _dataPersistence;
        
 
         [Inject]
-        private void Construct (AdMobController adMobController)
+        private void Construct (AdMobController adMobController, DataController dataController, DataPersistence dataPersistence)
         {
             _adMobController = adMobController;
+            _dataController = dataController;
+            _dataPersistence = dataPersistence;
         }
 
         private void Awake()
@@ -240,22 +244,30 @@ public class IAPService : MonoBehaviour, IStoreListener
             }
             else if (String.Equals(args.purchasedProduct.definition.id, buy100Id, StringComparison.Ordinal))
             {
-                PlayerPrefs.SetInt("Diamond", PlayerPrefs.GetInt("Diamond") + 100);
+                _dataController.currentGameData.diamonds = _dataController.currentGameData.diamonds + 100;
+                _dataPersistence.SaveGame();
+                UpdateAllDiamondsText();
                 Debug.Log($"ProcessPurchase: PASS. Product: '{args.purchasedProduct.definition.id}'");
             }
             else if (String.Equals(args.purchasedProduct.definition.id, buy300Id, StringComparison.Ordinal))
             {
-                PlayerPrefs.SetInt("Diamond", PlayerPrefs.GetInt("Diamond") + 300);
+                _dataController.currentGameData.diamonds = _dataController.currentGameData.diamonds + 300;
+                _dataPersistence.SaveGame();
+                UpdateAllDiamondsText();
                 Debug.Log($"ProcessPurchase: PASS. Product: '{args.purchasedProduct.definition.id}'");
             }
             else if (String.Equals(args.purchasedProduct.definition.id, buy1000Id, StringComparison.Ordinal))
             {
-                PlayerPrefs.SetInt("Diamond", PlayerPrefs.GetInt("Diamond") + 1000);
+                _dataController.currentGameData.diamonds = _dataController.currentGameData.diamonds + 1000;
+                _dataPersistence.SaveGame();
+                UpdateAllDiamondsText();
                 Debug.Log($"ProcessPurchase: PASS. Product: '{args.purchasedProduct.definition.id}'");
             }
             else if (String.Equals(args.purchasedProduct.definition.id, buy3000Id, StringComparison.Ordinal))
             {
-                PlayerPrefs.SetInt("Diamond", PlayerPrefs.GetInt("Diamond") + 3000);
+                _dataController.currentGameData.diamonds = _dataController.currentGameData.diamonds + 3000;
+                _dataPersistence.SaveGame();
+                UpdateAllDiamondsText();
                 Debug.Log($"ProcessPurchase: PASS. Product: '{args.purchasedProduct.definition.id}'");
             }
             else
@@ -264,6 +276,16 @@ public class IAPService : MonoBehaviour, IStoreListener
             }
         
             return PurchaseProcessingResult.Complete;
+        }
+
+        private void UpdateAllDiamondsText()
+        {
+            DiamondsText[] diamondsTexts = FindObjectsOfType<DiamondsText>();
+
+            foreach (DiamondsText diamondsText in diamondsTexts)
+            {
+                diamondsText.UpdateText();
+            }
         }
         
         public void RestorePurchases()
