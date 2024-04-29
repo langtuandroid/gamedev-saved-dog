@@ -16,7 +16,7 @@ MonoBehaviour:
   skinImage: {fileID: 21300000, guid: 593543ea1bbc93246b9f5e302153ce86, type: 3}
   animationIndex: 21
   health: 15
-  price: 0
+  price: 150
   adMustWatch: 0
   isOwned: 0
   skinName: Minion
