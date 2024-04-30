@@ -51,10 +51,10 @@ public class SubcscribeDescription : MonoBehaviour , IPointerClickHandler
             TMP_LinkInfo linkInfo = _descriptionText.textInfo.linkInfo[linkIndex];
             switch (linkInfo.GetLinkID())
             {
-                case "PrivacyPolicy":
+                case "Privacy Policy":
                     OpenUrl(_privacyLink);
                     break;
-                case "TermsOfService":
+                case "Terms of Service":
                     OpenUrl(_termsLink);
                     break;
             }
