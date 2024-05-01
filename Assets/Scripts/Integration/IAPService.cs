@@ -53,7 +53,6 @@ public class IAPService : MonoBehaviour, IStoreListener
             if (_storeController == null)
             {
                 InitializePurchasing();
-                CheckSubscriptionStatus();  
             }
             else
             {
@@ -104,14 +103,24 @@ public class IAPService : MonoBehaviour, IStoreListener
                 Product product = GetProduct(productId);
                 if (product != null && product.hasReceipt)
                 {
+                    Debug.Log("Product.hasReceipt = " + product.hasReceipt);
                     subscriptionActive = true;
                     break;
                 }
             }
+            Debug.Log("IsSubscriptionActive = " + subscriptionActive);
+            
             PlayerPrefs.SetInt(_adMobController.noAdsKey, subscriptionActive ? 1 : 0);
+            PlayerPrefs.Save();
+            
+            Debug.Log("Ads Key = "+ PlayerPrefs.GetInt(_adMobController.noAdsKey));
+            
             if (subscriptionActive && _subscriptionCanvas != null)
             {
                 HideSubscriptionPanel();
+            } else
+            {
+                ShowSubscriptionPanel();
             }
         }
 
@@ -156,6 +165,7 @@ public class IAPService : MonoBehaviour, IStoreListener
             Debug.Log("OnInitialized: SUCSESS");
             _storeController = controller;
             _extensionsProvider = extensions;
+            CheckSubscriptionStatus();
         }
 
         private void BuySubscription()

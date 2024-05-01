@@ -68,6 +68,7 @@ namespace Integration
 		public void RemoveAds()
 		{
 			PlayerPrefs.SetInt(noAdsKey, 1);
+			PlayerPrefs.Save();
 			_bannerViewController.HideAd();
 		}
 		
