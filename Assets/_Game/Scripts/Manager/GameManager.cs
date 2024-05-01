@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     
     private GameState gameState;
     private Tweener scaleTween;
+
+    public GameState GameState => gameState;
+
     private LevelManager _levelManager;
     private DataPersistence _dataPersistence;
     private AudioManager _audioManager;
@@ -50,6 +53,8 @@ public class GameManager : MonoBehaviour
         {
             Screen.SetResolution(Mathf.RoundToInt(ratio * (float)maxScreenHeight), maxScreenHeight, true);
         }
+        
+        _uiManager.OpenUI<UIMainMenu>();
 
         /*if (!PlayerPrefs.HasKey(FIRST_LOAD))
         {
@@ -66,6 +71,7 @@ public class GameManager : MonoBehaviour
 
     public void Victory()
     {
+        _uiManager.CloseUI<UIDiamondShop>();
         blade.gameObject.SetActive(false);
 
         _levelManager.CompleteLevel();
@@ -90,6 +96,7 @@ public class GameManager : MonoBehaviour
     
     public void Lose()
     {
+        _uiManager.CloseUI<UIDiamondShop>();
         ChangeState(GameState.Lose);
         blade.gameObject.SetActive(false);
 

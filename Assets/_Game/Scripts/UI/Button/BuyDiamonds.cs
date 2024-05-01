@@ -8,12 +8,14 @@ public class BuyDiamonds : MonoBehaviour
 
     private UIManager _uiManager;
     private AudioManager _audioManager;
+    private GameManager _gameManager;
 
     [Inject]
-    private void Construct (UIManager uiManager, AudioManager audioManager)
+    private void Construct (UIManager uiManager, AudioManager audioManager, GameManager gameManager)
     {
         _uiManager = uiManager;
         _audioManager = audioManager;
+        _gameManager = gameManager;
     }
 
     private void OnEnable()
@@ -28,6 +30,11 @@ public class BuyDiamonds : MonoBehaviour
 
     private void OpenShop()
     {
+        if (_gameManager.GameState is GameState.Lose or GameState.Win)
+        {
+            return;
+        }
+
         _uiManager.OpenUI<UIDiamondShop>();
 
         _audioManager.PlayBG(Constant.AUDIO_MUSIC_SHOP);
